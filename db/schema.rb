@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130701095724) do
+ActiveRecord::Schema.define(version: 20130702073147) do
 
   create_table "locations", force: true do |t|
     t.string   "name"
@@ -38,12 +38,12 @@ ActiveRecord::Schema.define(version: 20130701095724) do
     t.string   "ethnicity"
     t.string   "address"
     t.string   "email"
-    t.string   "crypted_password"
     t.string   "password_salt"
     t.string   "persistence_token"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "role_id"
+    t.string   "encrypted_password"
   end
 
 end

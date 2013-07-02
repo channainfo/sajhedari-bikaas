@@ -51,7 +51,7 @@ gem 'will_paginate'
 gem 'foreman'
 gem 'uuidtools'
 gem 'rack-offline'
-gem 'twitter-bootstrap-rails'
+gem "twitter-bootstrap-rails", "~> 2.2.7"
 
 group :test do
   gem 'shoulda-matchers'
