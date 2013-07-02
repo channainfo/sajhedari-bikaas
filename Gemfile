@@ -51,7 +51,22 @@ gem 'will_paginate'
 gem 'foreman'
 gem 'uuidtools'
 gem 'rack-offline'
+gem 'twitter-bootstrap-rails'
 
+group :test do
+  gem 'shoulda-matchers'
+  gem 'ci_reporter'
+  gem 'resque_spec'
+  gem 'selenium-webdriver'
+  gem 'nokogiri'
+  gem 'capybara'
+  gem 'database_cleaner'
+end
+
+group :test, :development do
+  gem 'rspec'
+  gem 'rspec-rails'
+end
 
 
 # Gems used only for assets and not required
