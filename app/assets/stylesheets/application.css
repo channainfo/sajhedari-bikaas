@@ -11,3 +11,14 @@
  *= require_self
  *= require_tree .
  */
+
+.body-content {
+	margin-left: auto;
+	margin-right: auto;
+	width: 1000px;
+}
+
+.to-right{
+	right: 0px;
+	float: right;
+}

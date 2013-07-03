@@ -4,16 +4,13 @@ class HomeController < ApplicationController
   def index
     if current_user && !params[:explicit]
       if mobile_device?
-        p "Helllo"
-        # redirect_to mobile_collections_path 
+        redirect_to mobile_locations_path 
       else
-        p "Desktop"
-        # redirect_to collections_path
+        redirect_to locations_path
       end
     else
       if mobile_device?
-        P "Mobile"
-        # redirect_to new_user_session_path 
+        redirect_to new_user_sessions_path 
       end
     end
   end

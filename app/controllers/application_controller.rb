@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   helper :all
   protect_from_forgery
+  layout :layout_by_resource 
   #before_filter :prepare_for_mobile
 
   private
@@ -20,6 +21,14 @@ class ApplicationController < ActionController::Base
   def prepare_for_mobile
     session[:mobile_param] = params[:mobile] if params[:mobile]
     #request.format = :mobile if mobile_device?
+  end
+
+  def layout_by_resource
+    if devise_controller? && resource_name == :user && action_name == 'new'
+      'devise'
+    else
+      'application'
+    end
   end
 
   def current_user_or_guest
@@ -45,9 +54,9 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     if mobile_device?
-      stored_location_for(resource) || mobile_collections_path
+       stored_location_for(resource) || mobile_location_path
     else
-      stored_location_for(resource) || collections_path
+       stored_location_for(resource) || location_path
     end
   end
 

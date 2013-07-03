@@ -39,24 +39,21 @@ gem 'mysql2'
 gem 'devise'
 gem 'haml-rails'
 gem 'decent_exposure'
-gem "instedd-rails", '0.0.17'
 gem "breadcrumbs_on_rails"
 gem "tire"
-gem "resque", :require => "resque/server"
-gem 'resque-scheduler', :require => 'resque_scheduler'
 gem "nuntium_api", "~> 0.13", :require => "nuntium"
 gem 'ice_cube'
-gem 'knockoutjs-rails'
 gem 'will_paginate'
 gem 'foreman'
 gem 'uuidtools'
 gem 'rack-offline'
 gem "twitter-bootstrap-rails", "~> 2.2.7"
+gem "protected_attributes"
+gem 'will_paginate-bootstrap'
 
 group :test do
   gem 'shoulda-matchers'
   gem 'ci_reporter'
-  gem 'resque_spec'
   gem 'selenium-webdriver'
   gem 'nokogiri'
   gem 'capybara'

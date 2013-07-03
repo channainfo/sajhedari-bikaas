@@ -11,13 +11,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130702073147) do
+ActiveRecord::Schema.define(version: 20130703024613) do
+
+  create_table "cases", force: true do |t|
+    t.string   "type"
+    t.string   "intensity"
+    t.integer  "location_id"
+    t.string   "state_of_conflict"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "locations", force: true do |t|
     t.string   "name"
     t.string   "code"
     t.decimal  "lat",        precision: 10, scale: 6
     t.decimal  "lng",        precision: 10, scale: 6
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "reporters", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "phone_number"
+    t.string   "sex"
+    t.string   "cast"
+    t.string   "ethnicity"
+    t.string   "address"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

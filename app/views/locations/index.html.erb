@@ -1,0 +1,46 @@
+    <div class="btn-toolbar">
+    	<%= link_to "Add New Place", new_location_path, :method => :get, :class => 'btn btn-primary' %>
+	    <a href="#" class="btn to-right"><i class="icon-upload"></i> Import Location Code</a>
+    </div>
+    <div class="well">
+    	<!--<table class="table table-bordered table-striped">-->
+	    <table class="table">
+		    <thead>
+			    <tr>
+				    <th>Location Code</th>
+				    <th>Location Name</th>
+				    <th>Latitude</th>
+				    <th>Longtitude</th>
+				    <th style="width: 36px;"></th>
+			    </tr>
+		    </thead>
+		    <% @locations.each do |l| %>
+			    <tbody>
+				    <tr>
+					    <td><%= l.code %></td>
+					    <td><%= l.name %></td>
+					    <td><%= l.lat %></td>
+					    <td><%= l.lng %></td>
+					    <td>
+					    <%= link_to raw("<i class='icon-pencil'></i>"), edit_location_path(l), :method => :get %>
+					    <%= link_to raw("<i class='icon-remove'></i>"), location_path(l), :method => :delete, :confirm => "Are you sure to delete this location?" %>
+					    </td>
+				    </tr>
+			    </tbody>
+			<% end %>
+	    </table>
+    </div>
+    <%= will_paginate @locations, renderer: BootstrapPagination::Rails %>
+    <div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="myModalLabel">Delete Confirmation</h3>
+		</div>
+		<div class="modal-body">
+		    <p class="error-text">Are you sure you want to delete the user?</p>
+		</div>
+		<div class="modal-footer">
+		    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+		    <button class="btn btn-danger" data-dismiss="modal">Delete</button>
+	    </div>
+    </div>

@@ -1,13 +1,61 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Conflict</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-<%= yield %>
-
-</body>
+	<head>
+	  <title>Violent Reporting System</title>
+	  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+	  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+	  <%= csrf_meta_tags %>
+	</head>
+	<body>
+		<div class="navbar">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						</a>
+					<a class="brand" href="#" name="top">Sajhedari Bikaas</a>
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li><a href="#"><i class="icon-envelope"></i> Map and Messages</a></li>
+							<li class="divider-vertical"></li>
+							<li><a href="#"><i class="icon-file"></i> Reporters</a></li>
+							<li class="divider-vertical"></li>
+							<li><a href="#"><i class="icon-envelope"></i> Trend </a></li>
+							<li class="divider-vertical"></li>
+							<li><a href="#"><i class="icon-bell"></i> Cases Based Alert</a></li>
+							<li class="divider-vertical"></li>
+							<li><a href="#"><i class="icon-warning-sign"></i> Aggregate Threshold Alert</a></li>
+							<li class="divider-vertical"></li>
+							<li class="active"><a href="#"><i class="icon-map-marker"></i> Location Code</a></li>
+							<li class="divider-vertical"></li>
+						</ul>
+						<div class="btn-group pull-right">
+							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+								<i class="icon-user"></i> admin <span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#"><i class="icon-wrench"></i> Settings</a></li>
+								<li class="divider"></li>
+								<li><%= link_to "Sign out", destroy_user_session_path, :method => :delete, :class => 'icon-share' %></li>
+							</ul>
+						</div>
+					</div>
+				<!--/.nav-collapse -->
+				</div>
+			<!--/.container-fluid -->
+			</div>
+		<!--/.navbar-inner -->
+		</div>
+		<div class="body-content">
+			<%= yield %>
+			<hr>
+			<img src="" />
+			<footer>
+				Developed by <a href="http://www.ilabsoutheastasia.org/">InSTEDD iLab South East Asia</a>.
+			</footer>
+		</div>
+		
+	</body>
 </html>
