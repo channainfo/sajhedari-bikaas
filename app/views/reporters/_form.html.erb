@@ -1,0 +1,66 @@
+<% if reporter.errors.any? %>
+  <div id="error_explanation">
+    <h4><%= pluralize(reporter.errors.count, "error") %> prohibited this post from being saved:</h4>
+ 
+    <ul>
+    <% reporter.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+<%= form_for(reporter, :url => {:action => action} , :html => {:class => 'form-horizontal'} ) do |f| %>    
+    <fieldset>                
+        <!-- Name -->
+        <div class="control-group">
+            <%= f.label "First Name",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :first_name, :class =>"input-xlarge", :required => "required" %>
+            </div>
+        </div>
+        <div class="control-group">
+            <%= f.label "Last Name",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :last_name, :class =>"input-xlarge", :required => "required" %>
+            </div>
+        </div>
+        <div class="control-group">
+            <%= f.label "Gender",:class => "control-label" %>
+            <div class="controls">
+                <%= f.select(:sex, options_for_select(["Female", "Male"].collect {|p| [p] }, "Select Gender")) %>
+            </div>
+        </div>
+        <div class="control-group">
+            <%= f.label "Cast",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :cast, :class =>"input-xlarge", :required => "required" %>
+            </div>
+        </div>
+        <div class="control-group">
+            <%= f.label "Ethnicity",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :ethnicity, :class =>"input-xlarge", :required => "required" %>
+            </div>
+        </div>
+        <div class="control-group">
+            <%= f.label "Phone Number",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :phone_number, :class =>"input-xlarge", :required => "required" %>
+            </div>
+        </div>
+        <div class="control-group">
+            <%= f.label "Address",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_area :address, :class =>"input-xlarge", :required => "required" %>
+            </div>
+        </div>
+        
+        <!-- Submit -->
+        <div class="control-group">
+            <div class="controls">
+                <button class="btn btn-success">Save</button>
+                <%=link_to "Cancel", reporters_path, :class => "btn" %>
+            </div>
+        </div>
+    </fieldset>
+<% end %>

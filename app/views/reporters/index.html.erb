@@ -1,29 +1,35 @@
     <div class="btn-toolbar">
-    	<a href="#" class="btn"><i class="icon-upload"></i> Import Location Code</a>
-    	<%= link_to "Add New Place", new_location_path, :method => :get, :class => 'btn btn-primary to-right' %>	    
+    	<div class="input-append">
+        	<input type="text" placeholder="Search here ..." class="span2 search-query" name="q">
+        </div>
+    	<%= link_to "Add New Reporter", new_reporter_path, :method => :get, :class => 'btn btn-primary to-right' %>	    
     </div>
     <div class="well">
     	<!--<table class="table table-bordered table-striped">-->
 	    <table class="table">
 		    <thead>
 			    <tr>
-				    <th>Location Code</th>
-				    <th>Location Name</th>
-				    <th>Latitude</th>
-				    <th>Longtitude</th>
+				    <th>First Name</th>
+				    <th>Last Name</th>
+				    <th>Gender</th>
+				    <th>Cast</th>
+				    <th>Ethnicity</th>
+				    <th>Phone Number</th>
 				    <th style="width: 36px;"></th>
 			    </tr>
 		    </thead>
-		    <% @locations.each do |l| %>
+		    <% @reporters.each do |reporter| %>
 			    <tbody>
 				    <tr>
-					    <td><%= l.code %></td>
-					    <td><%= l.name %></td>
-					    <td><%= l.lat %></td>
-					    <td><%= l.lng %></td>
+					    <td><%= reporter.first_name %></td>
+					    <td><%= reporter.last_name %></td>
+					    <td><%= reporter.sex %></td>
+					    <td><%= reporter.cast %></td>
+					    <td><%= reporter.ethnicity %></td>
+					    <td><%= reporter.phone_number %></td>
 					    <td>
-					    <%= link_to raw("<i class='icon-pencil'></i>"), edit_location_path(l), :method => :get %>
-					    <%= link_to raw("<i class='icon-remove'></i>"), location_path(l), :method => :delete, :confirm => "Are you sure to delete this location?" %>
+					    <%= link_to raw("<i class='icon-pencil'></i>"), edit_reporter_path(reporter), :method => :get %>
+					    <%= link_to raw("<i class='icon-remove'></i>"), reporter_path(reporter), :method => :delete, :confirm => "Are you sure to delete this location?" %>
 					    </td>
 				    </tr>
 			    </tbody>

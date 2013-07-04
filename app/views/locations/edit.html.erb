@@ -1,42 +1,6 @@
-    <div class="row-fluid">
-        <%= form_for(@location, :url => {action: "update"} , :html => {:class => 'form-horizontal'} ) do |f| %>    
-            <fieldset>
-                <div id="legend">
-                    <legend class="">Edit Place - <%= @location.name %></legend>
-                </div>
-                <!-- Name -->
-                <div class="control-group">
-                    <%= f.label "Location Name",:class => "control-label" %>
-                    <div class="controls">
-                        <%= f.text_field :name, :class =>"input-xlarge", :required => "required" %>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <%= f.label "Location Code",:class => "control-label" %>
-                    <div class="controls">
-                        <%= f.text_field :code, :class =>"input-xlarge", :required => "required" %>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <%= f.label "Latitude",:class => "control-label" %>
-                    <div class="controls">
-                        <%= f.text_field :lat, :class =>"input-xlarge", :required => "required" %>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <%= f.label "Longtitude",:class => "control-label" %>
-                    <div class="controls">
-                        <%= f.text_field :lng, :class =>"input-xlarge", :required => "required" %>
-                    </div>
-                </div>
-                
-                <!-- Submit -->
-                <div class="control-group">
-                    <div class="controls">
-                        <button class="btn btn-success">Save</button>
-                    </div>
-                </div>
-            </fieldset>
-        <% end %>
+<div class="row-fluid">
+    <div id="legend">
+        <legend class="">Edit Place - <%= @location.name %></legend>
     </div>
+    <%= render "form", {:location => @location, :action => "update" } %>
+</div>

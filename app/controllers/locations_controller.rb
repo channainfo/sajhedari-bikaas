@@ -14,11 +14,11 @@ class LocationsController < ApplicationController
   end
 
   def create
-    location = Location.new(params[:location])
-  	if location.save
+    @location = Location.new(params[:location])
+  	if @location.save
       redirect_to locations_path
     else
-      redirect_to new_location_path
+      render :new
     end
   end
 
@@ -27,11 +27,11 @@ class LocationsController < ApplicationController
   end
 
   def update
-    location = Location.find(params[:id])
-    if(location.update_attributes(params[:location]))
+    @location = Location.find(params[:id])
+    if(@location.update_attributes(params[:location]))
       redirect_to locations_path
     else
-      redirect_to edit_location_path(location)
+      render :edit
     end
   end
 

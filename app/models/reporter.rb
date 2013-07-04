@@ -1,6 +1,5 @@
 class Reporter < ActiveRecord::Base 
   validates_uniqueness_of :phone_number, :allow_blank => true
-  validates_uniqueness_of :name, :allow_blank => true
   validates_presence_of :first_name
   validates_presence_of :last_name
 
