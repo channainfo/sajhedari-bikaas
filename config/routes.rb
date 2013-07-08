@@ -13,6 +13,12 @@ Conflict::Application.routes.draw do
 
   resources :locations
   resources :reporters
+  resources :users do
+    collection do
+      post 'register'
+    end
+  end
+
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -1,9 +1,19 @@
-<h2>Sign up</h2>
+<% if user.errors.any? %>
+    <div class="alert alert-block">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <div id="error_explanation">
+            <h4><%= pluralize(user.errors.count, "error") %> prohibited this post from being saved:</h4>
 
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
-
-  <fieldset>                
+            <ul>
+            <% user.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+            </ul>
+        </div>
+    </div>
+<% end %>
+<%= form_for(user, :url => {:action => action} , :html => {:class => 'form-horizontal'} ) do |f| %>    
+    <fieldset>                
         <!-- Name -->
         <div class="control-group">
             <%= f.label "First Name",:class => "control-label" %>
@@ -11,7 +21,6 @@
                 <%= f.text_field :first_name, :class =>"input-xlarge", :required => "required" %>
             </div>
         </div>
-        
         <div class="control-group">
             <%= f.label "Last Name",:class => "control-label" %>
             <div class="controls">
@@ -22,14 +31,14 @@
         <div class="control-group">
             <%= f.label "Role",:class => "control-label" %>
             <div class="controls">
-                <%= f.select(:role_id, options_for_select(Role.all.collect {|p| [p.name,p.id] }, "Select Role")) %>
+                <%= f.select(:role, options_for_select(@roles.collect {|p| [p.name,p.id] }, f.object.role.id)) %>
             </div>
         </div>
 
         <div class="control-group">
             <%= f.label "Gender",:class => "control-label" %>
             <div class="controls">
-                <%= f.select(:sex, options_for_select(["Female", "Male"].collect {|p| [p] }, "Select Gender")) %>
+                <%= f.select(:sex, options_for_select(["Female", "Male"].collect {|p| [p] }, f.object.sex)) %>
             </div>
         </div>
 
@@ -53,7 +62,6 @@
                 <%= f.text_field :cast, :class =>"input-xlarge", :required => "required" %>
             </div>
         </div>
-        
         <div class="control-group">
             <%= f.label "Ethnicity",:class => "control-label" %>
             <div class="controls">
@@ -67,21 +75,7 @@
                 <%= f.text_area :address, :class =>"input-xlarge", :required => "required" %>
             </div>
         </div>
-
-        <div class="control-group">
-            <%= f.label :password, :class => "control-label" %>
-            <div class="controls">
-                <%= f.password_field :password, :class =>"input-xlarge", :required => "required" %>
-            </div>
-        </div>
-        
-        <div class="control-group">
-            <%= f.label :password_confirmation, :class => "control-label" %>
-            <div class="controls">
-                <%= f.password_field :password_confirmation, :class =>"input-xlarge", :required => "required" %>
-            </div>
-        </div>
-        
+       
         <!-- Submit -->
         <div class="control-group">
             <div class="controls">
@@ -90,6 +84,4 @@
             </div>
         </div>
     </fieldset>
-   	<% end %>
-
-<%= render :partial => "devise/shared/links" %>
+<% end %>

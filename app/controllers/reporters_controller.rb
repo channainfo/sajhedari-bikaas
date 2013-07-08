@@ -1,8 +1,13 @@
 class ReportersController < ApplicationController  
   before_filter :authenticate_user!
 
-  def index
-    @reporters = Reporter.all.paginate(:page => params[:page], :per_page => 10)
+  def index  
+    if params[:query]
+      @query = params[:query]
+      @reporters = Reporter.where('last_name like ? OR first_name like ? OR phone_number like ?',"%#{@query}%","%#{@query}%","%#{@query}%").paginate(:page => params[:page], :per_page => 3)
+    else
+      @reporters = Reporter.all.paginate(:page => params[:page], :per_page => 3)
+    end
   end
 
   def show
@@ -14,11 +19,12 @@ class ReportersController < ApplicationController
   end
 
   def create
-    reporter = Reporter.new(params[:reporter])
-  	if reporter.save
+    @reporter = Reporter.new(params[:reporter])
+  	if @reporter.save
+      flash[:notice] = "You have successfully create reporter #{@reporter.first_name} #{@reporter.last_name}."
       redirect_to reporters_path
     else
-      redirect_to new_reporter_path
+      render :new
     end
   end
 
@@ -27,16 +33,23 @@ class ReportersController < ApplicationController
   end
 
   def update
-    reporter = Reporter.find(params[:id])
-    if(reporter.update_attributes(params[:reporter]))
+    @reporter = Reporter.find(params[:id])
+    if(@reporter.update_attributes(params[:reporter]))
+      flash[:notice] = "You have successfully update reporter #{@reporter.first_name} #{@reporter.last_name}."
       redirect_to reporters_path
     else
-      redirect_to edit_reporter_path(reporter)
+      render :edit
     end
   end
 
   def destroy
-    Reporter.find(params[:id]).destroy
-    redirect_to reporters_path
+    @reporter= Reporter.find(params[:id])
+    if @reporter.destroy
+      flash[:notice] = "You have successfully delete reporter #{@reporter.first_name} #{@reporter.last_name}."
+      redirect_to reporters_path
+    else
+      flash[:error] = "Failed to delete reporter #{@reporter.first_name} #{@reporter.last_name}. Please try again later."
+      redirect_to reporters_path
+    end
   end
 end

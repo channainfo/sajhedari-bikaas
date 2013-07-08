@@ -36,27 +36,19 @@ class ApplicationController < ActionController::Base
       return if !current_user.try(:is_guest)
     end
 
-    if params.has_key? "collection"
-      return if !Collection.find(params["collection"]).public
-      u = User.find_by_is_guest true
-      sign_in :user, u
-      current_user.is_login = true
+    if current_user.try(:is_login)
+      current_user.is_login = false
       current_user.save!
     else
-      if current_user.try(:is_login)
-        current_user.is_login = false
-        current_user.save!
-      else
-        sign_out :user
-      end
+      sign_out :user
     end
   end
 
   def after_sign_in_path_for(resource)
     if mobile_device?
-       stored_location_for(resource) || mobile_location_path
+       stored_location_for(resource) || mobile_locations_path
     else
-       stored_location_for(resource) || location_path
+       stored_location_for(resource) || locations_path
     end
   end
 
@@ -72,5 +64,13 @@ class ApplicationController < ActionController::Base
   def prepare_for_mobile
     session[:mobile_param] = params[:mobile] if params[:mobile]
     request.format = :mobile if mobile_device?
+  end
+
+  def is_super_admin? user
+    user.role.name == "Super Admin"
+  end
+
+  def is_admin? user
+    user.role.name == "Admin"
   end
 end

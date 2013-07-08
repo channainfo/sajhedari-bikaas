@@ -2,7 +2,7 @@ class LocationsController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @locations = Location.all.paginate(:page => params[:page], :per_page => 10)
+    @locations = Location.all.paginate(:page => params[:page], :per_page => 3)
   end
 
   def show
@@ -16,6 +16,7 @@ class LocationsController < ApplicationController
   def create
     @location = Location.new(params[:location])
   	if @location.save
+      flash[:notice] = "You have successfully create location #{@location.name}."      
       redirect_to locations_path
     else
       render :new
@@ -29,6 +30,7 @@ class LocationsController < ApplicationController
   def update
     @location = Location.find(params[:id])
     if(@location.update_attributes(params[:location]))
+      flash[:notice] = "You have successfully update location #{@location.name}."
       redirect_to locations_path
     else
       render :edit
@@ -36,7 +38,13 @@ class LocationsController < ApplicationController
   end
 
   def destroy
-    Location.find(params[:id]).destroy
-    redirect_to locations_path
+    @location = Location.find(params[:id])
+    if @location.destroy
+      flash[:notice] = "You have successfully delete location #{@location.name}."
+      redirect_to locations_path
+    else
+      flash[:error] = "Failed to delete location #{@location.name}. Please try again later."
+      redirect_to locations_path
+    end
   end
 end

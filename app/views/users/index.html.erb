@@ -1,41 +1,45 @@
     <div class="btn-toolbar">
-    	<form class="form-search input-append" action=<%= reporters_path() %>>
+    	<form class="form-search input-append" action=<%= users_path %>>
 		    <div class="input-append" method="#">
 		    	<input type="text" class="span2 search-query" id="query" name="query" value=<%= @query %>>
 		    	<button type="submit" class="btn">Search</button>
 		    </div>
 		</form>
-    	<%= link_to "Add New Reporter", new_reporter_path, :method => :get, :class => 'btn btn-primary to-right' %>	    
+    	<%= link_to "Add New User", new_user_path, :method => :get, :class => 'btn btn-primary to-right' %>	    
     </div>
-    <div>
+    <div >
     	<!--<table class="table table-bordered table-striped">-->
 	    <table class="table table-condensed table-hover">
 		    <thead>
 			    <tr>
-				    <th>First Name</th>
-				    <th>Last Name</th>
+				    <th>Full Name</th>
+				    <th>Email</th>
 				    <th>Gender</th>
 				    <th>Cast</th>
 				    <th>Ethnicity</th>
 				    <th>Phone Number</th>
+				    <th>Role</th>
 				    <th style="width: 36px;"></th>
 			    </tr>
 		    </thead>
 		    <tbody>
-			    <% @reporters.each do |reporter| %>			    
-				    <tr>
-					    <td><%= reporter.first_name %></td>
-					    <td><%= reporter.last_name %></td>
-					    <td><%= reporter.sex %></td>
-					    <td><%= reporter.cast %></td>
-					    <td><%= reporter.ethnicity %></td>
-					    <td><%= reporter.phone_number %></td>
-					    <td>
-					    <%= link_to raw("<i class='icon-pencil'></i>"), edit_reporter_path(reporter), :method => :get %>
-					    <%= link_to raw("<i class='icon-remove'></i>"), reporter_path(reporter), :method => :delete, :confirm => "Are you sure to delete reporter #{reporter.first_name} #{reporter.last_name}?" %>
-					    </td>
-				    </tr>
-				<% end %>
+		    <% @users.each do |user| %>			    
+			    <tr>
+				    <td><%= user.first_name + " " +user.last_name %></td>
+				    <td><%= user.email %></td>
+				    <td><%= user.sex %></td>
+				    <td><%= user.cast %></td>
+				    <td><%= user.ethnicity %></td>
+				    <td><%= user.phone_number %></td>
+				    <td><%= user.role.name %></td>
+				    <td>
+					    <% if(is_super_admin? current_user or (is_admin? current_user and is_admin? user)) %>
+					    	<%= link_to raw("<i class='icon-pencil'></i>"), edit_user_path(user), :method => :get %>
+					    	<%= link_to raw("<i class='icon-remove'></i>"), user_path(user), :method => :delete, :confirm => "Are you sure to delete #{user.first_name} #{user.last_name}?" %>
+					    <% end %>
+				    </td>
+			    </tr>			    
+			<% end %>
 			</tbody>
 	    </table>
     </div>

@@ -2,9 +2,9 @@
     	<a href="#" class="btn"><i class="icon-upload"></i> Import Location Code</a>
     	<%= link_to "Add New Place", new_location_path, :method => :get, :class => 'btn btn-primary to-right' %>	    
     </div>
-    <div class="well">
+    <div>
     	<!--<table class="table table-bordered table-striped">-->
-	    <table class="table">
+	    <table class="table table-condensed table-hover">
 		    <thead>
 			    <tr>
 				    <th>Location Code</th>
@@ -14,20 +14,20 @@
 				    <th style="width: 36px;"></th>
 			    </tr>
 		    </thead>
-		    <% @locations.each do |l| %>
-			    <tbody>
-				    <tr>
-					    <td><%= l.code %></td>
-					    <td><%= l.name %></td>
-					    <td><%= l.lat %></td>
-					    <td><%= l.lng %></td>
-					    <td>
-					    <%= link_to raw("<i class='icon-pencil'></i>"), edit_location_path(l), :method => :get %>
-					    <%= link_to raw("<i class='icon-remove'></i>"), location_path(l), :method => :delete, :confirm => "Are you sure to delete this location?" %>
-					    </td>
-				    </tr>
-			    </tbody>
+		    <tbody>
+		    <% @locations.each do |l| %>			    
+			    <tr>
+				    <td><%= l.code %></td>
+				    <td><%= l.name %></td>
+				    <td><%= l.lat %></td>
+				    <td><%= l.lng %></td>
+				    <td>
+				    <%= link_to raw("<i class='icon-pencil'></i>"), edit_location_path(l), :method => :get %>
+				    <%= link_to raw("<i class='icon-remove'></i>"), location_path(l), :method => :delete, :confirm => "Are you sure to delete location #{l.code}?" %>
+				    </td>
+			    </tr>
 			<% end %>
+			</tbody>
 	    </table>
     </div>
     <%= will_paginate @locations, renderer: BootstrapPagination::Rails %>

@@ -28,3 +28,12 @@
   background-color: red;
   display: table;
 }
+
+.hearder_narrow {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.menu-item{
+	padding: 10px 10px;
+}
