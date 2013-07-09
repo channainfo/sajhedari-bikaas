@@ -37,13 +37,14 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
-    
+    assign_role_list
   end
 
   def update
     @user = User.find(params[:id])
     if(@user.update_attributes(params[:user]))
       flash[:notice] = "You have successfully update user #{@user.first_name} #{@user.last_name}."
+      @user.update_to_resourcemap
       redirect_to users_path
     else
       assign_role_list

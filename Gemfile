@@ -50,6 +50,7 @@ gem 'rack-offline'
 gem "twitter-bootstrap-rails", "~> 2.2.7"
 gem "protected_attributes"
 gem 'will_paginate-bootstrap'
+gem "typhoeus"
 
 group :test do
   gem 'shoulda-matchers'
