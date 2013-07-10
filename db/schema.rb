@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130703024613) do
+ActiveRecord::Schema.define(version: 20130710084213) do
 
   create_table "cases", force: true do |t|
     t.string   "type"
@@ -19,6 +19,24 @@ ActiveRecord::Schema.define(version: 20130703024613) do
     t.integer  "location_id"
     t.string   "state_of_conflict"
     t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "conflict_intensities", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "conflict_states", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "conflict_types", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
