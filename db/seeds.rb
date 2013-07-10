@@ -9,3 +9,16 @@
 Role.find_or_create_by_name :name => "Admin"
 Role.find_or_create_by_name :name => "Super Admin"
 
+ConflictType.find_or_create_by_name :name => "Gender Based Violence"
+ConflictType.find_or_create_by_name :name => "Casted Based Violence"
+ConflictType.find_or_create_by_name :name => "Political Violence"
+ConflictType.find_or_create_by_name :name => "Inter-personal Conflict"
+ConflictType.find_or_create_by_name :name => "Resource Based Violence"
+
+ConflictState.find_or_create_by_name :name => "Before The Conflict"
+ConflictState.find_or_create_by_name :name => "After The Conflict"
+
+ConflictIntensity.find_or_create_by_name :name => "Low"
+ConflictIntensity.find_or_create_by_name :name => "Moderate"
+ConflictIntensity.find_or_create_by_name :name => "High"
+
