@@ -11,17 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130710084213) do
+ActiveRecord::Schema.define(version: 20130710090600) do
 
   create_table "cases", force: true do |t|
-    t.string   "type"
-    t.string   "intensity"
+    t.string   "message"
+    t.integer  "conflict_type_id"
+    t.integer  "conflict_intensity_id"
+    t.integer  "conflict_state_id"
     t.integer  "location_id"
-    t.string   "state_of_conflict"
-    t.integer  "user_id"
+    t.string   "user_id"
+    t.string   "site_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "cases", ["conflict_intensity_id"], name: "index_cases_on_conflict_intensity_id", using: :btree
+  add_index "cases", ["conflict_state_id"], name: "index_cases_on_conflict_state_id", using: :btree
+  add_index "cases", ["conflict_type_id"], name: "index_cases_on_conflict_type_id", using: :btree
+  add_index "cases", ["location_id"], name: "index_cases_on_location_id", using: :btree
 
   create_table "conflict_intensities", force: true do |t|
     t.string   "name"

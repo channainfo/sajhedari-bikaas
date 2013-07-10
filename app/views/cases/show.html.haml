@@ -1,0 +1,27 @@
+%p#notice= notice
+
+%p
+  %b Message:
+  = @case.message
+%p
+  %b Conflict type:
+  = @case.conflict_type
+%p
+  %b Conflict intensity:
+  = @case.conflict_intensity
+%p
+  %b Conflict state:
+  = @case.conflict_state
+%p
+  %b Location:
+  = @case.location
+%p
+  %b User:
+  = @case.user_id
+%p
+  %b Site:
+  = @case.site_id
+
+= link_to 'Edit', edit_case_path(@case)
+\|
+= link_to 'Back', cases_path
