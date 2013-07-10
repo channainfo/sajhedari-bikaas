@@ -1,0 +1,10 @@
+class ConflictType < ActiveRecord::Base
+
+	has_many :cases
+
+	GENDER_BASED_VIOLENCE = 1
+	CASTED_BASED_VIOLENCE = 2
+	POLITICAL_VIOLENCE = 3
+	INTER_PERSONAL_CONFLICT = 4
+	RESOURCE_BASED_VIOLENCE = 5
+end
