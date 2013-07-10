@@ -31,7 +31,7 @@
         <div class="control-group">
             <%= f.label "Role",:class => "control-label" %>
             <div class="controls">
-                <%= f.select(:role, options_for_select(@roles.collect {|p| [p.name,p.id] }, f.object.role.id)) %>
+                <%= f.select(:role_id, options_for_select(@roles.collect {|p| [p.name,p.id] }, f.object.role.id)) %>
             </div>
         </div>
 

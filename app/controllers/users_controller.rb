@@ -26,10 +26,17 @@ class UsersController < ApplicationController
 
   def register
     @user = User.new(params[:user])
-    if @user.save
-      flash[:notice] = "You have successfully create user #{@user.first_name} #{@user.last_name}."
-      redirect_to users_path
+    if @user.create_to_resourcemap
+      if @user.save
+        flash[:notice] = "You have successfully create user #{@user.first_name} #{@user.last_name}."
+        redirect_to users_path
+      else
+        flash[:error] = "Failed to save record. Please try again later."
+        assign_role_list
+        render :new
+      end
     else
+      flash[:error] = "Failed to create user on resource map application. Please try again later."
       assign_role_list
       render :new
     end
@@ -42,11 +49,17 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    if(@user.update_attributes(params[:user]))
-      flash[:notice] = "You have successfully update user #{@user.first_name} #{@user.last_name}."
-      @user.update_to_resourcemap
-      redirect_to users_path
+    if @user.update_to_resourcemap params[:user]
+      if(@user.update_attributes!(params[:user]))
+        flash[:notice] = "You have successfully update user #{@user.first_name} #{@user.last_name}."
+        redirect_to users_path
+      else
+        flash[:error] = "Failed to update user. Please try again later."
+        assign_role_list
+        render :edit
+      end
     else
+      flash[:error] = "Failed to update user on resource map application. Please try again later."
       assign_role_list
       render :edit
     end
