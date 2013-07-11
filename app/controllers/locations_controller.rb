@@ -29,8 +29,12 @@ class LocationsController < ApplicationController
 
   def update
     @location = Location.find(params[:id])
+    conflict_cases = ConflictCase.where(:location_id => params[:id])
+    site_ids = Location.generate_site_id conflict_cases
+    user_emails = Location.generate_user_email conflict_cases
+
     if(@location.update_attributes(params[:location]))
-      @location.update_to_resourcemap
+      @location.update_to_resourcemap site_ids, user_emails
       flash[:notice] = "You have successfully update location #{@location.name}."
       redirect_to locations_path
     else

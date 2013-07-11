@@ -1,6 +1,6 @@
 class ConflictIntensity < ActiveRecord::Base
 
-	has_many :cases
+	has_many :conflict_cases
 
 
 	LOW = 1

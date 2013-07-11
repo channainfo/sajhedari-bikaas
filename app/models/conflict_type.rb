@@ -1,6 +1,6 @@
 class ConflictType < ActiveRecord::Base
 
-	has_many :cases
+	has_many :conflict_cases
 
 	GENDER_BASED_VIOLENCE = 1
 	CASTED_BASED_VIOLENCE = 2
