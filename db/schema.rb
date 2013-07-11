@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130710090600) do
+ActiveRecord::Schema.define(version: 20130711040600) do
 
   create_table "cases", force: true do |t|
     t.string   "message"
@@ -29,6 +29,23 @@ ActiveRecord::Schema.define(version: 20130710090600) do
   add_index "cases", ["conflict_state_id"], name: "index_cases_on_conflict_state_id", using: :btree
   add_index "cases", ["conflict_type_id"], name: "index_cases_on_conflict_type_id", using: :btree
   add_index "cases", ["location_id"], name: "index_cases_on_location_id", using: :btree
+
+  create_table "conflict_cases", force: true do |t|
+    t.string   "case_message"
+    t.integer  "conflict_type_id"
+    t.integer  "conflict_intensity_id"
+    t.integer  "conflict_state_id"
+    t.integer  "location_id"
+    t.integer  "site_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "conflict_cases", ["conflict_intensity_id"], name: "index_conflict_cases_on_conflict_intensity_id", using: :btree
+  add_index "conflict_cases", ["conflict_state_id"], name: "index_conflict_cases_on_conflict_state_id", using: :btree
+  add_index "conflict_cases", ["conflict_type_id"], name: "index_conflict_cases_on_conflict_type_id", using: :btree
+  add_index "conflict_cases", ["location_id"], name: "index_conflict_cases_on_location_id", using: :btree
 
   create_table "conflict_intensities", force: true do |t|
     t.string   "name"

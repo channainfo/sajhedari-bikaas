@@ -24,7 +24,7 @@
 							<li class="divider-vertical"></li>
 							<li><a href="#"><i class="icon-signal"></i> Trend </a></li>
 							<li class="divider-vertical"></li>
-							<li class=<%= section_active("cases")  %>><%= link_to raw('<i class="icon-bell"></i> Case Based Alert'), cases_path, :method => :get, :style => "padding: 10px" %></li>
+							<li class=<%= section_active("conflict_cases")  %>><%= link_to raw('<i class="icon-bell"></i> Case Based Alert'), conflict_cases_path, :method => :get, :style => "padding: 10px" %></li>
 							<li><a href="#"><i class="icon-warning-sign"></i> Aggregate Threshold Alert</a></li>
 							<li class="divider-vertical"></li>
 							<li class=<%= section_active("locations")  %>><%= link_to raw('<i class="icon-map-marker"></i> Location Code'), locations_path, :method => :get, :style => "padding: 10px" %></li>
