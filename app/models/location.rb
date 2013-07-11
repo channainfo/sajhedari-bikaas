@@ -10,9 +10,10 @@ class Location < ActiveRecord::Base
   attr_accessible :code
 
   def update_to_resourcemap site_ids, user_emails
-
+     yml = self.load_resource_map
   	 request = Typhoeus::Request.new(
-       "http://localhost:3001/api/collections/1/update_sites",
+       # yml["url"] + "api/collections/1/update_sites",
+       'http://localhost:3001/api/collections/1/update_sites',
        method: :put,
        body: "this is a request body",
        params: { lat: self.lat, lng: self.lng, site_id: site_ids, user_email: user_emails },
@@ -41,6 +42,10 @@ class Location < ActiveRecord::Base
     end
     user_emails = array_email.join(",")
     return user_emails
+	end
+
+  def load_resource_map
+    YAML.load_file File.expand_path(Rails.root + "config/resourcemap.yml", __FILE__)
   end
 
 end

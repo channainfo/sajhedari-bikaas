@@ -23,16 +23,16 @@ class User < ActiveRecord::Base
   end
 
   def create_to_resourcemap
+    yml = self.load_resource_map
     request = Typhoeus::Request.new(
-      "http://localhost:3000/sb/create_user",
+      yml["url"] + 'api/collections/' + yml["collection_id"].to_s + '/memberships',
       method: :post,
       params: { "user[email]" => self.email, 
                 "user[password]" => self.password, 
-                "user[password_confirmation]" => self.password, 
+                "user[password_confirmation]" => self.password_confirmation, 
                 "user[phone_number]" => self.phone_number,
                 "user[confirmed_at]" => Time.now(),
-                "role" => self.role.name,
-                "collection_id" => 10
+                "role" => self.role.name
               },
       headers: { Accept: "text/html" }
     )
@@ -42,13 +42,13 @@ class User < ActiveRecord::Base
   end
 
   def update_to_resourcemap user
+    yml = self.load_resource_map
     request = Typhoeus::Request.new(
-      "http://localhost:3000/sb/update_user",
+      yml["url"] + 'api/collections/' + yml["collection_id"].to_s + '/memberships',
       method: :put,
       params: { "user[email]" => user["email"], 
                 "user[phone_number]" => user["phone_number"],
-                "role" => Role.find(user["role_id"].to_i).name,
-                "collection_id" => 10
+                "role" => Role.find(user["role_id"].to_i).name
               },
       headers: { Accept: "text/html" }
     )
@@ -56,4 +56,9 @@ class User < ActiveRecord::Base
     response = request.response.return_code
     return response == :ok
   end
+
+  def load_resource_map
+    YAML.load_file File.expand_path(Rails.root + "config/resourcemap.yml", __FILE__)
+  end
+
 end
