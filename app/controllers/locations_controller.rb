@@ -30,7 +30,7 @@ class LocationsController < ApplicationController
   def update
     @location = Location.find(params[:id])
     if(@location.update_attributes(params[:location]))
-      @location.update_to_resourcemap
+      @location.update_to_resourcemap current_user
       flash[:notice] = "You have successfully update location #{@location.name}."
       redirect_to locations_path
     else
