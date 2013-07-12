@@ -1,0 +1,47 @@
+   <!--  <div class="btn-toolbar">
+    	<%= link_to "Add New Conflict Case", new_conflict_case_path, :method => :get, :class => 'btn btn-primary to-right' %>	    
+    </div> -->
+    <div>
+    	<!--<table class="table table-bordered table-striped">-->
+	    <table class="table table-condensed table-hover">
+		    <thead>
+			    <tr>
+				    <th>Message</th>
+				    <th>Conflict type</th>
+				    <th>Conflict Intensity</th>
+				    <th>Conflict state</th>
+				    <th>Location</th>
+				    <th style="width: 36px;"></th>
+			    </tr>
+		    </thead>
+		    <tbody>
+		    <% @conflict_cases.each do |l| %>			    
+			    <tr>
+				    <td><%= l.case_message %></td>
+				    <td><%= l.conflict_type.name %></td>
+				    <td><%= l.conflict_intensity.name %></td>
+				    <td><%= l.conflict_state.name %></td>
+				    <td><%= l.location.name %></td>
+				    <td>
+				    <%= link_to raw("<i class='icon-pencil'></i>"), edit_conflict_case_path(l), :method => :get %>
+				    <%= link_to raw("<i class='icon-remove'></i>"), conflict_case_path(l), :method => :delete, :confirm => "Are you sure to delete this case ?" %>
+				    </td>
+			    </tr>
+			<% end %>
+			</tbody>
+	    </table>
+    </div>
+    <%= will_paginate @locations, renderer: BootstrapPagination::Rails %>
+    <div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="myModalLabel">Delete Confirmation</h3>
+		</div>
+		<div class="modal-body">
+		    <p class="error-text">Are you sure you want to delete the case?</p>
+		</div>
+		<div class="modal-footer">
+		    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+		    <button class="btn btn-danger" data-dismiss="modal">Delete</button>
+	    </div>
+    </div>

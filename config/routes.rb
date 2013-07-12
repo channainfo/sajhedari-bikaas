@@ -1,6 +1,4 @@
 Conflict::Application.routes.draw do
-  resources :cases
-
   devise_for :users,
     controllers: {
     registrations:  "users/registrations",
@@ -15,6 +13,7 @@ Conflict::Application.routes.draw do
 
   resources :locations
   resources :reporters
+  resources :conflict_cases
   resources :users do
     collection do
       post 'register'
