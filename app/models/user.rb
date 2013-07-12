@@ -57,6 +57,23 @@ class User < ActiveRecord::Base
     return response == :ok
   end
 
+  def update_password_to_resourcemap user
+    yml = self.load_resource_map
+    request = Typhoeus::Request.new(
+      yml["url"] + 'api/collections/' + yml["collection_id"].to_s + '/memberships',
+      method: :put,
+      params: { 
+                "user[password]" => user["password"],
+                "user[password_confirmation]" => user["password_confirmation"],
+                "user[email]" => self.email
+              },
+      headers: { Accept: "text/html" }
+    )
+    request.run
+    response = request.response.return_code
+    return response == :ok
+  end
+
   def load_resource_map
     YAML.load_file File.expand_path(Rails.root + "config/resourcemap.yml", __FILE__)
   end

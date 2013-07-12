@@ -47,6 +47,32 @@ class UsersController < ApplicationController
     assign_role_list
   end
 
+  def edit_profile
+    @user = current_user
+    assign_role_list
+  end
+
+  def change_password
+    @user = current_user
+  end
+
+  def update_password
+    @user = current_user
+    if @user.update_password_to_resourcemap params[:user]
+      if(@user.update_attributes!(params[:user]))
+        flash[:notice] = "You have successfully update user #{@user.first_name} #{@user.last_name}."
+        redirect_to users_path
+      else
+        flash[:error] = "Failed to update user. Please try again later."
+        assign_role_list
+        render :change_password
+      end
+    else
+      flash[:error] = "Failed to update user on resource map application. Please try again later."
+      render :change_password
+    end
+  end
+
   def update
     @user = User.find(params[:id])
     if @user.update_to_resourcemap params[:user]

@@ -18,9 +18,14 @@ Conflict::Application.routes.draw do
   resources :users do
     collection do
       post 'register'
+
+    end
+
+    member do
+      put 'update_password'
+      get 'change_password'
     end
   end
-
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

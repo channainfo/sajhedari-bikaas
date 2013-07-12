@@ -37,9 +37,11 @@
 								<i class="icon-user"></i> <%= current_user.first_name || "UNKNOWN" %> <span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a href="#"><i class="icon-wrench"></i> Settings</a></li>
+								<li><%= link_to " Profile", edit_user_path(current_user), :method => :get, :class => 'icon-user' %>
 								<li class="divider"></li>
-								<li><%= link_to "Sign out", destroy_user_session_path, :method => :delete, :class => 'icon-share' %></li>
+								<li><%= link_to " Change Password", change_password_user_path(current_user), :method => :get, :class => 'icon-cog' %>
+								<li class="divider"></li>
+								<li><%= link_to " Sign out", destroy_user_session_path, :method => :delete, :class => 'icon-share' %></li>
 							</ul>
 						</div>
 					</div>
