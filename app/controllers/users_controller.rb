@@ -58,17 +58,21 @@ class UsersController < ApplicationController
 
   def update_password
     @user = current_user
-    if @user.update_password_to_resourcemap params[:user]
-      if(@user.update_attributes!(params[:user]))
-        flash[:notice] = "You have successfully update user #{@user.first_name} #{@user.last_name}."
-        redirect_to users_path
+    if @user.valid_password? params["user"]["current_password"]
+      if @user.update_password_to_resourcemap params[:user]
+        if(@user.update_attributes!(params[:user]))
+          flash[:notice] = "You have successfully update user #{@user.first_name} #{@user.last_name}."
+          redirect_to users_path
+        else
+          flash[:error] = "Failed to update user password. Please try again later."
+          render :change_password
+        end
       else
-        flash[:error] = "Failed to update user. Please try again later."
-        assign_role_list
+        flash[:error] = "Failed to update user password on resource map application. Please try again later."
         render :change_password
       end
     else
-      flash[:error] = "Failed to update user on resource map application. Please try again later."
+      @user.errors.add(:current_password, " does not match" )
       render :change_password
     end
   end

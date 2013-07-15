@@ -37,8 +37,8 @@ class User < ActiveRecord::Base
       headers: { Accept: "text/html" }
     )
     request.run
-    response = request.response.return_code
-    return response == :ok
+    response = request.response.code
+    return response == 200
   end
 
   def update_to_resourcemap user
@@ -53,8 +53,8 @@ class User < ActiveRecord::Base
       headers: { Accept: "text/html" }
     )
     request.run
-    response = request.response.return_code
-    return response == :ok
+    response = request.response.code
+    return response == 200
   end
 
   def update_password_to_resourcemap user
@@ -70,8 +70,8 @@ class User < ActiveRecord::Base
       headers: { Accept: "text/html" }
     )
     request.run
-    response = request.response.return_code
-    return response == :ok
+    response = request.response.code
+    return response == 200
   end
 
   def load_resource_map

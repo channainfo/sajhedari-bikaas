@@ -10,20 +10,20 @@ class Location < ActiveRecord::Base
   attr_accessible :code
 
   def update_to_resourcemap site_ids, user_emails
-     yml = self.load_resource_map
-  	 request = Typhoeus::Request.new(
-       # yml["url"] + "api/collections/1/update_sites",
-       'http://localhost:3001/api/collections/1/update_sites',
-       method: :put,
-       body: "this is a request body",
-       params: { lat: self.lat, lng: self.lng, site_id: site_ids, user_email: user_emails },
-       headers: { Accept: "text/html" }
-     )
-     request.run
-     response = request.response
-     if(response.return_code == :ok)
-       p response.response_body
-     end
+    yml = self.load_resource_map
+    request = Typhoeus::Request.new(
+      # yml["url"] + "api/collections/1/update_sites",
+      'http://localhost:3001/api/collections/1/update_sites',
+      method: :put,
+      body: "this is a request body",
+      params: { lat: self.lat, lng: self.lng, site_id: site_ids, user_email: user_emails },
+      headers: { Accept: "text/html" }
+    )
+    request.run
+    response = request.response
+    if(response.return_code == :ok)
+     p response.response_body
+    end
 	end
 
   def self.generate_site_id conflict_cases
