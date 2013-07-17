@@ -23,7 +23,6 @@
 				    <td><%= l.conflict_state.name %></td>
 				    <td><%= l.location.name %></td>
 				    <td>
-				    <%= link_to raw("<i class='icon-pencil'></i>"), edit_conflict_case_path(l), :method => :get %>
 				    <%= link_to raw("<i class='icon-remove'></i>"), conflict_case_path(l), :method => :delete, :confirm => "Are you sure to delete this case ?" %>
 				    </td>
 			    </tr>

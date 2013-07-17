@@ -13,7 +13,7 @@ class Location < ActiveRecord::Base
      yml = self.load_resource_map
   	 request = Typhoeus::Request.new(
        # yml["url"] + "api/collections/1/update_sites",
-       'http://localhost:3001/api/collections/1/update_sites',
+       'http://localhost:3000/api/collections/1/update_sites',
        method: :put,
        body: "this is a request body",
        params: { lat: self.lat, lng: self.lng, site_id: site_ids, user_email: user_emails },

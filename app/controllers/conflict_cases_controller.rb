@@ -15,6 +15,8 @@ class ConflictCasesController < ApplicationController
 
   def create
     @conflict_case = ConflictCase.new(params[:conflict_case])
+    site = @conflict_case.save_case_to_resource_map
+    @conflict_case.site_id = site["id"]
   	if @conflict_case.save
       flash[:notice] = "You have successfully create conflict case #{@conflict_case.case_message}."      
       redirect_to conflict_cases_path
@@ -30,7 +32,6 @@ class ConflictCasesController < ApplicationController
   def update
     @conflict_case = ConflictCase.find(params[:id])
     if(@conflict_case.update_attributes(params[:conflict_case]))
-      @conflict_case.update_to_resourcemap
       flash[:notice] = "You have successfully update conflict case #{@conflict_case.case_message}."
       redirect_to conflict_cases_path
     else
@@ -40,6 +41,7 @@ class ConflictCasesController < ApplicationController
 
   def destroy
     @conflict_case = ConflictCase.find(params[:id])
+    @conflict_case.destroy_case_from_resource_map
     if @conflict_case.destroy
       flash[:notice] = "You have successfully delete conflict case #{@conflict_case.case_message}."
       redirect_to conflict_cases_path
