@@ -1,0 +1,73 @@
+<%= form_for(base, :url => apply_update_form_location_path(base) , :method => :put, :html => {:class => 'form-horizontal'} ) do |f| %>
+    <div class="row-fluid">
+        <div class="span6">
+            <h4> Modified</h4>
+            <fieldset>                
+                <div class="control-group">
+                    <%= f.label "Location Name",:class => "control-label" %>
+                    <div class="controls">
+                        <input type="text" id="location_name" name="location[name]" required="required" class ="input-xlarge" value="<%= base.backup.data['name'] %>" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <%= f.label "Location Code",:class => "control-label" %>
+                    <div class="controls">
+                        <%= base.backup.data["Name"] %>
+                        <input type="text" id="location_code" name="location[code]" required="required" class ="input-xlarge" value="<%= base.backup.data['code'] %>" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <%= f.label "Latitude",:class => "control-label" %>
+                    <div class="controls">
+                        <input type="text" id="location_lat" name="location[lat]" required="required" class ="input-xlarge" value="<%= base.backup.data['lat'] %>" />
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <%= f.label "Longtitude",:class => "control-label" %>
+                    <div class="controls">
+                        <input type="text" id="location_lng" name="location[lng]" required="required" class ="input-xlarge" value="<%= base.backup.data['lng'] %>" />
+                    </div>
+                </div>
+                
+                <!-- Submit -->
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-success">Approve to update</button>
+                        <%=link_to "Cancel", locations_path, :class => "btn" %>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="span6">
+            <h4> Based</h4>
+            <fieldset>                
+                <div class="control-group">
+                    <%= f.label "Location Name",:class => "control-label" %>
+                    <div class="controls">
+                        <input type="text" readonly="readonly" class ="input-xlarge" value='<%= base.name %>' />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <%= f.label "Location Code",:class => "control-label" %>
+                    <div class="controls">
+                        <input type="text" readonly="readonly" class ="input-xlarge" value='<%= base.code %>' />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <%= f.label "Latitude",:class => "control-label" %>
+                    <div class="controls">
+                        <input type="text" readonly="readonly" class ="input-xlarge" value='<%= base.lat %>' />
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <%= f.label "Longtitude",:class => "control-label" %>
+                    <div class="controls">
+                        <input type="text" readonly="readonly" class ="input-xlarge" value='<%= base.lng %>' />
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+<% end %>

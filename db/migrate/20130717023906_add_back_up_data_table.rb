@@ -1,9 +1,10 @@
 class AddBackUpDataTable < ActiveRecord::Migration
   def change
-  	create_table :backup do |t|
+  	create_table :backups do |t|
       t.integer :entity_id
       t.text 	:data
-      t.string 	:type
+      t.string 	:category
+      t.references :user
 
       t.timestamps
     end

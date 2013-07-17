@@ -2,7 +2,7 @@ class LocationsController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @locations = Location.all.paginate(:page => params[:page], :per_page => 3)
+    @locations = Location.all.paginate(:page => params[:page], :per_page => 10)
   end
 
   def show
@@ -25,28 +25,44 @@ class LocationsController < ApplicationController
 
   def edit
     @location = Location.find(params[:id])
+    if(@location.is_updated)
+      flash[:error] = "Location #{@location.name} is marked as updated. Please approve the update before make another change."
+      redirect_to locations_path
+    end
+    if(@location.is_deleted)
+      flash[:error] = "Location #{@location.name} is marked as deleted. Please cancel delete before make another change."
+      redirect_to locations_path
+    end
+
   end
 
   def update
     @location = Location.find(params[:id])
-    conflict_cases = ConflictCase.where(:location_id => params[:id])
-    site_ids = Location.generate_site_id conflict_cases
-    user_emails = Location.generate_user_email conflict_cases
+    if @location.is_updated       
+      unless @location.backup.user.id == current_user.id
+        flash[:error] = "Location #{@location.name} is marked as update please click Approve to update to confirm update location."
+        redirect_to locations_path
+      else
+        flash[:error] = "Failed to update location #{@location.name}. Please try again later."
+        redirect_to locations_path
+      end
 
-    if(@location.update_attributes!(params[:location]))
-      @location.update_to_resourcemap site_ids, user_emails
-      flash[:notice] = "You have successfully update location #{@location.name}."
-      redirect_to locations_path
     else
-      render :edit
+      flash[:notice] = "#{@location.name} is mark as updated."
+      Backup.create!(:entity_id => @location.id, :data => params[:location].to_json, :category => Location.get_category, :user_id => current_user.id)
+      @location.is_updated = true
+      @location.save
+      redirect_to locations_path
     end
+    
+    
   end
 
   def destroy
     @location = Location.find(params[:id])
     if @location.is_deleted 
-      if @location.destroy
-        flash[:notice] = "You have successfully delete location #{@location.name}."
+      unless @location.backup.user.id == current_user.id
+        flash[:error] = "Location #{@location.name} is marked as delete please click Approve to delete to confirm delete location."
         redirect_to locations_path
       else
         flash[:error] = "Failed to delete location #{@location.name}. Please try again later."
@@ -54,6 +70,7 @@ class LocationsController < ApplicationController
       end
     else
       flash[:notice] = "#{@location.name} is mark as deleted."
+      Backup.create!(:entity_id => @location.id, :data => @location.to_json, :category => Location.get_category, :user_id => current_user.id)
       @location.is_deleted = true
       @location.save
       redirect_to locations_path
@@ -102,5 +119,100 @@ class LocationsController < ApplicationController
         render :text => content
       }
     end
+  end
+
+  def cancel_delete
+    @location = Location.find(params[:id])
+    if(@location.is_deleted and @location.backup)
+      flash[:notice] = "#{@location.name} is mark as undeleted."
+      @location.backup.destroy
+      @location.is_deleted = false
+      @location.save
+      redirect_to locations_path
+    else
+      redirect_to locations_path
+    end
+  end
+
+  def cancel_update
+    @location = Location.find(params[:id])
+    if(@location.is_updated and @location.backup)
+      flash[:notice] = "#{@location.name} is mark as not update."
+      @location.backup.destroy
+      @location.is_updated = false
+      @location.save
+      redirect_to locations_path
+    else
+      redirect_to locations_path
+    end
+  end
+
+  def approve_delete
+    @location = Location.find(params[:id])
+    if(@location and @location.is_deleted and @location.backup and @location.backup.user.id != current_user.id)
+      @location.destroy!
+      @location.backup.destroy!
+      flash[:notice] = "You have successfully delete #{@location.name}."
+      redirect_to locations_path
+    else
+      flash[:error] = "Process delete #{@location.name} failed."
+      redirect_to locations_path
+    end
+  end
+
+  def approve_update
+    @location = Location.find(params[:id])
+    if(@location and @location.is_updated and @location.backup and @location.backup.user.id != current_user.id)
+      conflict_cases = ConflictCase.where(:location_id => params[:id])
+      site_ids = Location.generate_site_id conflict_cases
+      user_emails = Location.generate_user_email conflict_cases
+      if @location.update_to_resourcemap(site_ids, user_emails)
+        if(@location.update_attributes!(@location.backup.data))        
+          flash[:notice] = "You have successfully update location #{@location.name}."
+          @location.backup.destroy!
+          @location.is_updated = false
+          @location.save
+          redirect_to locations_path
+        else
+          redirect_to locations_path
+        end 
+      else
+        flash[:error] = "Failed to update location on resource map application. Please try again later."
+        redirect_to locations_path
+      end     
+    else
+      flash[:error] = "Process update #{@location.name} failed."
+      redirect_to locations_path
+    end
+  end
+
+  def apply_update_form
+    @location = Location.find(params[:id])
+    if(@location and @location.is_updated and @location.backup and @location.backup.user.id != current_user.id)
+      conflict_cases = ConflictCase.where(:location_id => params[:id])
+      site_ids = Location.generate_site_id conflict_cases
+      user_emails = Location.generate_user_email conflict_cases
+      if @location.update_to_resourcemap(site_ids, user_emails)
+        if(@location.update_attributes!(params[:location]))        
+          flash[:notice] = "You have successfully update location #{@location.name}."
+          @location.backup.destroy!
+          @location.is_updated = false
+          @location.save
+          redirect_to locations_path
+        else
+          redirect_to locations_path
+        end 
+      else
+        flash[:error] = "Failed to update location on resource map application. Please try again later."
+        redirect_to locations_path
+      end     
+    else
+      flash[:error] = "Process update #{@location.name} failed."
+      redirect_to locations_path
+    end
+  end
+
+  def view_difference
+    @base = Location.find(params[:id])
   end
 end

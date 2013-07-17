@@ -17,6 +17,15 @@ Conflict::Application.routes.draw do
       post 'import_process'
       get 'download_location_template'
     end
+
+    member do
+      get 'cancel_delete'
+      get 'cancel_update'
+      get 'approve_delete'
+      get 'approve_update'
+      get 'view_difference'
+      put 'apply_update_form'
+    end
   end
   resources :reporters
   resources :conflict_cases
