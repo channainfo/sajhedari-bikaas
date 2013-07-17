@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130711040600) do
+ActiveRecord::Schema.define(version: 20130716092806) do
 
   create_table "cases", force: true do |t|
     t.string   "message"
@@ -72,6 +72,8 @@ ActiveRecord::Schema.define(version: 20130711040600) do
     t.decimal  "lng",        precision: 10, scale: 6
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_deleted",                          default: false
+    t.boolean  "is_updated",                          default: false
   end
 
   create_table "reporters", force: true do |t|

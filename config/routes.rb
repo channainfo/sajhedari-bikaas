@@ -11,7 +11,13 @@ Conflict::Application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'home#index'
 
-  resources :locations
+  resources :locations do 
+    collection do
+      get 'import'
+      post 'import_process'
+      get 'download_location_template'
+    end
+  end
   resources :reporters
   resources :conflict_cases
   resources :users do

@@ -1,6 +1,6 @@
     <div class="btn-toolbar">
-    	<a href="#" class="btn"><i class="icon-upload"></i> Import Location Code</a>
-    	<%= link_to "Add New Place", new_location_path, :method => :get, :class => 'btn btn-primary to-right' %>	    
+    	<%= link_to raw("<i class='icon-upload'></i> Import Location Code"), import_locations_path, :method => :get, :class => 'btn' %>
+    	<%= link_to "Add New Place", new_location_path, :method => :get, :class => 'btn btn-primary to-right' %>    
     </div>
     <div>
     	<!--<table class="table table-bordered table-striped">-->
@@ -15,15 +15,47 @@
 			    </tr>
 		    </thead>
 		    <tbody>
-		    <% @locations.each do |l| %>			    
-			    <tr>
+		    <% @locations.each do |l| %>
+		    <% class_name = "" %>
+		    <% if l.is_deleted %>
+		    	<% class_name = "deleted" %>
+		    <% elsif l.is_updated %>
+		    	<% class_name = "updated" %>
+		    <% end %>		    
+			    <tr class=<%= class_name %>>
 				    <td><%= l.code %></td>
 				    <td><%= l.name %></td>
 				    <td><%= l.lat %></td>
 				    <td><%= l.lng %></td>
 				    <td>
-				    <%= link_to raw("<i class='icon-pencil'></i>"), edit_location_path(l), :method => :get %>
-				    <%= link_to raw("<i class='icon-remove'></i>"), location_path(l), :method => :delete, :confirm => "Are you sure to delete location #{l.code}?" %>
+				    <% if l.is_deleted %>
+				    	<div class="btn-group pull-right">
+							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+								<i class="icon-user"></i> <%= current_user.first_name || "UNKNOWN" %> <span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><%= link_to " Approve to delete", change_password_user_path(current_user), :method => :get, :class => 'icon-ok-circle' %>
+								<li class="divider"></li>
+								<li><%= link_to " Cancel delete", destroy_user_session_path, :method => :delete, :class => 'icon-ban-circle' %></li>
+							</ul>
+						</div>
+				    <% elsif l.is_updated %>
+				    	<div class="btn-group pull-right">
+							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+								<i class="icon-user"></i> <%= current_user.first_name || "UNKNOWN" %> <span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li><%= link_to " View the difference", change_password_user_path(current_user), :method => :get, :class => 'icon-eye-open' %>
+								<li class="divider"></li>
+								<li><%= link_to " Approve to update", change_password_user_path(current_user), :method => :get, :class => 'icon-cog' %>
+								<li class="divider"></li>
+								<li><%= link_to " Cancel update", destroy_user_session_path, :method => :delete, :class => 'icon-share' %></li>
+							</ul>
+						</div>
+				    <% else %>						
+					    <%= link_to raw("<i class='icon-pencil'></i>"), edit_location_path(l), :method => :get %>
+					    <%= link_to raw("<i class='icon-remove'></i>"), location_path(l), :method => :delete, :confirm => "Are you sure to delete location #{l.code}?" %>
+				    <% end %>
 				    </td>
 			    </tr>
 			<% end %>
