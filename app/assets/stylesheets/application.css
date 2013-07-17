@@ -37,3 +37,15 @@
 .menu-item{
 	padding: 10px 10px;
 }
+
+.bold_link{
+	font-weight: bold;
+}
+
+.deleted{
+	background-color: #FFDFDD;
+}
+
+.updated{
+	background-color: #ADDFFF;
+}

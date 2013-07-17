@@ -37,8 +37,8 @@ class User < ActiveRecord::Base
       headers: { Accept: "text/html" }
     )
     request.run
-    response = request.response.return_code
-    return response == :ok
+    response = request.response.code
+    return response == 200
   end
 
   def update_to_resourcemap user
@@ -53,8 +53,25 @@ class User < ActiveRecord::Base
       headers: { Accept: "text/html" }
     )
     request.run
-    response = request.response.return_code
-    return response == :ok
+    response = request.response.code
+    return response == 200
+  end
+
+  def update_password_to_resourcemap user
+    yml = self.load_resource_map
+    request = Typhoeus::Request.new(
+      yml["url"] + 'api/collections/' + yml["collection_id"].to_s + '/memberships',
+      method: :put,
+      params: { 
+                "user[password]" => user["password"],
+                "user[password_confirmation]" => user["password_confirmation"],
+                "user[email]" => self.email
+              },
+      headers: { Accept: "text/html" }
+    )
+    request.run
+    response = request.response.code
+    return response == 200
   end
 
   def load_resource_map

@@ -11,15 +11,35 @@ Conflict::Application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'home#index'
 
-  resources :locations
+  resources :locations do 
+    collection do
+      get 'import'
+      post 'import_process'
+      get 'download_location_template'
+    end
+
+    member do
+      get 'cancel_delete'
+      get 'cancel_update'
+      get 'approve_delete'
+      get 'approve_update'
+      get 'view_difference'
+      put 'apply_update_form'
+    end
+  end
   resources :reporters
   resources :conflict_cases
   resources :users do
     collection do
       post 'register'
+
+    end
+
+    member do
+      put 'update_password'
+      get 'change_password'
     end
   end
-
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

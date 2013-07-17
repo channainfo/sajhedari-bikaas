@@ -1,0 +1,22 @@
+<div class="row-fluid">
+    <div id="legend">                    
+        <legend class="">Import Location</legend>
+    </div>
+    <div class="alert alert-info">
+        This tool allows you to import a bunch of locations to your system by using a <%= link_to raw("location form"), download_location_template_locations_path + ".csv", :method => :get, :class => 'bold_link', :format => :csv %> as a template.
+    </div>
+    <%= form_for(:location, :url => "import_process" , :method => :post, :html => {:class => 'form-horizontal'} ) do |f| %>    
+        <div class="control-group">
+            <%= f.label "File",:class => "control-label" %>
+            <div class="controls">
+                <%= f.file_field :file_import, :class =>"input-xlarge", :required => "required" %>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button class="btn btn-success">Upload</button>
+                <%=link_to "Cancel", locations_path, :class => "btn" %>
+            </div>
+        </div>
+    <% end %>
+</div>
