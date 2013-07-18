@@ -71,6 +71,23 @@
 			</tbody>
 	    </table>
     </div>
+    <div class="row-fluid"  style="margin:5px">
+    	<div class="span1 img-rounded deleted_ex">
+	    	&nbsp;
+	    </div>
+        <div class="span4" style="padding-top:5px">
+            Record is marked as Deleted
+        </div>
+    </div>
+    <div class="row-fluid"  style="margin:5px">
+    	<div class="span1 img-rounded updated_ex">
+	    	&nbsp;
+	    </div>
+        <div class="span4" style="padding-top:5px">
+            Record is marked as Updated
+        </div>
+    </div>
+   
     <%= will_paginate @locations, renderer: BootstrapPagination::Rails %>
     <div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	    <div class="modal-header">
