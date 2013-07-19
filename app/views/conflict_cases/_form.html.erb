@@ -15,28 +15,23 @@
 <%= form_for(conflict_case, :url => {action: action} , :html => {:class => 'form-horizontal'} ) do |f| %>    
     <fieldset>                
         <div class="control-group">
-            <%= f.label "Message",:class => "control-label" %>
+            <%= f.label "Conflict Type",:class => "control-label" %>
             <div class="controls">
-                <%= f.text_field :name, :class =>"input-xlarge", :required => "required" %>
-            </div>
-        </div>
-        <div class="control-group">
-            <%= f.label "Location Code",:class => "control-label" %>
-            <div class="controls">
-                <%= f.text_field :code, :class =>"input-xlarge", :required => "required" %>
-            </div>
-        </div>
-        <div class="control-group">
-            <%= f.label "Latitude",:class => "control-label" %>
-            <div class="controls">
-                <%= f.text_field :lat, :class =>"input-xlarge", :required => "required" %>
+                <%= f.select(:conflict_type_id, options_for_select(@conflict_types.collect {|p| [p.name,p.id] }, f.object.conflict_type_id)) %>
             </div>
         </div>
 
         <div class="control-group">
-            <%= f.label "Longtitude",:class => "control-label" %>
+            <%= f.label "Conflict State",:class => "control-label" %>
             <div class="controls">
-                <%= f.text_field :lng, :class =>"input-xlarge", :required => "required" %>
+                <%= f.select(:conflict_state_id, options_for_select(@conflict_states.collect {|p| [p.name,p.id] }, f.object.conflict_state_id)) %>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <%= f.label "Conflict Intensity",:class => "control-label" %>
+            <div class="controls">
+                <%= f.select(:conflict_intensity_id, options_for_select(@conflict_intensities.collect {|p| [p.name,p.id] }, f.object.conflict_intensity_id)) %>
             </div>
         </div>
         
@@ -44,7 +39,7 @@
         <div class="control-group">
             <div class="controls">
                 <button class="btn btn-success">Save</button>
-                <%=link_to "Cancel", locations_path, :class => "btn" %>
+                <%=link_to "Cancel", conflict_cases_path, :class => "btn" %>
             </div>
         </div>
     </fieldset>

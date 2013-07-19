@@ -26,6 +26,9 @@ class ConflictCasesController < ApplicationController
   end
 
   def edit
+    @conflict_types = ConflictType.all
+    @conflict_states = ConflictState.all
+    @conflict_intensities = ConflictIntensity.all
     @conflict_case = ConflictCase.find(params[:id])
   end
 
