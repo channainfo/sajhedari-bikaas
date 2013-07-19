@@ -37,6 +37,29 @@ class ConflictCase < ActiveRecord::Base
      end
   end
 
+  def update_to_resource_map params
+    site_id = self.site_id.to_s
+    request = Typhoeus::Request.new(
+       # yml["url"] + "api/collections/1/update_sites",
+       'http://localhost:3000/api/collections/1/sites/'+site_id,
+       method: :put,
+       body: "this is a request body",
+       params: { 
+                 # lat: self.location.lat, 
+                 # lng: self.location.lng, 
+                 # name: self.user.username,
+                 # name: "with property", 
+                 email: self.user.email,
+                 conflict_type: ConflictType.find_by_id(params[:conflict_type_id].to_i).name,
+                 conflict_intensity: ConflictIntensity.find_by_id(params[:conflict_intensity_id].to_i).name,
+                 conflict_state: ConflictState.find_by_id(params[:conflict_state_id].to_i).name },
+       headers: { Accept: "text/html" }
+     )
+    request.run
+    response = request.response.code
+    return response == 200
+  end
+
   def destroy_case_from_resource_map
     site_id = self.site_id.to_s
     request = Typhoeus::Request.new(
