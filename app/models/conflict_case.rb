@@ -14,9 +14,9 @@ class ConflictCase < ActiveRecord::Base
   attr_accessible :user_id
 
   def save_case_to_resource_map
+    yml = self.load_resource_map
     request = Typhoeus::Request.new(
-       # yml["url"] + "api/collections/1/update_sites",
-       'http://localhost:3000/api/collections/1/sites',
+       yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
        method: :post,
        body: "this is a request body",
        params: { lat: self.location.lat, 
@@ -38,18 +38,13 @@ class ConflictCase < ActiveRecord::Base
   end
 
   def update_to_resource_map params
+    yml = self.load_resource_map
     site_id = self.site_id.to_s
     request = Typhoeus::Request.new(
-       # yml["url"] + "api/collections/1/update_sites",
-       'http://localhost:3000/api/collections/1/sites/'+site_id,
+       yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + site_id,
        method: :put,
        body: "this is a request body",
-       params: { 
-                 # lat: self.location.lat, 
-                 # lng: self.location.lng, 
-                 # name: self.user.username,
-                 # name: "with property", 
-                 email: self.user.email,
+       params: { email: self.user.email,
                  conflict_type: ConflictType.find_by_id(params[:conflict_type_id].to_i).name,
                  conflict_intensity: ConflictIntensity.find_by_id(params[:conflict_intensity_id].to_i).name,
                  conflict_state: ConflictState.find_by_id(params[:conflict_state_id].to_i).name },
@@ -61,20 +56,19 @@ class ConflictCase < ActiveRecord::Base
   end
 
   def destroy_case_from_resource_map
+    yml = self.load_resource_map
     site_id = self.site_id.to_s
     request = Typhoeus::Request.new(
-       # yml["url"] + "api/collections/1/update_sites",
-       'http://localhost:3000/api/collections/1/sites/'+site_id,
+       yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + site_id,
        method: :delete,
        body: "this is a request body",
        params: {},
        headers: { Accept: "text/html" }
      )
      request.run
-     # response = request.response
-     # if(response.return_code == :ok)
-     #   result = JSON.parse response.response_body
-     #   return result["site"]
-     # end
+  end
+
+  def load_resource_map
+    YAML.load_file File.expand_path(Rails.root + "config/resourcemap.yml", __FILE__)
   end
 end
