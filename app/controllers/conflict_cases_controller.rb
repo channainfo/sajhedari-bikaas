@@ -10,11 +10,16 @@ class ConflictCasesController < ApplicationController
   end
 
   def new
+    @locations = Location.all
+    @conflict_types = ConflictType.all
+    @conflict_states = ConflictState.all
+    @conflict_intensities = ConflictIntensity.all
   	@conflict_case = ConflictCase.new()
   end
 
   def create
     @conflict_case = ConflictCase.new(params[:conflict_case])
+    @conflict_case.user_id = current_user.id
     site = @conflict_case.save_case_to_resource_map
     if site
       @conflict_case.site_id = site["id"]

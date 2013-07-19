@@ -22,11 +22,11 @@ class ConflictCase < ActiveRecord::Base
        params: { lat: self.location.lat, 
                  lng: self.location.lng, 
                  # name: self.user.username,
-                 name: "with property", 
+                 name: self.case_message, 
                  email: self.user.email,
                  conflict_type: self.conflict_type.name,
                  conflict_intensity: self.conflict_intensity.name,
-                 conflict_state: self.conflict_intensity.name },
+                 conflict_state: self.conflict_state.name },
        headers: { Accept: "text/html" }
      )
      request.run
