@@ -45,6 +45,8 @@ class ConflictCase < ActiveRecord::Base
        method: :put,
        body: "this is a request body",
        params: { email: self.user.email,
+                 lat: Location.find_by_id(params[:location_id].to_i).lat, 
+                 lng: Location.find_by_id(params[:location_id].to_i).lng, 
                  conflict_type: ConflictType.find_by_id(params[:conflict_type_id].to_i).name,
                  conflict_intensity: ConflictIntensity.find_by_id(params[:conflict_intensity_id].to_i).name,
                  conflict_state: ConflictState.find_by_id(params[:conflict_state_id].to_i).name },

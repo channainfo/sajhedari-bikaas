@@ -36,6 +36,7 @@ class ConflictCasesController < ApplicationController
   end
 
   def edit
+    @locations = Location.all
     @conflict_types = ConflictType.all
     @conflict_states = ConflictState.all
     @conflict_intensities = ConflictIntensity.all

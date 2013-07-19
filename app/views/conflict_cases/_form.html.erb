@@ -34,6 +34,13 @@
                 <%= f.select(:conflict_intensity_id, options_for_select(@conflict_intensities.collect {|p| [p.name,p.id] }, f.object.conflict_intensity_id)) %>
             </div>
         </div>
+
+        <div class="control-group">
+            <%= f.label "Location",:class => "control-label" %>
+            <div class="controls">
+                <%= f.select(:location_id, options_for_select(@locations.collect {|p| [p.name,p.id] }, f.object.location_id)) %>
+            </div>
+        </div>
         
         <!-- Submit -->
         <div class="control-group">
