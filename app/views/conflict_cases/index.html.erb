@@ -15,16 +15,40 @@
 			    </tr>
 		    </thead>
 		    <tbody>
-		    <% @conflict_cases.each do |l| %>			    
-			    <tr>
+		    <% @conflict_cases.each do |l| %>	
+		    <% class_name = "" %>
+		    <% if l.is_deleted %>
+		    	<% class_name = "deleted" %>
+		    <% elsif l.is_updated %>
+		    	<% class_name = "updated" %>
+		    <% end %>			    
+			    <tr class=<%= class_name %>>
 				    <td><%= l.case_message %></td>
 				    <td><%= l.conflict_type.name %></td>
 				    <td><%= l.conflict_intensity.name %></td>
 				    <td><%= l.conflict_state.name %></td>
 				    <td><%= l.location.name %></td>
 				    <td>
-				    <%= link_to raw("<i class='icon-pencil'></i>"), edit_conflict_case_path(l), :method => :get %>	
-				    <%= link_to raw("<i class='icon-remove'></i>"), conflict_case_path(l), :method => :delete, :confirm => "Are you sure to delete this case ?" %>
+				    <% if l.is_deleted %>				    	
+				    	<div class="btn-group pull-right">
+				    		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+								<i class="icon-user"></i> <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+				    		<% if l.backup.user.id != current_user.id %>						
+								
+									<li><%= link_to " Approve to delete", approve_delete_conflict_case_path(l), :method => :get, :class => 'icon-ok-circle' %>
+									<li class="divider"></li>
+									<li><%= link_to " Cancel delete", cancel_delete_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>								
+							<% else %>
+								<li><%= link_to " Cancel delete", cancel_delete_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>
+							<% end %>
+							</ul>
+						</div>	
+					<% else %>						
+					    <%= link_to raw("<i class='icon-pencil'></i>"), edit_conflict_case_path(l), :method => :get %>
+					    <%= link_to raw("<i class='icon-remove'></i>"), conflict_case_path(l), :method => :delete, :confirm => "Are you sure to delete case #{l.case_message}?" %>
+				    <% end %>	
 				    </td>
 			    </tr>
 			<% end %>

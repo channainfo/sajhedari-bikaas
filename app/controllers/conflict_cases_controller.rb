@@ -72,4 +72,49 @@ class ConflictCasesController < ApplicationController
       redirect_to conflict_cases_path
     end
   end
+
+  def destroy
+    @conflict_case = ConflictCase.find(params[:id])
+    if @conflict_case.is_deleted 
+      unless @conflict_case.backup.user.id == current_user.id
+        flash[:error] = "Conflict Case is marked as delete please click Approve to delete to confirm delete location."
+        redirect_to conflict_cases_path
+      else
+        flash[:error] = "Failed to delete Conflict Case. Please try again later."
+        redirect_to conflict_cases_path
+      end
+    else
+      flash[:notice] = "Conflict Case is mark as deleted."
+      Backup.create!(:entity_id => @conflict_case.id, :data => @conflict_case.to_json, :category => ConflictCase.get_category, :user_id => current_user.id)
+      @conflict_case.is_deleted = true
+      @conflict_case.save
+      redirect_to conflict_cases_path
+    end
+  end
+
+  def cancel_delete
+    @conflict_case = ConflictCase.find(params[:id])
+    if(@conflict_case.is_deleted and @conflict_case.backup)
+      flash[:notice] = "#{@conflict_case.case_message} is mark as undeleted."
+      @conflict_case.backup.destroy
+      @conflict_case.is_deleted = false
+      @conflict_case.save
+      redirect_to conflict_cases_path
+    else
+      redirect_to conflict_cases_path
+    end
+  end
+
+  def approve_delete
+    @conflict_case = ConflictCase.find(params[:id])
+    if(@conflict_case and @conflict_case.is_deleted and @conflict_case.backup and @conflict_case.backup.user.id != current_user.id)
+      @conflict_case.destroy!
+      @conflict_case.backup.destroy!
+      flash[:notice] = "You have successfully delete #{@conflict_case.case_message}."
+      redirect_to conflict_cases_path
+    else
+      flash[:error] = "Process delete #{@conflict_case.case_message} failed."
+      redirect_to conflict_cases_path
+    end
+  end
 end

@@ -12,6 +12,8 @@ class ConflictCase < ActiveRecord::Base
   attr_accessible :case_message
   attr_accessible :site_id
   attr_accessible :user_id
+  attr_accessible :is_deleted
+  attr_accessible :is_updated
 
   def save_case_to_resource_map
     yml = self.load_resource_map
@@ -68,6 +70,16 @@ class ConflictCase < ActiveRecord::Base
        headers: { Accept: "text/html" }
      )
      request.run
+  end
+
+  def self.get_category
+    'conflict_case'
+  end
+
+  def backup
+    backup = Backup.find_by_entity_id_and_category(self.id, ConflictCase.get_category)
+    backup.data = JSON.parse backup.data if backup
+    backup
   end
 
   def load_resource_map

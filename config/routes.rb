@@ -28,7 +28,16 @@ Conflict::Application.routes.draw do
     end
   end
   resources :reporters
-  resources :conflict_cases
+  resources :conflict_cases do
+    member do
+      get 'cancel_delete'
+      get 'cancel_update'
+      get 'approve_delete'
+      get 'approve_update'
+      get 'view_difference'
+      put 'apply_update_form'
+    end
+  end
   resources :users do
     collection do
       post 'register'
