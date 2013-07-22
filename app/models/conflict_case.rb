@@ -3,7 +3,7 @@ class ConflictCase < ActiveRecord::Base
   belongs_to :conflict_intensity
   belongs_to :conflict_state
   belongs_to :location
-  belongs_to :user
+  belongs_to :reporter
 
   attr_accessible :conflict_type_id
   attr_accessible :conflict_intensity_id
@@ -11,9 +11,11 @@ class ConflictCase < ActiveRecord::Base
   attr_accessible :location_id
   attr_accessible :case_message
   attr_accessible :site_id
+
   attr_accessible :user_id
   attr_accessible :is_deleted
   attr_accessible :is_updated
+  attr_accessible :reporter_id
 
   def save_case_to_resource_map
     yml = self.load_resource_map
@@ -25,7 +27,7 @@ class ConflictCase < ActiveRecord::Base
                  lng: self.location.lng, 
                  # name: self.user.username,
                  name: self.case_message, 
-                 email: self.user.email,
+                 email: self.reporter.email,
                  conflict_type: self.conflict_type.name,
                  conflict_intensity: self.conflict_intensity.name,
                  conflict_state: self.conflict_state.name },
@@ -46,7 +48,7 @@ class ConflictCase < ActiveRecord::Base
        yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + site_id,
        method: :put,
        body: "this is a request body",
-       params: { email: self.user.email,
+       params: { email: self.reporter.email,
                  lat: Location.find_by_id(params[:location_id].to_i).lat, 
                  lng: Location.find_by_id(params[:location_id].to_i).lng, 
                  conflict_type: ConflictType.find_by_id(params[:conflict_type_id].to_i).name,

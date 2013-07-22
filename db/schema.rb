@@ -46,11 +46,14 @@ ActiveRecord::Schema.define(version: 20130722080026) do
     t.integer  "conflict_state_id"
     t.integer  "location_id"
     t.integer  "site_id"
-    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+<<<<<<< HEAD
     t.boolean  "is_deleted",            default: false
     t.boolean  "is_updated",            default: false
+=======
+    t.integer  "reporter_id"
+>>>>>>> ab5f0ae1576cde3157909efa2ade91f112612e21
   end
 
   add_index "conflict_cases", ["conflict_intensity_id"], name: "index_conflict_cases_on_conflict_intensity_id", using: :btree
@@ -85,6 +88,21 @@ ActiveRecord::Schema.define(version: 20130722080026) do
     t.datetime "updated_at"
     t.boolean  "is_deleted",                          default: false
     t.boolean  "is_updated",                          default: false
+  end
+
+  create_table "messages", force: true do |t|
+    t.string   "guid"
+    t.string   "country"
+    t.string   "carrier"
+    t.string   "channel"
+    t.string   "application"
+    t.string   "from"
+    t.string   "to"
+    t.string   "subject"
+    t.string   "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "reply"
   end
 
   create_table "reporters", force: true do |t|

@@ -31,7 +31,7 @@
 				    <% if l.is_deleted %>				    	
 				    	<div class="btn-group pull-right">
 				    		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-								<i class="icon-user"></i> <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
+								 <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu">
 				    		<% if l.backup.user.id != current_user.id %>						
@@ -47,7 +47,7 @@
 				    <% elsif l.is_updated %>
 				    	<div class="btn-group pull-right">
 							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-								<i class="icon-user"></i> <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
+								</i> <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu">
 								<% if l.backup.user.id != current_user.id %>							
