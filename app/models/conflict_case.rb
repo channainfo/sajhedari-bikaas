@@ -3,7 +3,7 @@ class ConflictCase < ActiveRecord::Base
   belongs_to :conflict_intensity
   belongs_to :conflict_state
   belongs_to :location
-  belongs_to :user
+  belongs_to :reporter
 
   attr_accessible :conflict_type_id
   attr_accessible :conflict_intensity_id
@@ -11,7 +11,7 @@ class ConflictCase < ActiveRecord::Base
   attr_accessible :location_id
   attr_accessible :case_message
   attr_accessible :site_id
-  attr_accessible :user_id
+  attr_accessible :reporter_id
 
   def save_case_to_resource_map
     request = Typhoeus::Request.new(
@@ -23,7 +23,7 @@ class ConflictCase < ActiveRecord::Base
                  lng: self.location.lng, 
                  # name: self.user.username,
                  name: "with property", 
-                 email: self.user.email,
+                 email: self.reporter.email,
                  conflict_type: self.conflict_type.name,
                  conflict_intensity: self.conflict_intensity.name,
                  conflict_state: self.conflict_intensity.name },

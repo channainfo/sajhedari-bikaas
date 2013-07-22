@@ -41,6 +41,8 @@ Conflict::Application.routes.draw do
     end
   end
 
+  match 'messaging' => 'messaging#index', :via => :post
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
