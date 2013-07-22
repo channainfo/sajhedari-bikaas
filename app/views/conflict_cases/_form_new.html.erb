@@ -13,32 +13,39 @@
     </div>
 <% end %>
 <%= form_for(conflict_case, :url => {action: action} , :html => {:class => 'form-horizontal'} ) do |f| %>    
-    <fieldset>                
+    <fieldset>
+        <div class="control-group">
+            <%= f.label "Case Message",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :case_message, :class =>"input-xlarge", :required => "required" %>
+            </div>
+        </div>
+
         <div class="control-group">
             <%= f.label "Conflict Type",:class => "control-label" %>
             <div class="controls">
-                <%= f.select(:conflict_type_id, options_for_select(@conflict_types.collect {|p| [p.name,p.id] }, f.object.conflict_type_id)) %>
+                <%= f.select(:conflict_type_id, options_for_select(@conflict_types.collect {|p| [p.name,p.id] }, "Select Type")) %>
             </div>
         </div>
 
         <div class="control-group">
             <%= f.label "Conflict State",:class => "control-label" %>
             <div class="controls">
-                <%= f.select(:conflict_state_id, options_for_select(@conflict_states.collect {|p| [p.name,p.id] }, f.object.conflict_state_id)) %>
+                <%= f.select(:conflict_state_id, options_for_select(@conflict_states.collect {|p| [p.name,p.id] }, "Select State")) %>
             </div>
         </div>
 
         <div class="control-group">
             <%= f.label "Conflict Intensity",:class => "control-label" %>
             <div class="controls">
-                <%= f.select(:conflict_intensity_id, options_for_select(@conflict_intensities.collect {|p| [p.name,p.id] }, f.object.conflict_intensity_id)) %>
+                <%= f.select(:conflict_intensity_id, options_for_select(@conflict_intensities.collect {|p| [p.name,p.id] }, "Select Intensity")) %>
             </div>
         </div>
 
         <div class="control-group">
             <%= f.label "Location",:class => "control-label" %>
             <div class="controls">
-                <%= f.select(:location_id, options_for_select(@locations.collect {|p| [p.name,p.id] }, f.object.location_id)) %>
+                <%= f.select(:location_id, options_for_select(@locations.collect {|p| [p.name,p.id] }, "Select Location")) %>
             </div>
         </div>
         

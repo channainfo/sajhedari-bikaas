@@ -19,7 +19,7 @@ class Location < ActiveRecord::Base
       userpwd: "#{USER_NAME}:#{PASSWORD}",
       method: :put,
       body: "this is a request body",
-      params: { lat: self.lat, lng: self.lng, site_id: site_ids, user_email: user_emails },
+      params: { lat: self.backup.data["lat"], lng: self.backup.data["lng"], site_id: site_ids, user_email: user_emails },
       headers: { Accept: "text/html" }
     )
     request.run
