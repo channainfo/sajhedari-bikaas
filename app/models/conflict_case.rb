@@ -48,12 +48,12 @@ class ConflictCase < ActiveRecord::Base
        yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + site_id,
        method: :put,
        body: "this is a request body",
-       params: { email: self.reporter.email,
-                 lat: Location.find_by_id(params[:location_id].to_i).lat, 
-                 lng: Location.find_by_id(params[:location_id].to_i).lng, 
-                 conflict_type: ConflictType.find_by_id(params[:conflict_type_id].to_i).name,
-                 conflict_intensity: ConflictIntensity.find_by_id(params[:conflict_intensity_id].to_i).name,
-                 conflict_state: ConflictState.find_by_id(params[:conflict_state_id].to_i).name },
+       params: { phone_number: self.reporter.phone_number,
+                 lat: Location.find_by_id(self.backup.data["location_id"].to_i).lat, 
+                 lng: Location.find_by_id(self.backup.data["location_id"].to_i).lng, 
+                 conflict_type: ConflictType.find_by_id(self.backup.data["conflict_type_id"].to_i).name,
+                 conflict_intensity: ConflictIntensity.find_by_id(self.backup.data["conflict_intensity_id"].to_i).name,
+                 conflict_state: ConflictState.find_by_id(self.backup.data["conflict_state_id"].to_i).name },
        headers: { Accept: "text/html" }
      )
     request.run

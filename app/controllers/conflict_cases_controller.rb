@@ -115,6 +115,19 @@ class ConflictCasesController < ApplicationController
     end
   end
 
+  def cancel_update
+    @conflict_case = ConflictCase.find(params[:id])
+    if(@conflict_case.is_updated and @conflict_case.backup)
+      flash[:notice] = "#{@conflict_case.case_message} is mark as not update."
+      @conflict_case.backup.destroy
+      @conflict_case.is_updated = false
+      @conflict_case.save
+      redirect_to conflict_cases_path
+    else
+      redirect_to conflict_cases_path
+    end
+  end
+
   def approve_delete
     @conflict_case = ConflictCase.find(params[:id])
     site = @conflict_case.destroy_case_from_resource_map
@@ -127,5 +140,59 @@ class ConflictCasesController < ApplicationController
       flash[:error] = "Process delete #{@conflict_case.case_message} failed."
       redirect_to conflict_cases_path
     end
+  end
+
+  def apply_update_form
+    @conflict_case = ConflictCase.find(params[:id])
+    if(@conflict_case and @conflict_case.is_updated and @conflict_case.backup and @conflict_case.backup.user.id != current_user.id)
+      if @conflict_case.update_to_resource_map params[:conflict_case]
+        if(@conflict_case.update_attributes(@conflict_case.backup.data))
+          flash[:notice] = "You have successfully update conflict case #{@conflict_case.case_message}."
+          @conflict_case.backup.destroy!
+          @conflict_case.is_updated = false
+          @conflict_case.save
+          redirect_to conflict_cases_path
+        else
+          redirect_to conflict_cases_path
+        end
+      else 
+        @conflict_types = ConflictType.all
+        @conflict_states = ConflictState.all
+        @conflict_intensities = ConflictIntensity.all
+        flash[:error] = "Failed to update case on resource map application. Please try again later."
+        redirect_to conflict_cases_path
+      end
+    end
+  end
+
+  def approve_update
+    @conflict_case = ConflictCase.find(params[:id])
+    if(@conflict_case and @conflict_case.is_updated and @conflict_case.backup and @conflict_case.backup.user.id != current_user.id)
+      if @conflict_case.update_to_resource_map params[:conflict_case]
+        if(@conflict_case.update_attributes(@conflict_case.backup.data))
+          flash[:notice] = "You have successfully update conflict case #{@conflict_case.case_message}."
+          @conflict_case.backup.destroy!
+          @conflict_case.is_updated = false
+          @conflict_case.save
+          redirect_to conflict_cases_path
+        else
+          redirect_to conflict_cases_path
+        end
+      else 
+        @conflict_types = ConflictType.all
+        @conflict_states = ConflictState.all
+        @conflict_intensities = ConflictIntensity.all
+        flash[:error] = "Failed to update case on resource map application. Please try again later."
+        redirect_to conflict_cases_path
+      end
+    end
+  end
+
+  def view_difference
+    @locations = Location.all
+    @conflict_types = ConflictType.all
+    @conflict_states = ConflictState.all
+    @conflict_intensities = ConflictIntensity.all
+    @base = ConflictCase.find(params[:id])
   end
 end
