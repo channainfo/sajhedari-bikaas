@@ -44,7 +44,24 @@
 								<li><%= link_to " Cancel delete", cancel_delete_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>
 							<% end %>
 							</ul>
-						</div>	
+						</div>
+					<% elsif l.is_updated %>
+				    	<div class="btn-group pull-right">
+							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+								</i> <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<% if l.backup.user.id != current_user.id %>							
+									<li><%= link_to " View the difference", view_difference_conflict_case_path(l), :method => :get, :class => 'icon-eye-open' %>
+									<li class="divider"></li>
+									<li><%= link_to " Approve to update", approve_update_conflict_case_path(l), :method => :get, :class => 'icon-ok-circle' %>
+									<li class="divider"></li>
+									<li><%= link_to " Cancel update", cancel_update_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>		
+								<% else %>
+									<li><%= link_to " Cancel update", cancel_update_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>
+								<% end %>
+							</ul>
+						</div>		
 					<% else %>						
 					    <%= link_to raw("<i class='icon-pencil'></i>"), edit_conflict_case_path(l), :method => :get %>
 					    <%= link_to raw("<i class='icon-remove'></i>"), conflict_case_path(l), :method => :delete, :confirm => "Are you sure to delete case #{l.case_message}?" %>

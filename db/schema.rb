@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20130722080026) do
     t.integer  "reporter_id"
     t.boolean  "is_deleted",            default: false
     t.boolean  "is_updated",            default: false
+
   end
 
   add_index "conflict_cases", ["conflict_intensity_id"], name: "index_conflict_cases_on_conflict_intensity_id", using: :btree

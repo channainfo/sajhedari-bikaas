@@ -11,4 +11,6 @@ class Reporter < ActiveRecord::Base
   attr_accessible :address
   attr_accessible :phone_number
 
+  has_many :conflict_cases
+
 end

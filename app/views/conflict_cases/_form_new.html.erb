@@ -22,6 +22,13 @@
         </div>
 
         <div class="control-group">
+            <%= f.label "Reporter",:class => "control-label" %>
+            <div class="controls">
+                <%= f.select(:reporter_id, options_for_select(@reporters.collect {|p| [p.first_name,p.id] }, "Select Reporter")) %>
+            </div>
+        </div>
+
+        <div class="control-group">
             <%= f.label "Conflict Type",:class => "control-label" %>
             <div class="controls">
                 <%= f.select(:conflict_type_id, options_for_select(@conflict_types.collect {|p| [p.name,p.id] }, "Select Type")) %>
