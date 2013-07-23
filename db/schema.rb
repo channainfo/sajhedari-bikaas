@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130719074404) do
+ActiveRecord::Schema.define(version: 20130722080026) do
 
   create_table "backups", force: true do |t|
     t.integer  "entity_id"
@@ -48,7 +48,12 @@ ActiveRecord::Schema.define(version: 20130719074404) do
     t.integer  "site_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+<<<<<<< HEAD
+    t.boolean  "is_deleted",            default: false
+    t.boolean  "is_updated",            default: false
+=======
     t.integer  "reporter_id"
+>>>>>>> ab5f0ae1576cde3157909efa2ade91f112612e21
   end
 
   add_index "conflict_cases", ["conflict_intensity_id"], name: "index_conflict_cases_on_conflict_intensity_id", using: :btree
