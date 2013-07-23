@@ -53,12 +53,12 @@ gem 'will_paginate-bootstrap'
 gem "typhoeus"
 
 group :test do
-  gem 'shoulda-matchers'
-  gem 'ci_reporter'
-  gem 'selenium-webdriver'
-  gem 'nokogiri'
-  gem 'capybara'
-  gem 'database_cleaner'
+  gem 'faker'
+  gem 'libxml-ruby' 
+  gem "machinist", "1.0.6"
+  gem 'shoulda', :require => false
+  gem "factory_girl"
+  gem "simplecov", :require => false
 end
 
 group :test, :development do

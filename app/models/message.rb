@@ -15,22 +15,19 @@ class Message < ActiveRecord::Base
 			fields = body.split(" ")
 			if self.save_to_case(fields, sender)
 				self.reply = "Successfully submit report to the system."
-				p self.reply
 			else
 				self.reply = "Failed to submit report to the system. Please try again later."
-				p self.reply
 			end
 		end
 	end
 
 	def validate_message
 		fields = body.split(" ")
-		return "Message missing some field. Please follow the message template." unless fields.size == 3
 		list = {}
 		fields.each do |f|
-			if((f.start_with? "t.") or (f.start_with? "c.") or (f.start_with? "i."))
+			if((f.start_with? "t.") or (f.start_with? "s.") or (f.start_with? "c.") or (f.start_with? "i."))
 				unless self.is_i? f[2..-1]
-					return "#{f[2..1]} is not valid."
+					return "#{f} is not valid."
 				else
 					list["#{f[0]}"] = f[2..-1]
 				end
@@ -38,7 +35,8 @@ class Message < ActiveRecord::Base
 				return "#{f} is unknown."
 			end
 		end
-		return "Duplicate information reported." if list.size != 3
+		return "Message missing some field. Please follow the message template." unless fields.size == 4
+		return "Duplicate information reported." if list.size != 4
 	end
 
 	def validate_sender
@@ -69,21 +67,25 @@ class Message < ActiveRecord::Base
 				l = Location.find_by_code(f[2..-1])
 				conflict[:location_id] = l.id
 			end
+			if f.start_with? "s."
+				l = Location.find_by_code(f[2..-1])
+				conflict[:conflict_state_id] = f[2..-1].to_i
+			end
 			if f.start_with? "i."
 				conflict[:conflict_intensity_id] = f[2..-1].to_i
 			end
 		end
 		conflict[:reporter_id] = sender.id
 		@conflict_case = ConflictCase.new(conflict)
-		if @conflict_case.save_case_to_resource_map
+		#if @conflict_case.save_case_to_resource_map
 			if @conflict_case.save				
 				return true
 			else
 				return false
 			end
-		else
-			return false
-		end
+		#else
+		#	return false
+		#end
 		return false
 	end
 
