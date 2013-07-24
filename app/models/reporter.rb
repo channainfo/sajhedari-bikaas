@@ -29,6 +29,22 @@ class Reporter < ActiveRecord::Base
     return response == 200
   end
 
+  def update_to_resourcemap reporter
+    yml = self.load_resource_map
+    request = Typhoeus::Request.new(
+      yml["url"] + 'api/collections/' + yml["collection_id"].to_s + '/memberships',
+      method: :put,
+      params: { "user[phone_number]" => reporter["phone_number"],
+                "role" => "reporter",
+                "reporter_phone" => self.phone_number
+              },
+      headers: { Accept: "text/html" }
+    )
+    request.run
+    response = request.response.code
+    return response == 200
+  end
+
   def load_resource_map
     YAML.load_file File.expand_path(Rails.root + "config/resourcemap.yml", __FILE__)
   end

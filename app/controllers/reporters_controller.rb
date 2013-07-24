@@ -39,10 +39,15 @@ class ReportersController < ApplicationController
 
   def update
     @reporter = Reporter.find(params[:id])
-    if(@reporter.update_attributes(params[:reporter]))
-      flash[:notice] = "You have successfully update reporter #{@reporter.first_name} #{@reporter.last_name}."
-      redirect_to reporters_path
+    if @reporter.update_to_resourcemap params[:reporter]
+      if(@reporter.update_attributes(params[:reporter]))
+        flash[:notice] = "You have successfully update reporter #{@reporter.first_name} #{@reporter.last_name}."
+        redirect_to reporters_path
+      else
+        render :edit
+      end
     else
+      flash[:error] = "Failed to update reporter on resource map application. Please try again later."
       render :edit
     end
   end
