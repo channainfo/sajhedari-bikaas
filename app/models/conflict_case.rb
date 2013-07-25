@@ -17,7 +17,7 @@ class ConflictCase < ActiveRecord::Base
   attr_accessible :reporter_id
 
   def save_case_to_resource_map
-    yml = self.load_resource_map
+    yml = self.class.load_resource_map
     request = Typhoeus::Request.new(
        yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
        method: :post,
@@ -40,7 +40,7 @@ class ConflictCase < ActiveRecord::Base
   end
 
   def update_to_resource_map params
-    yml = self.load_resource_map
+    yml = self.class.load_resource_map
     site_id = self.site_id.to_s
     request = Typhoeus::Request.new(
        yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + site_id,
@@ -60,7 +60,7 @@ class ConflictCase < ActiveRecord::Base
   end
 
   def destroy_case_from_resource_map
-    yml = self.load_resource_map
+    yml = self.class.load_resource_map
     site_id = self.site_id.to_s
     request = Typhoeus::Request.new(
     yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + site_id,
@@ -84,7 +84,24 @@ class ConflictCase < ActiveRecord::Base
     backup
   end
 
-  def load_resource_map
+  def self.load_resource_map
     YAML.load_file File.expand_path(Rails.root + "config/resourcemap.yml", __FILE__)
+  end
+
+  def self.get_fields
+    yml = load_resource_map
+    request = Typhoeus::Request.new(
+    yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/get_fields.json",
+      method: :get,
+      headers: { Accept: "text/html" }
+    )
+    request.run
+    response = request.response
+    if response.code == 200
+      fields = JSON.parse response.response_body
+      return fields
+    else
+      return nil
+    end
   end
 end
