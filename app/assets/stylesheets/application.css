@@ -61,3 +61,7 @@
 	width: 20px; 
 	background-color: #ADDFFF;
 }
+
+.clear {
+	clear: both;
+}

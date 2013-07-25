@@ -77,15 +77,17 @@ class Message < ActiveRecord::Base
 		end
 		conflict[:reporter_id] = sender.id
 		@conflict_case = ConflictCase.new(conflict)
-		#if @conflict_case.save_case_to_resource_map
+		site = @conflict_case.save_case_to_resource_map
+		if site
+			@conflict_case.site_id = site["id"]
 			if @conflict_case.save				
 				return true
 			else
 				return false
 			end
-		#else
-		#	return false
-		#end
+		else
+			return false
+		end
 		return false
 	end
 

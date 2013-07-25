@@ -12,7 +12,6 @@ class ConflictCase < ActiveRecord::Base
   attr_accessible :case_message
   attr_accessible :site_id
 
-  attr_accessible :user_id
   attr_accessible :is_deleted
   attr_accessible :is_updated
   attr_accessible :reporter_id
@@ -25,12 +24,11 @@ class ConflictCase < ActiveRecord::Base
        body: "this is a request body",
        params: { lat: self.location.lat, 
                  lng: self.location.lng, 
-                 # name: self.user.username,
-                 name: self.case_message, 
+                 name: self.location.name, 
                  phone_number: self.reporter.phone_number,
-                 conflict_type: self.conflict_type.name,
-                 conflict_intensity: self.conflict_intensity.name,
-                 conflict_state: self.conflict_state.name },
+                 conflict_type: self.conflict_type.id,
+                 conflict_intensity: self.conflict_intensity.id,
+                 conflict_state: self.conflict_state.id },
        headers: { Accept: "text/html" }
      )
      request.run
@@ -65,18 +63,15 @@ class ConflictCase < ActiveRecord::Base
     yml = self.load_resource_map
     site_id = self.site_id.to_s
     request = Typhoeus::Request.new(
-       yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + site_id,
-       method: :delete,
-       body: "this is a request body",
-       params: {},
-       headers: { Accept: "text/html" }
-     )
-     request.run
-     response = request.response
-     if(response.return_code == :ok)
-       result = JSON.parse response.response_body
-       return result["site"]
-     end
+    yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + site_id,
+      method: :delete,
+      body: "this is a request body",
+      params: {},
+      headers: { Accept: "text/html" }
+    )
+    request.run
+    response = request.response.code
+    return response == 200
   end
 
   def self.get_category

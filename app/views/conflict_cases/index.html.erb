@@ -1,106 +1,102 @@
-    <div class="btn-toolbar">
-    	<%= link_to "Add New Conflict Case", new_conflict_case_path, :method => :get, :class => 'btn btn-primary to-right' %>	    
-    </div>
-    <div>
-    	<!--<table class="table table-bordered table-striped">-->
-	    <table class="table table-condensed table-hover">
-		    <thead>
-			    <tr>
-				    <th>Message</th>
-				    <th>Conflict type</th>
-				    <th>Conflict Intensity</th>
-				    <th>Conflict state</th>
-				    <th>Location</th>
-				    <th style="width: 36px;"></th>
-			    </tr>
-		    </thead>
-		    <tbody>
-		    <% @conflict_cases.each do |l| %>	
-		    <% class_name = "" %>
-		    <% if l.is_deleted %>
-		    	<% class_name = "deleted" %>
-		    <% elsif l.is_updated %>
-		    	<% class_name = "updated" %>
-		    <% end %>			    
-			    <tr class=<%= class_name %>>
-				    <td><%= l.case_message %></td>
-				    <td><%= l.conflict_type.name %></td>
-				    <td><%= l.conflict_intensity.name %></td>
-				    <td><%= l.conflict_state.name %></td>
-				    <td><%= l.location.name %></td>
-				    <td>
-				    <% if l.is_deleted %>				    	
-				    	<div class="btn-group pull-right">
-				    		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-								<i class="icon-user"></i> <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
-							</a>
-							<ul class="dropdown-menu">
-				    		<% if l.backup.user.id != current_user.id %>						
-								
-									<li><%= link_to " Approve to delete", approve_delete_conflict_case_path(l), :method => :get, :class => 'icon-ok-circle' %>
-									<li class="divider"></li>
-									<li><%= link_to " Cancel delete", cancel_delete_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>								
+
+<div>
+	<!--<table class="table table-bordered table-striped">-->
+    <table class="table table-condensed table-hover">
+	    <thead>
+		    <tr>
+			    <th>Conflict type</th>
+			    <th>Conflict Intensity</th>
+			    <th>Conflict state</th>
+			    <th>Location</th>
+			    <th style="width: 36px;"></th>
+		    </tr>
+	    </thead>
+	    <tbody>
+	    <% @conflict_cases.each do |l| %>	
+	    <% class_name = "" %>
+	    <% if l.is_deleted %>
+	    	<% class_name = "deleted" %>
+	    <% elsif l.is_updated %>
+	    	<% class_name = "updated" %>
+	    <% end %>			    
+		    <tr class=<%= class_name %>>
+			    <td><%= l.conflict_type_id %></td>
+			    <td><%= l.conflict_intensity_id %></td>
+			    <td><%= l.conflict_state_id %></td>
+			    <td><%= l.location.name %>(<%= l.location.lat %> , <%= l.location.lng %>)</td>
+			    <td>
+			    <% if l.is_deleted %>				    	
+			    	<div class="btn-group pull-right">
+			    		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+							<i class="icon-user"></i> <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+			    		<% if l.backup.user.id != current_user.id %>						
+							
+								<li><%= link_to " Approve to delete", approve_delete_conflict_case_path(l), :method => :get, :class => 'icon-ok-circle' %>
+								<li class="divider"></li>
+								<li><%= link_to " Cancel delete", cancel_delete_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>								
+						<% else %>
+							<li><%= link_to " Cancel delete", cancel_delete_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>
+						<% end %>
+						</ul>
+					</div>
+				<% elsif l.is_updated %>
+			    	<div class="btn-group pull-right">
+						<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+							</i> <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<% if l.backup.user.id != current_user.id %>							
+								<li><%= link_to " View the difference", view_difference_conflict_case_path(l), :method => :get, :class => 'icon-eye-open' %>
+								<li class="divider"></li>
+								<li><%= link_to " Approve to update", approve_update_conflict_case_path(l), :method => :get, :class => 'icon-ok-circle' %>
+								<li class="divider"></li>
+								<li><%= link_to " Cancel update", cancel_update_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>		
 							<% else %>
-								<li><%= link_to " Cancel delete", cancel_delete_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>
+								<li><%= link_to " Cancel update", cancel_update_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>
 							<% end %>
-							</ul>
-						</div>
-					<% elsif l.is_updated %>
-				    	<div class="btn-group pull-right">
-							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-								</i> <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
-							</a>
-							<ul class="dropdown-menu">
-								<% if l.backup.user.id != current_user.id %>							
-									<li><%= link_to " View the difference", view_difference_conflict_case_path(l), :method => :get, :class => 'icon-eye-open' %>
-									<li class="divider"></li>
-									<li><%= link_to " Approve to update", approve_update_conflict_case_path(l), :method => :get, :class => 'icon-ok-circle' %>
-									<li class="divider"></li>
-									<li><%= link_to " Cancel update", cancel_update_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>		
-								<% else %>
-									<li><%= link_to " Cancel update", cancel_update_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>
-								<% end %>
-							</ul>
-						</div>		
-					<% else %>						
-					    <%= link_to raw("<i class='icon-pencil'></i>"), edit_conflict_case_path(l), :method => :get %>
-					    <%= link_to raw("<i class='icon-remove'></i>"), conflict_case_path(l), :method => :delete, :confirm => "Are you sure to delete case #{l.case_message}?" %>
-				    <% end %>	
-				    </td>
-			    </tr>
-			<% end %>
-			</tbody>
-	    </table>
-    </div>
+						</ul>
+					</div>		
+				<% else %>						
+				    <%= link_to raw("<i class='icon-pencil'></i>"), edit_conflict_case_path(l), :method => :get %>
+				    <%= link_to raw("<i class='icon-remove'></i>"), conflict_case_path(l), :method => :delete, :confirm => "Are you sure to delete case #{l.case_message}?" %>
+			    <% end %>	
+			    </td>
+		    </tr>
+		<% end %>
+		</tbody>
+    </table>
+</div>
 
-    <div class="row-fluid"  style="margin:5px">
-    	<div class="span1 img-rounded deleted_ex">
-	    	&nbsp;
-	    </div>
-        <div class="span4" style="padding-top:5px">
-            Record is marked as Deleted
-        </div>
+<div class="row-fluid"  style="margin:5px">
+	<div class="span1 img-rounded deleted_ex">
+    	&nbsp;
     </div>
-    <div class="row-fluid"  style="margin:5px">
-    	<div class="span1 img-rounded updated_ex">
-	    	&nbsp;
-	    </div>
-        <div class="span4" style="padding-top:5px">
-            Record is marked as Updated
-        </div>
+    <div class="span4" style="padding-top:5px">
+        Record is marked as Deleted
     </div>
+</div>
+<div class="row-fluid"  style="margin:5px">
+	<div class="span1 img-rounded updated_ex">
+    	&nbsp;
+    </div>
+    <div class="span4" style="padding-top:5px">
+        Record is marked as Updated
+    </div>
+</div>
 
-    <%= will_paginate @locations, renderer: BootstrapPagination::Rails %>
-    <div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	    <div class="modal-header">
-		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		    <h3 id="myModalLabel">Delete Confirmation</h3>
-		</div>
-		<div class="modal-body">
-		    <p class="error-text">Are you sure you want to delete the case?</p>
-		</div>
-		<div class="modal-footer">
-		    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-		    <button class="btn btn-danger" data-dismiss="modal">Delete</button>
-	    </div>
+<%= will_paginate @locations, renderer: BootstrapPagination::Rails %>
+<div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Delete Confirmation</h3>
+	</div>
+	<div class="modal-body">
+	    <p class="error-text">Are you sure you want to delete the case?</p>
+	</div>
+	<div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	    <button class="btn btn-danger" data-dismiss="modal">Delete</button>
     </div>
+</div>

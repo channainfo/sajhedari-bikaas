@@ -73,7 +73,7 @@ class ConflictCasesController < ApplicationController
       end
 
     else
-      flash[:notice] = "#{@conflict_case.case_message} is mark as updated."
+      flash[:notice] = "#{@conflict_case.location.name} is mark as updated."
       Backup.create!(:entity_id => @conflict_case.id, :data => params[:conflict_case].to_json, :category => ConflictCase.get_category, :user_id => current_user.id)
       @conflict_case.is_updated = true
       @conflict_case.save
