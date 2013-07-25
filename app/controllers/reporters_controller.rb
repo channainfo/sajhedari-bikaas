@@ -20,10 +20,15 @@ class ReportersController < ApplicationController
 
   def create
     @reporter = Reporter.new(params[:reporter])
-  	if @reporter.save
-      flash[:notice] = "You have successfully create reporter #{@reporter.first_name} #{@reporter.last_name}."
-      redirect_to reporters_path
+    if @reporter.create_to_resource_map
+    	if @reporter.save
+        flash[:notice] = "You have successfully create reporter #{@reporter.first_name} #{@reporter.last_name}."
+        redirect_to reporters_path
+      else
+        render :new
+      end
     else
+      flash[:error] = "Failed to create reporter on resource map application. Please try again later."
       render :new
     end
   end
@@ -34,10 +39,15 @@ class ReportersController < ApplicationController
 
   def update
     @reporter = Reporter.find(params[:id])
-    if(@reporter.update_attributes(params[:reporter]))
-      flash[:notice] = "You have successfully update reporter #{@reporter.first_name} #{@reporter.last_name}."
-      redirect_to reporters_path
+    if @reporter.update_to_resourcemap params[:reporter]
+      if(@reporter.update_attributes(params[:reporter]))
+        flash[:notice] = "You have successfully update reporter #{@reporter.first_name} #{@reporter.last_name}."
+        redirect_to reporters_path
+      else
+        render :edit
+      end
     else
+      flash[:error] = "Failed to update reporter on resource map application. Please try again later."
       render :edit
     end
   end
