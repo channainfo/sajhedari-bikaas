@@ -24,4 +24,13 @@ module ApplicationHelper
     	end
     	return conflict_type_id
     end
+
+    def field_by_code(fields, field_code)
+        fields.each do |f|
+            if(f["code"] == field_code)
+                return f["options"]
+            end
+        end
+        return []
+    end
 end

@@ -15,10 +15,8 @@ class ConflictCasesController < ApplicationController
 
   def new
     @locations = Location.all
-    @conflict_types = ConflictType.all
-    @conflict_states = ConflictState.all
-    @conflict_intensities = ConflictIntensity.all
     @reporters = Reporter.all
+    @fields = ConflictCase.get_fields
   	@conflict_case = ConflictCase.new()
   end
 
@@ -41,9 +39,7 @@ class ConflictCasesController < ApplicationController
 
   def edit
     @locations = Location.all
-    @conflict_types = ConflictType.all
-    @conflict_states = ConflictState.all
-    @conflict_intensities = ConflictIntensity.all
+    @fields = ConflictCase.get_fields
     @conflict_case = ConflictCase.find(params[:id])
   end
 

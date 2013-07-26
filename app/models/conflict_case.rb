@@ -1,16 +1,13 @@
 class ConflictCase < ActiveRecord::Base
-  belongs_to :conflict_type
-  belongs_to :conflict_intensity
-  belongs_to :conflict_state
   belongs_to :location
   belongs_to :reporter
 
-  attr_accessible :conflict_type_id
-  attr_accessible :conflict_intensity_id
-  attr_accessible :conflict_state_id
   attr_accessible :location_id
   attr_accessible :case_message
   attr_accessible :site_id
+  attr_accessible :conflict_intensity
+  attr_accessible :conflict_state
+  attr_accessible :conflict_type
 
   attr_accessible :is_deleted
   attr_accessible :is_updated
@@ -26,14 +23,14 @@ class ConflictCase < ActiveRecord::Base
                  lng: self.location.lng, 
                  name: self.location.name, 
                  phone_number: self.reporter.phone_number,
-                 conflict_type: self.conflict_type.id,
-                 conflict_intensity: self.conflict_intensity.id,
-                 conflict_state: self.conflict_state.id },
+                 conflict_type: self.conflict_type,
+                 conflict_intensity: self.conflict_intensity,
+                 conflict_state: self.conflict_state },
        headers: { Accept: "text/html" }
      )
      request.run
      response = request.response
-     if(response.return_code == :ok)
+     if(response.code == 200)
        result = JSON.parse response.response_body
        return result["site"]
      end
@@ -49,9 +46,10 @@ class ConflictCase < ActiveRecord::Base
        params: { phone_number: self.reporter.phone_number,
                  lat: Location.find_by_id(self.backup.data["location_id"].to_i).lat, 
                  lng: Location.find_by_id(self.backup.data["location_id"].to_i).lng, 
-                 conflict_type: ConflictType.find_by_id(self.backup.data["conflict_type_id"].to_i).name,
-                 conflict_intensity: ConflictIntensity.find_by_id(self.backup.data["conflict_intensity_id"].to_i).name,
-                 conflict_state: ConflictState.find_by_id(self.backup.data["conflict_state_id"].to_i).name },
+                 conflict_type: self.backup.data["conflict_type"].to_i,
+                 conflict_intensity: self.backup.data["conflict_intensity"].to_i,
+                 conflict_state: self.backup.data["conflict_state"].to_i 
+                },
        headers: { Accept: "text/html" }
      )
     request.run
