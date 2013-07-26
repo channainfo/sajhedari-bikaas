@@ -7,21 +7,21 @@
                 <div class="control-group">
                     <%= f.label "Conflict Type",:class => "control-label" %>
                     <div class="controls">
-                        <%= f.select(:conflict_type, options_for_select(@conflict_types.collect {|p| [p.name,p.id] }, f.object.backup.data["conflict_type_id"])) %>
+                        <%= f.select(:conflict_type, options_for_select(field_by_code(@fields, "con_type").collect {|p| [p["label"],p["id"]] }, f.object.backup.data["conflict_type"])) %>
                     </div>
                 </div>
 
                 <div class="control-group">
                     <%= f.label "Conflict State",:class => "control-label" %>
                     <div class="controls">
-                        <%= f.select(:conflict_state, options_for_select(@conflict_states.collect {|p| [p.name,p.id] }, f.object.backup.data["conflict_state_id"])) %>
+                        <%= f.select(:conflict_state, options_for_select(field_by_code(@fields, "con_state").collect {|p| [p["label"],p["id"]] }, f.object.backup.data["conflict_state"])) %>
                     </div>
                 </div>
 
                 <div class="control-group">
                     <%= f.label "Conflict Intensity",:class => "control-label" %>
                     <div class="controls">
-                        <%= f.select(:conflict_intensity, options_for_select(@conflict_intensities.collect {|p| [p.name,p.id] }, f.object.backup.data["conflict_intensity_id"])) %>
+                        <%= f.select(:conflict_intensity, options_for_select(field_by_code(@fields, "con_intensity").collect {|p| [p["label"],p["id"]] }, f.object.backup.data["conflict_intensity"])) %>
                     </div>
                 </div>
 
@@ -47,21 +47,21 @@
                 <div class="control-group">
                     <%= f.label "Conflict Type",:class => "control-label" %>
                     <div class="controls">
-                        <%= f.select(:conflict_type_id, options_for_select(@conflict_types.collect {|p| [p.name,p.id] }, f.object.conflict_type_id)) %>
+                        <%= f.select(:conflict_type, options_for_select(field_by_code(@fields, "con_type").collect {|p| [p["label"],p["id"]] }, f.object.conflict_type)) %>
                     </div>
                 </div>
 
                 <div class="control-group">
                     <%= f.label "Conflict State",:class => "control-label" %>
                     <div class="controls">
-                        <%= f.select(:conflict_state_id, options_for_select(@conflict_states.collect {|p| [p.name,p.id] }, f.object.conflict_state_id)) %>
+                        <%= f.select(:conflict_state, options_for_select(field_by_code(@fields, "con_state").collect {|p| [p["label"],p["id"]] }, f.object.conflict_state)) %>
                     </div>
                 </div>
 
                 <div class="control-group">
                     <%= f.label "Conflict Intensity",:class => "control-label" %>
                     <div class="controls">
-                        <%= f.select(:conflict_intensity_id, options_for_select(@conflict_intensities.collect {|p| [p.name,p.id] }, f.object.conflict_intensity_id)) %>
+                        <%= f.select(:conflict_intensity, options_for_select(field_by_code(@fields, "con_intensity").collect {|p| [p["label"],p["id"]] }, f.object.conflict_intensity)) %>
                     </div>
                 </div>
 

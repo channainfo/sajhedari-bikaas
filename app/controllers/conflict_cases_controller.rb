@@ -190,9 +190,7 @@ class ConflictCasesController < ApplicationController
 
   def view_difference
     @locations = Location.all
-    @conflict_types = ConflictType.all
-    @conflict_states = ConflictState.all
-    @conflict_intensities = ConflictIntensity.all
+    @fields = ConflictCase.get_fields
     @base = ConflictCase.find(params[:id])
   end
 end
