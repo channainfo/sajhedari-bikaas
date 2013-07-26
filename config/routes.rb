@@ -27,7 +27,12 @@ Conflict::Application.routes.draw do
       put 'apply_update_form'
     end
   end
-  resources :reporters
+  resources :reporters do
+    collection do
+      get 'getReporterCases'
+    end
+  end
+
   resources :conflict_cases do
     member do
       get 'cancel_delete'

@@ -33,8 +33,16 @@ class ReportersController < ApplicationController
     end
   end
 
+  def test
+
+  end
+
   def edit
     @reporter = Reporter.find(params[:id])
+  end
+
+  def getReporterCases
+    render :json => ConflictCase.find_all_by_reporter_id(params[:id])
   end
 
   def update
