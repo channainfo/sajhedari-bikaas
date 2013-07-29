@@ -43,11 +43,11 @@
 			</tbody>
 	    </table>
     </div>
-    <%= will_paginate @locations, renderer: BootstrapPagination::Rails %>
+    <%= will_paginate @reporters, renderer: BootstrapPagination::Rails %>
     <div id="betaModal" class="modal hide fade">
     <div class="modal-header">
             <button class="close" data-dismiss="modal">×</button>
-            <h3> Reporter Name - Report </h3>
+            <h3> Conflict Case Report </h3>
     </div>
 	<div class="modal-body">
 	    <div>
@@ -68,7 +68,7 @@
 	    </div>
 	</div>
 </div>
-    <div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	    <div class="modal-header">
 		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 		    <h3 id="myModalLabel">Delete Confirmation</h3>
@@ -80,7 +80,7 @@
 		    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
 		    <button class="btn btn-danger" data-dismiss="modal">Delete</button>
 	    </div>
-    </div>
+	</div>
 
 
 <script>
@@ -91,22 +91,8 @@ function updateModal(id) {
 		type: "get",
 		data: "id="+id,
 		success: function(data) {
-			// $("#mytable > tbody").append("<tr><td>hello</td><td>hello</td><td>hello</td><td>hello</td><td>hello</td></tr>")
-			// console.dir($.parseJSON(data));
 			$("#mytable > tbody").html("");
-			for (var key in data)
-			{
-			   if (data.hasOwnProperty(key))
-			   {
-			      // here you have access to
-			      var updated_date = data[key].updated_at;
-			      var conflict_type = data[key].conflict_type_id;
-			      var conflict_intensity = data[key].conflict_intensity_id;
-			      var conflict_state = data[key].conflict_state_id;
-			      var location = data[key].location_id
-			      $("#mytable > tbody").append("<tr><td>"+updated_date+"</td><td>"+conflict_type+"</td><td>"+conflict_intensity+"</td><td>"+conflict_state+"</td><td>"+location+"</td></tr>")
-			   }
-			}
+			$("#mytable > tbody").append(data);
 		}
 	})
 }
