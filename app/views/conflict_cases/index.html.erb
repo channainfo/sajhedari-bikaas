@@ -20,9 +20,9 @@
 	    	<% class_name = "updated" %>
 	    <% end %>			    
 		    <tr class=<%= class_name %>>
-			    <td><%= field_desc(@fields, l.conflict_type_id, "con_type") %></td>
-			    <td><%= field_desc(@fields, l.conflict_intensity_id, "con_intensity") %></td>
-			    <td><%= field_desc(@fields, l.conflict_state_id, "con_state") %></td>
+			    <td><%= field_desc(@fields, l.conflict_type, "con_type") %></td>
+			    <td><%= field_desc(@fields, l.conflict_intensity, "con_intensity") %></td>
+			    <td><%= field_desc(@fields, l.conflict_state, "con_state") %></td>
 			    <td><%= l.location.name %>(<%= l.location.lat %> , <%= l.location.lng %>)</td>
 			    <td>
 			    <% if l.is_deleted %>				    	

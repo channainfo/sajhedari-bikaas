@@ -31,21 +31,21 @@
         <div class="control-group">
             <%= f.label "Conflict Type",:class => "control-label" %>
             <div class="controls">
-                <%= f.select(:conflict_type_id, options_for_select(@conflict_types.collect {|p| [p.name,p.id] }, "Select Type")) %>
+                <%= f.select(:conflict_type, options_for_select(@conflict_types.collect {|p| [p.name,p.id] }, "Select Type")) %>
             </div>
         </div>
 
         <div class="control-group">
             <%= f.label "Conflict State",:class => "control-label" %>
             <div class="controls">
-                <%= f.select(:conflict_state_id, options_for_select(@conflict_states.collect {|p| [p.name,p.id] }, "Select State")) %>
+                <%= f.select(:conflict_state, options_for_select(@conflict_states.collect {|p| [p.name,p.id] }, "Select State")) %>
             </div>
         </div>
 
         <div class="control-group">
             <%= f.label "Conflict Intensity",:class => "control-label" %>
             <div class="controls">
-                <%= f.select(:conflict_intensity_id, options_for_select(@conflict_intensities.collect {|p| [p.name,p.id] }, "Select Intensity")) %>
+                <%= f.select(:conflict_intensity, options_for_select(@conflict_intensities.collect {|p| [p.name,p.id] }, "Select Intensity")) %>
             </div>
         </div>
 

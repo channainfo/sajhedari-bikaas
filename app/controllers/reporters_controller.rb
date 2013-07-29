@@ -47,9 +47,9 @@ class ReportersController < ApplicationController
     @reporter_cases = ConflictCase.find_all_by_reporter_id(params[:id])
     @reporter_cases.each do |el|
       location = Location.find_by_id(el.location_id)
-      conflict_type = ApplicationController.helpers.field_desc @fields, el.conflict_type_id, "con_type"
-      conflict_intensity = ApplicationController.helpers.field_desc @fields, el.conflict_intensity_id, "con_intensity"
-      conflict_state = ApplicationController.helpers.field_desc @fields, el.conflict_state_id, "con_state"
+      conflict_type = ApplicationController.helpers.field_desc @fields, el.conflict_type, "con_type"
+      conflict_intensity = ApplicationController.helpers.field_desc @fields, el.conflict_intensity, "con_intensity"
+      conflict_state = ApplicationController.helpers.field_desc @fields, el.conflict_state, "con_state"
       row = "<tr><td style='width: 100px;'>#{el.updated_at.strftime("%m/%d/%Y")}</td><td>#{conflict_type}</td><td>#{conflict_intensity}</td><td>#{conflict_state}</td><td>#{location.name}</td></tr>"  
       table_rows = table_rows + row   
     end

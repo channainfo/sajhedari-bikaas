@@ -61,7 +61,7 @@ class Message < ActiveRecord::Base
 		conflict = {}
 		fields.each do |f|
 			if f.start_with? "t."
-				conflict[:conflict_type_id] = f[2..-1].to_i
+				conflict[:conflict_type] = f[2..-1].to_i
 			end
 			if f.start_with? "c."
 				l = Location.find_by_code(f[2..-1])
@@ -69,10 +69,10 @@ class Message < ActiveRecord::Base
 			end
 			if f.start_with? "s."
 				l = Location.find_by_code(f[2..-1])
-				conflict[:conflict_state_id] = f[2..-1].to_i
+				conflict[:conflict_state] = f[2..-1].to_i
 			end
 			if f.start_with? "i."
-				conflict[:conflict_intensity_id] = f[2..-1].to_i
+				conflict[:conflict_intensity] = f[2..-1].to_i
 			end
 		end
 		conflict[:reporter_id] = sender.id

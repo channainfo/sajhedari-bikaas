@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130722080026) do
+ActiveRecord::Schema.define(version: 20130726081030) do
 
   create_table "backups", force: true do |t|
     t.integer  "entity_id"
@@ -41,40 +41,19 @@ ActiveRecord::Schema.define(version: 20130722080026) do
 
   create_table "conflict_cases", force: true do |t|
     t.string   "case_message"
-    t.integer  "conflict_type_id"
-    t.integer  "conflict_intensity_id"
-    t.integer  "conflict_state_id"
     t.integer  "location_id"
     t.integer  "site_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_deleted",            default: false
-    t.boolean  "is_updated",            default: false
+    t.boolean  "is_deleted",         default: false
+    t.boolean  "is_updated",         default: false
     t.integer  "reporter_id"
+    t.integer  "conflict_type"
+    t.integer  "conflict_state"
+    t.integer  "conflict_intensity"
   end
 
-  add_index "conflict_cases", ["conflict_intensity_id"], name: "index_conflict_cases_on_conflict_intensity_id", using: :btree
-  add_index "conflict_cases", ["conflict_state_id"], name: "index_conflict_cases_on_conflict_state_id", using: :btree
-  add_index "conflict_cases", ["conflict_type_id"], name: "index_conflict_cases_on_conflict_type_id", using: :btree
   add_index "conflict_cases", ["location_id"], name: "index_conflict_cases_on_location_id", using: :btree
-
-  create_table "conflict_intensities", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "conflict_states", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "conflict_types", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "locations", force: true do |t|
     t.string   "name"
