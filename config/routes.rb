@@ -29,7 +29,7 @@ Conflict::Application.routes.draw do
   end
   resources :reporters do
     collection do
-      get 'getReporterCases'
+      get 'getReporterCasesPagination'
     end
   end
 
