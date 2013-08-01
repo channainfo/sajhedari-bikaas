@@ -6,7 +6,7 @@ class ReportersController < ApplicationController
       @query = params[:query]
       @reporters = Reporter.where('last_name like ? OR first_name like ? OR phone_number like ?',"%#{@query}%","%#{@query}%","%#{@query}%").paginate(:page => params[:page], :per_page => 3)
     else
-      @reporters = Reporter.all.paginate(:page => params[:page], :per_page => 3)
+      @reporters = Reporter.all.paginate(:page => params[:reporter_page], :per_page => 10)
     end
   end
 
@@ -41,19 +41,42 @@ class ReportersController < ApplicationController
     @reporter = Reporter.find(params[:id])
   end
 
-  def getReporterCases
+  def getReporterCasesPagination
     @fields = ConflictCase.get_fields
+    json_data = {}
     table_rows = ""
-    @reporter_cases = ConflictCase.find_all_by_reporter_id(params[:id])
+    @reporter_cases = ConflictCase.all.where(:reporter_id => params[:id]).offset(params[:offset].to_i).limit(5)
+    @reporter_cases.count == 0 ? table_rows = "<tr><td colspan='5' style='text-align: center; color: red; padding-top: 20px;'>No records found</td></tr>" : table_row = ""
     @reporter_cases.each do |el|
       location = Location.find_by_id(el.location_id)
       conflict_type = ApplicationController.helpers.field_desc @fields, el.conflict_type, "con_type"
       conflict_intensity = ApplicationController.helpers.field_desc @fields, el.conflict_intensity, "con_intensity"
       conflict_state = ApplicationController.helpers.field_desc @fields, el.conflict_state, "con_state"
       row = "<tr><td style='width: 100px;'>#{el.updated_at.strftime("%m/%d/%Y")}</td><td>#{conflict_type}</td><td>#{conflict_intensity}</td><td>#{conflict_state}</td><td>#{location.name}</td></tr>"  
-      table_rows = table_rows + row   
+      table_rows = table_rows + row
     end
-    render :text => table_rows
+    json_data["table_row"] = table_rows
+    if @reporter_cases.count > 5
+      if (params[:offset].to_i <= 0)
+        params[:offset] = 0
+        paging = "<div class='pagination' id='paginate_report'><ul>"
+        paging += "<li class='active'><a>Prev</a></li>"
+        paging += "<li><a style='cursor: pointer;' onclick='updateModalPaging(#{params[:id]},#{params[:offset]} + 5)'>Next</a></li>"
+        paging += "</ul> </div>"
+      elsif (ConflictCase.count - 5) <= params[:offset].to_i 
+        paging = "<div class='pagination' id='paginate_report'><ul>"
+        paging += "<li><a style='cursor: pointer;' onclick='updateModalPaging(#{params[:id]},#{params[:offset]} - 5)'>Prev</a></li>"
+        paging += "<li class='active'><a>Next</a></li>"
+        paging += "</ul> </div>"
+      else 
+        paging = "<div class='pagination' id='paginate_report'><ul>"
+        paging += "<li><a style='cursor: pointer;' onclick='updateModalPaging(#{params[:id]},#{params[:offset]} - 5)'>Prev</a></li>"
+        paging += "<li><a style='cursor: pointer;' onclick='updateModalPaging(#{params[:id]},#{params[:offset]} + 5)'>Next</a></li>"
+        paging += "</ul> </div>"
+      end
+    end
+    json_data["paging"] = paging
+    render :json => json_data
   end
 
   def update

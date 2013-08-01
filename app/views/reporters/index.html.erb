@@ -31,7 +31,7 @@
 					    <td><%= reporter.ethnicity %></td>
 					    <td><%= reporter.phone_number %></td>
 					    <td style="width: 145px;">
-					    	<a class="" data-toggle="modal" href="#betaModal" onclick="updateModal(<%= reporter.id %>);">View Case Reported</a> 
+					    	<a class="" data-toggle="modal" href="#betaModal" onclick="updateModalPaging(<%= reporter.id %>, 0);">View Case Reported</a> 
 				    	</td>
 					    <td>
 					    <%= link_to raw("<i class='icon-pencil'></i>"), edit_reporter_path(reporter), :method => :get %>
@@ -43,31 +43,30 @@
 			</tbody>
 	    </table>
     </div>
-    <%= will_paginate @reporters, renderer: BootstrapPagination::Rails %>
-    <div id="betaModal" class="modal hide fade" style="margin-left:-420px; width:840px;">
-	    <div class="modal-header">
-	            <button class="close" data-dismiss="modal">×</button>
-	            <h3> Conflict Case Report </h3>
+    <%= will_paginate @reporters, :param_name => 'reporter_page', renderer: BootstrapPagination::Rails %>
+    <div id="betaModal" class="modal hide fade">
+    <div class="modal-header">
+            <button class="close" data-dismiss="modal">×</button>
+            <h3> Conflict Case Report </h3>
+    </div>
+	<div class="modal-body" id="reporter_case">
+	    <div>
+	    	<!--<table class="table table-bordered table-striped">-->
+		    <table class="table table-condensed table-hover" id="mytable">
+			    <thead>
+				    <tr>
+					    <th>Reported date</th>
+					    <th>Type of violent</th>
+					    <th>Intensity</th>
+					    <th>State</th>
+					    <th>Location</th>
+				    </tr>
+			    </thead>
+			    <tbody>
+				</tbody>
+		    </table>
 	    </div>
-		<div class="modal-body">
-		    <div>
-		    	<!--<table class="table table-bordered table-striped">-->
-			    <table class="table table-condensed table-hover" id="mytable">
-				    <thead>
-					    <tr>
-						    <th>Reported date</th>
-						    <th>Type of violent</th>
-						    <th>Intensity</th>
-						    <th>State</th>
-						    <th>Location</th>
-					    </tr>
-				    </thead>
-				    <tbody>
-					</tbody>
-			    </table>
-		    </div>
-		</div>
-		<div class="modal-footer">
+	    <div class="modal-footer">
 			<a href="#" data-dismiss="modal" class="btn btn-primary">Close</a>
 		</div>
 	</div>
@@ -88,14 +87,18 @@
 
 <script>
 
-function updateModal(id) {
+function updateModalPaging(id, offset) {
 	$.ajax({
-		url: '/reporters/getReporterCases',
+		url: '/reporters/getReporterCasesPagination',
 		type: "get",
-		data: "id="+id,
+		data: "id="+id+"&offset="+offset,
 		success: function(data) {
 			$("#mytable > tbody").html("");
-			$("#mytable > tbody").append(data);
+			$("#mytable > tbody").append(data["table_row"]);
+			if ($("#paginate_report")[0]) {
+				$("#reporter_case")[0].removeChild($("#paginate_report")[0]);
+			}
+			$("#reporter_case").append(data["paging"]);
 		}
 	})
 }
