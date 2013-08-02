@@ -16,7 +16,7 @@ class LocationsController < ApplicationController
   def create
     @location = Location.new(params[:location])
   	if @location.save
-      flash[:notice] = "You have successfully create location #{@location.name}."      
+      flash[:notice] = "You have successfully created location #{@location.name}."      
       redirect_to locations_path
     else
       render :new
@@ -40,7 +40,7 @@ class LocationsController < ApplicationController
     @location = Location.find(params[:id])
     if @location.is_updated       
       unless @location.backup.user.id == current_user.id
-        flash[:error] = "Location #{@location.name} is marked as update please click Approve to update to confirm update location."
+        flash[:error] = "Location #{@location.name} is marked as updated please click Approve to update to confirm update location."
         redirect_to locations_path
       else
         flash[:error] = "Failed to update location #{@location.name}. Please try again later."
@@ -62,7 +62,7 @@ class LocationsController < ApplicationController
     @location = Location.find(params[:id])
     if @location.is_deleted 
       unless @location.backup.user.id == current_user.id
-        flash[:error] = "Location #{@location.name} is marked as delete please click Approve to delete to confirm delete location."
+        flash[:error] = "Location #{@location.name} is marked as deleted please click Approve to delete to confirm delete location."
         redirect_to locations_path
       else
         flash[:error] = "Failed to delete location #{@location.name}. Please try again later."
@@ -102,7 +102,7 @@ class LocationsController < ApplicationController
 
       if(errors.empty?)
         rows = Import::process_import file_obj.path
-        flash[:notice] = "You have successfully import #{rows[:success]} locations to your system with #{rows[:failed]} failed."
+        flash[:notice] = "You have successfully imported #{rows[:success]} locations to your system with #{rows[:failed]} failed."
         redirect_to locations_path
       else
         flash[:error] = "Process import failed. #{errors['error_type']}"
@@ -137,7 +137,7 @@ class LocationsController < ApplicationController
   def cancel_update
     @location = Location.find(params[:id])
     if(@location.is_updated and @location.backup)
-      flash[:notice] = "#{@location.name} is mark as not update."
+      flash[:notice] = "#{@location.name} is mark as not updated."
       @location.backup.destroy
       @location.is_updated = false
       @location.save
@@ -152,7 +152,7 @@ class LocationsController < ApplicationController
     if(@location and @location.is_deleted and @location.backup and @location.backup.user.id != current_user.id)
       @location.destroy!
       @location.backup.destroy!
-      flash[:notice] = "You have successfully delete #{@location.name}."
+      flash[:notice] = "You have successfully deleted #{@location.name}."
       redirect_to locations_path
     else
       flash[:error] = "Process delete #{@location.name} failed."
@@ -168,7 +168,7 @@ class LocationsController < ApplicationController
       user_emails = Location.generate_user_email conflict_cases
       if @location.update_to_resourcemap(site_ids, user_emails)
         if(@location.update_attributes!(@location.backup.data))        
-          flash[:notice] = "You have successfully update location #{@location.name}."
+          flash[:notice] = "You have successfully updated location #{@location.name}."
           @location.backup.destroy!
           @location.is_updated = false
           @location.save
@@ -194,7 +194,7 @@ class LocationsController < ApplicationController
       user_emails = Location.generate_user_email conflict_cases
       if @location.update_to_resourcemap(site_ids, user_emails)
         if(@location.update_attributes!(params[:location]))        
-          flash[:notice] = "You have successfully update location #{@location.name}."
+          flash[:notice] = "You have successfully updated location #{@location.name}."
           @location.backup.destroy!
           @location.is_updated = false
           @location.save

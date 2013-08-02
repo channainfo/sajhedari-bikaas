@@ -26,7 +26,7 @@ class ConflictCasesController < ApplicationController
     if site
       @conflict_case.site_id = site["id"]
     	if @conflict_case.save
-        flash[:notice] = "You have successfully create conflict case #{@conflict_case.case_message}."      
+        flash[:notice] = "You have successfully created conflict case #{@conflict_case.case_message}."      
         redirect_to conflict_cases_path
       else
         render :new
@@ -65,7 +65,7 @@ class ConflictCasesController < ApplicationController
     @conflict_case = ConflictCase.find(params[:id])
     if @conflict_case.is_updated       
       unless @conflict_case.backup.user.id == current_user.id
-        flash[:error] = "Case #{@conflict_case.case_message} is marked as update please click Approve to update to confirm update location."
+        flash[:error] = "Case #{@conflict_case.case_message} is marked as updated please click Approve to update to confirm update location."
         redirect_to conflict_cases_path
       else
         flash[:error] = "Failed to update case #{@conflict_case.case_message}. Please try again later."
@@ -87,7 +87,7 @@ class ConflictCasesController < ApplicationController
     @conflict_case = ConflictCase.find(params[:id])
     if @conflict_case.is_deleted 
       unless @conflict_case.backup.user.id == current_user.id
-        flash[:error] = "Conflict Case is marked as delete please click Approve to delete to confirm delete location."
+        flash[:error] = "Conflict Case is marked as deleted please click Approve to delete to confirm delete location."
         redirect_to conflict_cases_path
       else
         flash[:error] = "Failed to delete Conflict Case. Please try again later."
@@ -118,7 +118,7 @@ class ConflictCasesController < ApplicationController
   def cancel_update
     @conflict_case = ConflictCase.find(params[:id])
     if(@conflict_case.is_updated and @conflict_case.backup)
-      flash[:notice] = "#{@conflict_case.case_message} is mark as not update."
+      flash[:notice] = "#{@conflict_case.case_message} is mark as not updated."
       @conflict_case.backup.destroy
       @conflict_case.is_updated = false
       @conflict_case.save
@@ -134,7 +134,7 @@ class ConflictCasesController < ApplicationController
     if(@conflict_case and @conflict_case.is_deleted and @conflict_case.backup and @conflict_case.backup.user.id != current_user.id and site)
       @conflict_case.destroy!
       @conflict_case.backup.destroy!
-      flash[:notice] = "You have successfully delete #{@conflict_case.case_message}."
+      flash[:notice] = "You have successfully deleted #{@conflict_case.case_message}."
       redirect_to conflict_cases_path
     else
       flash[:error] = "Process delete #{@conflict_case.case_message} failed."
@@ -147,7 +147,7 @@ class ConflictCasesController < ApplicationController
     if(@conflict_case and @conflict_case.is_updated and @conflict_case.backup and @conflict_case.backup.user.id != current_user.id)
       if @conflict_case.update_to_resource_map params[:conflict_case]
         if(@conflict_case.update_attributes(@conflict_case.backup.data))
-          flash[:notice] = "You have successfully update conflict case #{@conflict_case.case_message}."
+          flash[:notice] = "You have successfully updated conflict case #{@conflict_case.case_message}."
           @conflict_case.backup.destroy!
           @conflict_case.is_updated = false
           @conflict_case.save
@@ -170,7 +170,7 @@ class ConflictCasesController < ApplicationController
     if(@conflict_case and @conflict_case.is_updated and @conflict_case.backup and @conflict_case.backup.user.id != current_user.id)
       if @conflict_case.update_to_resource_map params[:conflict_case]
         if(@conflict_case.update_attributes(@conflict_case.backup.data))
-          flash[:notice] = "You have successfully update conflict case #{@conflict_case.case_message}."
+          flash[:notice] = "You have successfully updated conflict case #{@conflict_case.case_message}."
           @conflict_case.backup.destroy!
           @conflict_case.is_updated = false
           @conflict_case.save

@@ -22,7 +22,7 @@ class ReportersController < ApplicationController
     @reporter = Reporter.new(params[:reporter])
     if @reporter.create_to_resource_map
     	if @reporter.save
-        flash[:notice] = "You have successfully create reporter #{@reporter.first_name} #{@reporter.last_name}."
+        flash[:notice] = "You have successfully created reporter #{@reporter.first_name} #{@reporter.last_name}."
         redirect_to reporters_path
       else
         render :new
@@ -83,7 +83,7 @@ class ReportersController < ApplicationController
     @reporter = Reporter.find(params[:id])
     if @reporter.update_to_resourcemap params[:reporter]
       if(@reporter.update_attributes(params[:reporter]))
-        flash[:notice] = "You have successfully update reporter #{@reporter.first_name} #{@reporter.last_name}."
+        flash[:notice] = "You have successfully updated reporter #{@reporter.first_name} #{@reporter.last_name}."
         redirect_to reporters_path
       else
         render :edit
@@ -97,7 +97,7 @@ class ReportersController < ApplicationController
   def destroy
     @reporter= Reporter.find(params[:id])
     if @reporter.destroy
-      flash[:notice] = "You have successfully delete reporter #{@reporter.first_name} #{@reporter.last_name}."
+      flash[:notice] = "You have successfully deleted reporter #{@reporter.first_name} #{@reporter.last_name}."
       redirect_to reporters_path
     else
       flash[:error] = "Failed to delete reporter #{@reporter.first_name} #{@reporter.last_name}. Please try again later."
