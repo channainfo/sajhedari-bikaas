@@ -4,9 +4,9 @@ class UsersController < ApplicationController
   def index
     if params[:query]
       @query = params[:query]
-      @users = User.where('last_name like ? OR first_name like ? OR phone_number like ?',"%#{@query}%","%#{@query}%","%#{@query}%").paginate(:page => params[:page], :per_page => 3)
+      @users = User.where('last_name like ? OR first_name like ? OR phone_number like ?',"%#{@query}%","%#{@query}%","%#{@query}%").paginate(:page => params[:page], :per_page => 10)
     else
-      @users = User.all.paginate(:page => params[:page], :per_page => 3)
+      @users = User.all.paginate(:page => params[:page], :per_page => 10)
     end
     
   end

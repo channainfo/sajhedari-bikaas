@@ -2,7 +2,7 @@ class ConflictCasesController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @conflict_cases = ConflictCase.all.paginate(:page => params[:page], :per_page => 3)
+    @conflict_cases = ConflictCase.all.paginate(:page => params[:page], :per_page => 10)
     @fields = ConflictCase.get_fields
     unless @fields
       flash[:error] = "Failed to get fields from resourcemap."
