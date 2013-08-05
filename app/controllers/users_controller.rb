@@ -28,7 +28,7 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     if @user.create_to_resourcemap
       if @user.save
-        flash[:notice] = "You have successfully create user #{@user.first_name} #{@user.last_name}."
+        flash[:notice] = "You have successfully created user #{@user.first_name} #{@user.last_name}."
         redirect_to users_path
       else
         flash[:error] = "Failed to save record. Please try again later."
@@ -61,7 +61,7 @@ class UsersController < ApplicationController
     if @user.valid_password? params["user"]["current_password"]
       if @user.update_password_to_resourcemap params[:user]
         if(@user.update_attributes!(params[:user]))
-          flash[:notice] = "You have successfully update user #{@user.first_name} #{@user.last_name}."
+          flash[:notice] = "You have successfully updated user #{@user.first_name} #{@user.last_name}."
           redirect_to users_path
         else
           flash[:error] = "Failed to update user password. Please try again later."
@@ -81,7 +81,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if @user.update_to_resourcemap params[:user]
       if(@user.update_attributes!(params[:user]))
-        flash[:notice] = "You have successfully update user #{@user.first_name} #{@user.last_name}."
+        flash[:notice] = "You have successfully updated user #{@user.first_name} #{@user.last_name}."
         redirect_to users_path
       else
         flash[:error] = "Failed to update user. Please try again later."
@@ -98,7 +98,7 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     if @user.destroy      
-      flash[:notice] = "You have successfully delete user #{@user.first_name} #{@user.last_name}."
+      flash[:notice] = "You have successfully deleted user #{@user.first_name} #{@user.last_name}."
       redirect_to users_path
     else
       flash[:error] = "Failed to delete user #{@user.first_name} #{@user.last_name}. Please try again later."

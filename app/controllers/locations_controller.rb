@@ -48,7 +48,7 @@ class LocationsController < ApplicationController
       end
 
     else
-      flash[:notice] = "#{@location.name} is mark as updated."
+      flash[:notice] = "#{@location.name} is marked as updated."
       Backup.create!(:entity_id => @location.id, :data => params[:location].to_json, :category => Location.get_category, :user_id => current_user.id)
       @location.is_updated = true
       @location.save
@@ -69,7 +69,7 @@ class LocationsController < ApplicationController
         redirect_to locations_path
       end
     else
-      flash[:notice] = "#{@location.name} is mark as deleted."
+      flash[:notice] = "#{@location.name} is marked as deleted."
       Backup.create!(:entity_id => @location.id, :data => @location.to_json, :category => Location.get_category, :user_id => current_user.id)
       @location.is_deleted = true
       @location.save
@@ -124,7 +124,7 @@ class LocationsController < ApplicationController
   def cancel_delete
     @location = Location.find(params[:id])
     if(@location.is_deleted and @location.backup)
-      flash[:notice] = "#{@location.name} is mark as undeleted."
+      flash[:notice] = "#{@location.name} is marked as undeleted."
       @location.backup.destroy
       @location.is_deleted = false
       @location.save
@@ -137,7 +137,7 @@ class LocationsController < ApplicationController
   def cancel_update
     @location = Location.find(params[:id])
     if(@location.is_updated and @location.backup)
-      flash[:notice] = "#{@location.name} is mark as not updated."
+      flash[:notice] = "#{@location.name} is marked as not updated."
       @location.backup.destroy
       @location.is_updated = false
       @location.save

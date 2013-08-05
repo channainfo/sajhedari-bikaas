@@ -32,7 +32,7 @@ class ConflictCasesController < ApplicationController
         render :new
       end
     else
-      flash[:error] = "Failed to case on resource map application. Please try again later."
+      flash[:error] = "Failed to create case on resource map application. Please try again later."
       render :new
     end
   end
@@ -73,7 +73,7 @@ class ConflictCasesController < ApplicationController
       end
 
     else
-      flash[:notice] = "#{@conflict_case.location.name} is mark as updated."
+      flash[:notice] = "#{@conflict_case.location.name} is marked as updated."
       Backup.create!(:entity_id => @conflict_case.id, :data => params[:conflict_case].to_json, :category => ConflictCase.get_category, :user_id => current_user.id)
       @conflict_case.is_updated = true
       @conflict_case.save
@@ -94,7 +94,7 @@ class ConflictCasesController < ApplicationController
         redirect_to conflict_cases_path
       end
     else
-      flash[:notice] = "Conflict Case is mark as deleted."
+      flash[:notice] = "Conflict Case is marked as deleted."
       Backup.create!(:entity_id => @conflict_case.id, :data => @conflict_case.to_json, :category => ConflictCase.get_category, :user_id => current_user.id)
       @conflict_case.is_deleted = true
       @conflict_case.save
@@ -105,7 +105,7 @@ class ConflictCasesController < ApplicationController
   def cancel_delete
     @conflict_case = ConflictCase.find(params[:id])
     if(@conflict_case.is_deleted and @conflict_case.backup)
-      flash[:notice] = "#{@conflict_case.case_message} is mark as undeleted."
+      flash[:notice] = "#{@conflict_case.case_message} is marked as undeleted."
       @conflict_case.backup.destroy
       @conflict_case.is_deleted = false
       @conflict_case.save
@@ -118,7 +118,7 @@ class ConflictCasesController < ApplicationController
   def cancel_update
     @conflict_case = ConflictCase.find(params[:id])
     if(@conflict_case.is_updated and @conflict_case.backup)
-      flash[:notice] = "#{@conflict_case.case_message} is mark as not updated."
+      flash[:notice] = "#{@conflict_case.case_message} is marked as not updated."
       @conflict_case.backup.destroy
       @conflict_case.is_updated = false
       @conflict_case.save

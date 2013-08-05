@@ -14,7 +14,7 @@ class Message < ActiveRecord::Base
 		if(self.reply == nil)
 			fields = body.split(" ")
 			if self.save_to_case(fields, sender)
-				self.reply = "Successfully submit report to the system."
+				self.reply = "Successfully submited report to the system."
 			else
 				self.reply = "Failed to submit report to the system. Please try again later."
 			end
