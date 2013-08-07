@@ -8,6 +8,8 @@
 			    <th>Conflict Intensity</th>
 			    <th>Conflict state</th>
 			    <th>Location</th>
+			    <th>Reporter Name</th>
+			    <th>Phone Number</th>
 			    <th style="width: 36px;"></th>
 		    </tr>
 	    </thead>
@@ -24,11 +26,13 @@
 			    <td><%= field_desc(@fields, l.conflict_intensity, "con_intensity") %></td>
 			    <td><%= field_desc(@fields, l.conflict_state, "con_state") %></td>
 			    <td><%= l.location.name %>(<%= l.location.lat %> , <%= l.location.lng %>)</td>
+			    <td><%= l.reporter.first_name %> <%= l.reporter.last_name %></td>
+			    <td><%= l.reporter.phone_number %></td>
 			    <td>
 			    <% if l.is_deleted %>				    	
 			    	<div class="btn-group pull-right">
 			    		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-							<i class="icon-user"></i> <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
+							</i> <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu">
 			    		<% if l.backup.user.id != current_user.id %>						

@@ -60,19 +60,24 @@ class LocationsController < ApplicationController
 
   def destroy
     @location = Location.find(params[:id])
-    if @location.is_deleted 
-      unless @location.backup.user.id == current_user.id
-        flash[:error] = "Location #{@location.name} is marked as deleted please click Approve to delete to confirm delete location."
-        redirect_to locations_path
+    if @location.never_present_in_conflict
+      if @location.is_deleted 
+        unless @location.backup.user.id == current_user.id
+          flash[:error] = "Location #{@location.name} is marked as deleted please click Approve to delete to confirm delete location."
+          redirect_to locations_path
+        else
+          flash[:error] = "Failed to delete location #{@location.name}. Please try again later."
+          redirect_to locations_path
+        end
       else
-        flash[:error] = "Failed to delete location #{@location.name}. Please try again later."
+        flash[:notice] = "#{@location.name} is marked as deleted."
+        Backup.create!(:entity_id => @location.id, :data => @location.to_json, :category => Location.get_category, :user_id => current_user.id)
+        @location.is_deleted = true
+        @location.save
         redirect_to locations_path
       end
     else
-      flash[:notice] = "#{@location.name} is marked as deleted."
-      Backup.create!(:entity_id => @location.id, :data => @location.to_json, :category => Location.get_category, :user_id => current_user.id)
-      @location.is_deleted = true
-      @location.save
+      flash[:error] = "Failed to delete location #{@location.name}. This location has been reported in case."
       redirect_to locations_path
     end
   end
@@ -101,9 +106,11 @@ class LocationsController < ApplicationController
       end 
 
       if(errors.empty?)
-        rows = Import::process_import file_obj.path
-        flash[:notice] = "You have successfully imported #{rows[:success]} locations to your system with #{rows[:failed]} failed."
-        redirect_to locations_path
+        @rows = Import::process_import file_obj.path
+        msg = "You have successfully imported #{@rows[:success]} locations to your system with #{@rows[:failed]} failed."
+        flash[:notice] = msg
+        @locations = Location.all.paginate(:page => params[:page], :per_page => 10)
+        render :index
       else
         flash[:error] = "Process import failed. #{errors['error_type']}"
         render :import

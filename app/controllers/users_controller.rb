@@ -97,9 +97,14 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-    if @user.destroy      
-      flash[:notice] = "You have successfully deleted user #{@user.first_name} #{@user.last_name}."
-      redirect_to users_path
+    if @user.destroy_from_resourcemap
+      if @user.destroy      
+        flash[:notice] = "You have successfully deleted user #{@user.first_name} #{@user.last_name}."
+        redirect_to users_path
+      else
+        flash[:error] = "Failed to delete user #{@user.first_name} #{@user.last_name}. Please try again later."
+        redirect_to users_path
+      end
     else
       flash[:error] = "Failed to delete user #{@user.first_name} #{@user.last_name}. Please try again later."
       redirect_to users_path

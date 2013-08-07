@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
          :recoverable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :role_id , :ethnicity, :cast, :sex, :first_name, :last_name, :address, :phone_number
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :role_id , :cast_ethnicity, :date_of_birth, :sex, :first_name, :last_name, :address, :phone_number
   belongs_to :role  
   validates_uniqueness_of :phone_number, :allow_blank => true
 
@@ -49,6 +49,22 @@ class User < ActiveRecord::Base
       params: { "user[email]" => user["email"], 
                 "user[phone_number]" => user["phone_number"],
                 "role" => Role.find(user["role_id"].to_i).name
+              },
+      headers: { Accept: "text/html" }
+    )
+    request.run
+    response = request.response.code
+    return response == 200
+  end
+
+  def destroy_from_resourcemap 
+    yml = self.load_resource_map
+    request = Typhoeus::Request.new(
+      yml["url"] + 'api/collections/' + yml["collection_id"].to_s + '/destroy_member',
+      method: :delete,
+      userpwd: "#{USER_NAME}:#{PASSWORD}",
+      params: { 
+                "user[phone_number]" => self.phone_number
               },
       headers: { Accept: "text/html" }
     )

@@ -59,4 +59,8 @@ class Location < ActiveRecord::Base
     backup
   end
 
+  def never_present_in_conflict
+    ConflictCase.find_by_location_id(self.id) == nil
+  end
+
 end

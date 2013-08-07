@@ -58,18 +58,19 @@
         </div>
 
         <div class="control-group">
-            <%= f.label "Cast",:class => "control-label" %>
+            <%= f.label "Cast/Ethnicity",:class => "control-label" %>
             <div class="controls">
-                <%= f.text_field :cast, :class =>"input-xlarge", :required => "required" %>
+                <%= f.text_field :cast_ethnicity, :class =>"input-xlarge", :required => "required" %>
             </div>
         </div>
         
         <div class="control-group">
-            <%= f.label "Ethnicity",:class => "control-label" %>
+            <%= f.label "Date of birth",:class => "control-label" %>
             <div class="controls">
-                <%= f.text_field :ethnicity, :class =>"input-xlarge", :required => "required" %>
+                <%= f.text_field :date_of_birth, :class =>"datepicker", :required => "required" %>
+                
             </div>
-        </div>
+        </div> 
         
         <div class="control-group">
             <%= f.label "Address",:class => "control-label" %>
@@ -101,3 +102,6 @@
         </div>
     </fieldset>
 <% end %>
+<script>
+    $('.datepicker').datepicker()
+</script>

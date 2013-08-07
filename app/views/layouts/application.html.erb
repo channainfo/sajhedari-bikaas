@@ -4,6 +4,8 @@
 	  	<title>Violent Reporting System</title>
 	  	<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
 	  	<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+	  	<%= stylesheet_link_tag    "datepicker", media: "all", "data-turbolinks-track" => true %>
+	  	<%= javascript_include_tag "bootstrap-datepicker", "data-turbolinks-track" => true %>
 	  	<%= csrf_meta_tags %>
 	</head>
 	<body>
@@ -62,7 +64,6 @@
 			</center>
 			<%= yield %>
 			<hr>
-			<img src="" />
 			<footer>
 				Developed by <a href="http://www.ilabsoutheastasia.org/">InSTEDD iLab South East Asia</a>.
 			</footer>

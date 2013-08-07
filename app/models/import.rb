@@ -28,15 +28,23 @@ class Import
   def self::process_import file_path
     rows = 0
     rows_error = 0
+    error_records = []
     CSV.foreach(file_path, :headers => true) do |row|
       @location = Location.new(:name => row[0], :code => row[1], :lat => row[2], :lng => row[3])
       if @location.save
         rows = rows + 1
       else
+        errors = []
+        @location.errors.messages.each do |key, value| 
+          errors.push(key.to_s + " " + value[0])
+        end
+        row["error_messages"] = errors.join("<br />")
+        p row
+        error_records.push(row)
         rows_error = rows_error + 1
-      end      
+      end
     end
-    return {:success => rows, :failed => rows_error}
+    return {:success => rows, :failed => rows_error, :error_records => error_records}
   end
   
 end

@@ -1,104 +1,150 @@
-    <div class="btn-toolbar">
-    	<%= link_to raw("<i class='icon-upload'></i> Import Location Code"), import_locations_path, :method => :get, :class => 'btn' %>
-    	<%= link_to "Add New Place", new_location_path, :method => :get, :class => 'btn btn-primary to-right' %>    
-    </div>
-    <div>
-    	<!--<table class="table table-bordered table-striped">-->
-	    <table class="table table-condensed table-hover">
-		    <thead>
-			    <tr>
-				    <th>Location Code</th>
-				    <th>Location Name</th>
-				    <th>Latitude</th>
-				    <th>Longtitude</th>
-				    <th style="width: 36px;"></th>
-			    </tr>
-		    </thead>
-		    <tbody>
-		    <% @locations.each do |l| %>
-		    <% class_name = "" %>
-		    <% if l.is_deleted %>
-		    	<% class_name = "deleted" %>
-		    <% elsif l.is_updated %>
-		    	<% class_name = "updated" %>
-		    <% end %>		    
-			    <tr class=<%= class_name %>>
-				    <td><%= l.code %></td>
-				    <td><%= l.name %></td>
-				    <td><%= l.lat %></td>
-				    <td><%= l.lng %></td>
-				    <td>
-				    <% if l.is_deleted %>				    	
-				    	<div class="btn-group pull-right">
-				    		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-								 <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
-							</a>
-							<ul class="dropdown-menu">
-				    		<% if l.backup.user.id != current_user.id %>						
-								
-									<li><%= link_to " Approve to delete", approve_delete_location_path(l), :method => :get, :class => 'icon-ok-circle' %>
-									<li class="divider"></li>
-									<li><%= link_to " Cancel delete", cancel_delete_location_path(l), :method => :get, :class => 'icon-ban-circle' %></li>								
+<div class="btn-toolbar">
+	<%= link_to raw("<i class='icon-upload'></i> Import Location Code"), import_locations_path, :method => :get, :class => 'btn' %>
+	<%= link_to "Add New Place", new_location_path, :method => :get, :class => 'btn btn-primary to-right' %>    
+</div>
+
+<div>
+	<!--<table class="table table-bordered table-striped">-->
+    <table class="table table-condensed table-hover">
+	    <thead>
+		    <tr>
+			    <th>Location Code</th>
+			    <th>Location Name</th>
+			    <th>Latitude</th>
+			    <th>Longtitude</th>
+			    <th style="width: 36px;"></th>
+		    </tr>
+	    </thead>
+	    <tbody>
+	    <% @locations.each do |l| %>
+	    <% class_name = "" %>
+	    <% if l.is_deleted %>
+	    	<% class_name = "deleted" %>
+	    <% elsif l.is_updated %>
+	    	<% class_name = "updated" %>
+	    <% end %>		    
+		    <tr class=<%= class_name %>>
+			    <td><%= l.code %></td>
+			    <td><%= l.name %></td>
+			    <td><%= l.lat %></td>
+			    <td><%= l.lng %></td>
+			    <td>
+			    <% if l.is_deleted %>				    	
+			    	<div class="btn-group pull-right">
+			    		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+							 <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+			    		<% if l.backup.user.id != current_user.id %>						
+							
+								<li><%= link_to " Approve to delete", approve_delete_location_path(l), :method => :get, :class => 'icon-ok-circle' %>
+								<li class="divider"></li>
+								<li><%= link_to " Cancel delete", cancel_delete_location_path(l), :method => :get, :class => 'icon-ban-circle' %></li>								
+						<% else %>
+							<li><%= link_to " Cancel delete", cancel_delete_location_path(l), :method => :get, :class => 'icon-ban-circle' %></li>
+						<% end %>
+						</ul>
+					</div>						
+			    <% elsif l.is_updated %>
+			    	<div class="btn-group pull-right">
+						<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+							</i> <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<% if l.backup.user.id != current_user.id %>							
+								<li><%= link_to " View the difference", view_difference_location_path(l), :method => :get, :class => 'icon-eye-open' %>
+								<li class="divider"></li>
+								<li><%= link_to " Approve to update", approve_update_location_path(l), :method => :get, :class => 'icon-ok-circle' %>
+								<li class="divider"></li>
+								<li><%= link_to " Cancel update", cancel_update_location_path(l), :method => :get, :class => 'icon-ban-circle' %></li>		
 							<% else %>
-								<li><%= link_to " Cancel delete", cancel_delete_location_path(l), :method => :get, :class => 'icon-ban-circle' %></li>
+								<li><%= link_to " Cancel update", cancel_update_location_path(l), :method => :get, :class => 'icon-ban-circle' %></li>
 							<% end %>
-							</ul>
-						</div>						
-				    <% elsif l.is_updated %>
-				    	<div class="btn-group pull-right">
-							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-								</i> <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
-							</a>
-							<ul class="dropdown-menu">
-								<% if l.backup.user.id != current_user.id %>							
-									<li><%= link_to " View the difference", view_difference_location_path(l), :method => :get, :class => 'icon-eye-open' %>
-									<li class="divider"></li>
-									<li><%= link_to " Approve to update", approve_update_location_path(l), :method => :get, :class => 'icon-ok-circle' %>
-									<li class="divider"></li>
-									<li><%= link_to " Cancel update", cancel_update_location_path(l), :method => :get, :class => 'icon-ban-circle' %></li>		
-								<% else %>
-									<li><%= link_to " Cancel update", cancel_update_location_path(l), :method => :get, :class => 'icon-ban-circle' %></li>
-								<% end %>
-							</ul>
-						</div>
-				    <% else %>						
-					    <%= link_to raw("<i class='icon-pencil'></i>"), edit_location_path(l), :method => :get %>
-					    <%= link_to raw("<i class='icon-remove'></i>"), location_path(l), :method => :delete, :confirm => "Are you sure to delete location #{l.code}?" %>
-				    <% end %>
-				    </td>
-			    </tr>
-			<% end %>
-			</tbody>
-	    </table>
+						</ul>
+					</div>
+			    <% else %>						
+				    <%= link_to raw("<i class='icon-pencil'></i>"), edit_location_path(l), :method => :get %>
+				    <%= link_to raw("<i class='icon-remove'></i>"), location_path(l), :method => :delete, :confirm => "Are you sure to delete location #{l.code}?" %>
+			    <% end %>
+			    </td>
+		    </tr>
+		<% end %>
+		</tbody>
+    </table>
+</div>
+<div class="row-fluid"  style="margin:5px">
+	<div class="span1 img-rounded deleted_ex">
+    	&nbsp;
     </div>
-    <div class="row-fluid"  style="margin:5px">
-    	<div class="span1 img-rounded deleted_ex">
-	    	&nbsp;
-	    </div>
-        <div class="span4" style="padding-top:5px">
-            Record is marked as Deleted
-        </div>
+    <div class="span4" style="padding-top:5px">
+        Record is marked as Deleted
     </div>
-    <div class="row-fluid"  style="margin:5px">
-    	<div class="span1 img-rounded updated_ex">
-	    	&nbsp;
-	    </div>
-        <div class="span4" style="padding-top:5px">
-            Record is marked as Updated
-        </div>
+</div>
+<div class="row-fluid"  style="margin:5px">
+	<div class="span1 img-rounded updated_ex">
+    	&nbsp;
     </div>
-   
-    <%= will_paginate @locations, renderer: BootstrapPagination::Rails %>
-    <div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	    <div class="modal-header">
-		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		    <h3 id="myModalLabel">Delete Confirmation</h3>
-		</div>
-		<div class="modal-body">
-		    <p class="error-text">Are you sure you want to delete the user?</p>
-		</div>
-		<div class="modal-footer">
-		    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-		    <button class="btn btn-danger" data-dismiss="modal">Delete</button>
-	    </div>
+    <div class="span4" style="padding-top:5px">
+        Record is marked as Updated
     </div>
+</div>
+
+<div id="errorModal" class="modal hide fade" style="width:760px; margin-left:-380px">
+    <div class="modal-header">
+            <button class="close" data-dismiss="modal">×</button>
+            <h3> Error Location Record </h3>
+    </div>
+	<div class="modal-body" id="reporter_case">
+	    <div>
+	    	<!--<table class="table table-bordered table-striped">-->
+		    <table class="table table-condensed table-hover" id="mytable">
+			    <thead>
+				    <tr>
+					    <th>Location Name</th>
+					    <th>Location Code</th>
+					    <th>Latitude</th>
+					    <th>Longtitude</th>
+					    <th>Status</th>
+				    </tr>
+			    </thead>
+			    <tbody>
+			    <% if @rows and @rows[:error_records] %>
+			    	<% @rows[:error_records].each do |r| %>
+			    		<tr>
+			    			<td><%= r["name"] %></td>
+			    			<td><%= r["code"] %></td>
+			    			<td><%= r["lat"] %></td>
+			    			<td><%= r["lng"] %></td>
+			    			<td><%= r["error_messages"] %></td>
+			    		</tr>
+			    	<% end %>
+			    <% end %>
+				</tbody>
+		    </table>
+	    </div>	    
+	</div>
+	<div class="modal-footer">
+		<a href="#" data-dismiss="modal" class="btn btn-primary">Close</a>
+	</div>
+</div>
+
+<%= will_paginate @locations, renderer: BootstrapPagination::Rails %>
+<div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Delete Confirmation</h3>
+	</div>
+	<div class="modal-body">
+	    <p class="error-text">Are you sure you want to delete the user?</p>
+	</div>
+	<div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	    <button class="btn btn-danger" data-dismiss="modal">Delete</button>
+    </div>
+</div>
+
+<% if @rows and @rows[:error_records] %>
+	<script>
+		  $('#errorModal').modal('show');
+	</script>
+<% end %>

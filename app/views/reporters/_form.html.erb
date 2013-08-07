@@ -21,36 +21,43 @@
                 <%= f.text_field :first_name, :class =>"input-xlarge", :required => "required" %>
             </div>
         </div>
+
         <div class="control-group">
             <%= f.label "Last Name",:class => "control-label" %>
             <div class="controls">
                 <%= f.text_field :last_name, :class =>"input-xlarge", :required => "required" %>
             </div>
         </div>
+
         <div class="control-group">
             <%= f.label "Gender",:class => "control-label" %>
             <div class="controls">
                 <%= f.select(:sex, options_for_select(["Male", "Female"].collect {|p| [p] }, f.object.sex)) %>
             </div>
         </div>
+        
         <div class="control-group">
-            <%= f.label "Cast",:class => "control-label" %>
+            <%= f.label "Date of birth",:class => "control-label" %>
             <div class="controls">
-                <%= f.text_field :cast, :class =>"input-xlarge", :required => "required" %>
+                <%= f.text_field :date_of_birth, :class =>"datepicker", :required => "required" %>
+                
+            </div>
+        </div>        
+
+        <div class="control-group">
+            <%= f.label "Cast/Ethnicity",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :cast_ethnicity, :class =>"input-xlarge", :required => "required" %>
             </div>
         </div>
-        <div class="control-group">
-            <%= f.label "Ethnicity",:class => "control-label" %>
-            <div class="controls">
-                <%= f.text_field :ethnicity, :class =>"input-xlarge", :required => "required" %>
-            </div>
-        </div>
+
         <div class="control-group">
             <%= f.label "Phone Number",:class => "control-label" %>
             <div class="controls">
                 <%= f.text_field :phone_number, :class =>"input-xlarge", :required => "required" %>
             </div>
         </div>
+
         <div class="control-group">
             <%= f.label "Address",:class => "control-label" %>
             <div class="controls">
@@ -67,3 +74,6 @@
         </div>
     </fieldset>
 <% end %>
+<script>
+    $('.datepicker').datepicker()
+</script>

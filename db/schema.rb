@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130726081030) do
+ActiveRecord::Schema.define(version: 20130806025413) do
 
   create_table "backups", force: true do |t|
     t.integer  "entity_id"
@@ -69,11 +69,11 @@ ActiveRecord::Schema.define(version: 20130726081030) do
     t.string   "last_name"
     t.string   "phone_number"
     t.string   "sex"
-    t.string   "cast"
-    t.string   "ethnicity"
     t.string   "address"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "cast_ethnicity"
+    t.date     "date_of_birth"
   end
 
   create_table "roles", force: true do |t|
@@ -88,8 +88,6 @@ ActiveRecord::Schema.define(version: 20130726081030) do
     t.string   "last_name"
     t.string   "phone_number"
     t.string   "sex"
-    t.string   "cast"
-    t.string   "ethnicity"
     t.string   "address"
     t.string   "email"
     t.string   "password_salt"
@@ -98,6 +96,8 @@ ActiveRecord::Schema.define(version: 20130726081030) do
     t.datetime "updated_at"
     t.integer  "role_id"
     t.string   "encrypted_password"
+    t.string   "cast_ethnicity"
+    t.date     "date_of_birth"
   end
 
 end

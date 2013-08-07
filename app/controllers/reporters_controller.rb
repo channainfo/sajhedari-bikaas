@@ -96,11 +96,21 @@ class ReportersController < ApplicationController
 
   def destroy
     @reporter= Reporter.find(params[:id])
-    if @reporter.destroy
-      flash[:notice] = "You have successfully deleted reporter #{@reporter.first_name} #{@reporter.last_name}."
-      redirect_to reporters_path
+    if @reporter.never_sent_case
+      if @reporter.destroy_from_resource_map
+        if @reporter.destroy
+          flash[:notice] = "You have successfully deleted reporter #{@reporter.first_name} #{@reporter.last_name}."
+          redirect_to reporters_path
+        else
+          flash[:error] = "Failed to delete reporter #{@reporter.first_name} #{@reporter.last_name}. Please try again later."
+          redirect_to reporters_path
+        end
+      else
+        flash[:error] = "Failed to delete reporter #{@reporter.first_name} #{@reporter.last_name} from Resource map application."
+        redirect_to reporters_path
+      end
     else
-      flash[:error] = "Failed to delete reporter #{@reporter.first_name} #{@reporter.last_name}. Please try again later."
+      flash[:error] = "Failed to delete reporter #{@reporter.first_name} #{@reporter.last_name}. This reporter has sent some cases to the system."
       redirect_to reporters_path
     end
   end
