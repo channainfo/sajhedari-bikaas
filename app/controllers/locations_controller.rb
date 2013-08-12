@@ -87,20 +87,20 @@ class LocationsController < ApplicationController
   end
 
   def import_process
-    max_file_size = 512000 
+    max_file_size = 1024000 
     datas = {}
     errors = {}
     redundant_list = []
     if(params["location"]["file_import"])
       file_obj = params["location"]["file_import"]
       file_size = File.size(file_obj.path)
-      errors = { "data" => file_size, "error_type" => "File over limited size" } if file_size > max_file_size
+      errors = { "data" => file_size, "error_type" => "File over limited size. Currently we allow only 1MB file size." } if file_size > max_file_size
       filename = file_obj.original_filename
-      if(!filename.end_with? ".csv" and errors.empty? )
+      if(errors.empty? and !filename.end_with? ".csv")
         errors = { "data" =>filename ,"error_type" => "File is not csv format." }  
       end
 
-      if(!Import::validate_header?(file_obj.path) and errors.empty?)
+      if(errors.empty? and !Import::validate_header?(file_obj.path))
         error_type = Import::get_error_type
         errors = { "data" =>filename ,"error_type" => error_type}
       end 

@@ -33,7 +33,12 @@ Conflict::Application.routes.draw do
     end
   end
 
+  resources :alerts
+
   resources :conflict_cases do
+    collection do
+      get 'get_field_options'
+    end
     member do
       get 'cancel_delete'
       get 'cancel_update'

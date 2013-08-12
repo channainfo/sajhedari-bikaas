@@ -1,0 +1,163 @@
+<% if alert.errors.any? %>
+    <div class="alert alert-block">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <div id="error_explanation">
+            <h4><%= pluralize(alert.errors.count, "error") %> prohibited this post from being saved:</h4>
+         
+            <ul>
+            <% alert.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+            </ul>
+        </div>
+    </div>
+<% end %>
+<%= form_for(alert, :url => {action: action} , :html => {:class => 'form-horizontal'} ) do |f| %>    
+    <fieldset>   
+        <div class="control-group">
+            <%= f.label "Alert name",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :name, :class =>"input-xlarge", :required => "required" %>
+            </div>
+
+        </div>
+        <div>
+            <label>If total case of:</label>
+        </div>
+        
+        <div class="well">
+            <div class="control-group" id="conditions" style="margin-bottom:0px">                
+                <!-- <div class="controls navbar-inner" style="padding-top:10px">
+                    <div class="row-fluid">
+                        <div class="span4">
+                            <select class="input-block-level">
+                                <option value="type">Violent type</option>
+                                <option value="intensity">Violent intensity</option>
+                                <option value="state">Violent state</option>
+                            </select>
+                            
+                        </div>
+                        <div class="span1" style="min-width:70px;padding-top:5px;">
+                            is equal to
+                        </div>
+                        <div class="span5" style="min-width:330px">
+                            <select class="input-block-level">
+                                <option>2013</option>
+                                <option>...</option>
+                                <option>2015</option>
+                            </select>
+                        </div>
+                        <div class="span1">
+                            <a href="javascript:void(0)" class="btn btn-danger" id="rmbtn" onclick="removeCondition(this)"><i class='icon-minus-sign'></i></a>
+                        </div>
+                    </div>
+                </div> -->
+            </div> 
+            <div class="control-group">
+                <div class="controls">
+                    <a href="javascript:void(0)" class="btn btn-info" onclick="addCondition()"><i class='icon-plus-sign'></i> Add condition</a>
+                </div>
+            </div>
+        </div>             
+        <div class="control-group">
+            <%= f.label "In the past",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :last_days, :class =>"input-xlarge", :required => "required" %> days
+            </div>
+
+        </div>
+        <div class="control-group">
+            <%= f.label "Is more than",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :total, :class =>"input-xlarge", :required => "required" %> cases
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <div class="row-fluid">
+                <div class="well span6">
+                    Send emails to
+                    <div class="list">
+                        <div>
+                            <span class="input-group-addon">
+                                <input type="checkbox" value="" />
+                            </span>
+                            <span class="email-label">
+                                rockesh@pactworld.org
+                            </span>  
+                        </div> 
+                        <div class="list-item">
+                            <span class="input-group-addon">
+                                <input type="checkbox" value="" />
+                            </span>
+                            <span class="email-label">
+                                raju@pactworld.org
+                            </span>  
+                        </div>
+                        <div class="list-item">
+                            <span class="input-group-addon">
+                                <input type="checkbox" value="" />
+                            </span>
+                            <span class="email-label">
+                                sila@pactworld.org
+                            </span>  
+                        </div>
+                        <div class="list-item">
+                            <span class="input-group-addon">
+                                <input type="checkbox" value="" />
+                            </span>
+                            <span class="email-label">
+                                equalaccess@pactworld.org
+                            </span>  
+                        </div>
+                    </div>
+                </div>
+                <div class="well span6">
+                    Send text messages to
+                    <div class="list">
+                        <div>
+                            <span class="input-group-addon">
+                                <input type="checkbox" value="" />
+                            </span>
+                            <span class="email-label">
+                                rockesh@pactworld.org
+                            </span>  
+                        </div> 
+                        <div class="list-item">
+                            <span class="input-group-addon">
+                                <input type="checkbox" value="" />
+                            </span>
+                            <span class="email-label">
+                                raju@pactworld.org
+                            </span>  
+                        </div>
+                        <div class="list-item">
+                            <span class="input-group-addon">
+                                <input type="checkbox" value="" />
+                            </span>
+                            <span class="email-label">
+                                sila@pactworld.org
+                            </span>  
+                        </div>
+                        <div class="list-item">
+                            <span class="input-group-addon">
+                                <input type="checkbox" value="" />
+                            </span>
+                            <span class="email-label">
+                                equalaccess@pactworld.org
+                            </span>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="control-group">
+            <div class="controls">
+                <button class="btn btn-success">Save</button>
+                <%=link_to "Cancel", alerts_path, :class => "btn" %>
+            </div>
+        </div>
+    </fieldset>
+<% end %>

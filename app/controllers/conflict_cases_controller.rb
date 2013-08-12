@@ -193,4 +193,18 @@ class ConflictCasesController < ApplicationController
     @fields = ConflictCase.get_fields
     @base = ConflictCase.find(params[:id])
   end
+
+  def get_field_options
+    @fields = ConflictCase.get_fields
+    success = false
+    @fields.each do |field|
+      if params[:field] == field["code"]
+        success = true
+        render :json => field["options"].to_json 
+      end
+    end
+    unless success
+      render :json => {:error => "field not found"}
+    end
+  end
 end

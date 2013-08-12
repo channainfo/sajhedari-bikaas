@@ -65,3 +65,15 @@
 .clear {
 	clear: both;
 }
+
+.email-label{
+	padding-left: 10px;
+}
+
+.list{
+	padding: 10px;
+}
+
+.list-item{
+	margin-top: 10px;
+}

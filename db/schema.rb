@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130806025413) do
+ActiveRecord::Schema.define(version: 20130808081038) do
+
+  create_table "alerts", force: true do |t|
+    t.text     "condition"
+    t.string   "name"
+    t.integer  "last_days"
+    t.integer  "total"
+    t.integer  "priority"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "backups", force: true do |t|
     t.integer  "entity_id"

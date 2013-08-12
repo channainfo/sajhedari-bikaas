@@ -82,24 +82,3 @@
 		    <button class="btn btn-danger" data-dismiss="modal">Delete</button>
 	    </div>	    
 	</div>
-
-
-<script>
-
-function updateModalPaging(id, offset) {
-	$.ajax({
-		url: '/reporters/getReporterCasesPagination',
-		type: "get",
-		data: "id="+id+"&offset="+offset,
-		success: function(data) {
-			$("#mytable > tbody").html("");
-			$("#mytable > tbody").append(data["table_row"]);
-			if ($("#paginate_report")[0]) {
-				$("#reporter_case")[0].removeChild($("#paginate_report")[0]);
-			}
-			$("#reporter_case").append(data["paging"]);
-		}
-	})
-}
-
-</script>

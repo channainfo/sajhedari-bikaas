@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   helper :all
   protect_from_forgery
   layout :layout_by_resource 
-  #before_filter :prepare_for_mobile
+  before_filter :prepare_resourcemap_url
 
   private
 
@@ -72,5 +72,13 @@ class ApplicationController < ActionController::Base
 
   def is_admin? user
     user.role.name == "Admin"
+  end
+
+  def prepare_resourcemap_url
+    @rm = load_resource_map
+  end
+
+  def load_resource_map
+    YAML.load_file File.expand_path(Rails.root + "config/resourcemap.yml", __FILE__)
   end
 end
