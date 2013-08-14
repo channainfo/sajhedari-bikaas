@@ -1,11 +1,18 @@
+
+require 'will_paginate/array'
 class ConflictCasesController < ApplicationController  
   before_filter :authenticate_user!
 
   def index
-    @conflict_cases = ConflictCase.all.paginate(:page => params[:page], :per_page => 10)
     @fields = ConflictCase.get_fields
     unless @fields
       flash[:error] = "Failed to get fields from resourcemap."
+    else
+      page  = params[:page]? params[:page]:1
+      sites = ConflictCase.get_all_sites_from_resource_map(10, (page-1))
+      @conflict_cases = ConflictCase.transform(sites, @fields)
+      p @conflict_cases
+      @conflict_cases = @conflict_cases.paginate(:page => page, :per_page => 10)
     end
   end
 
@@ -40,26 +47,9 @@ class ConflictCasesController < ApplicationController
   def edit
     @locations = Location.all
     @fields = ConflictCase.get_fields
-    @conflict_case = ConflictCase.find(params[:id])
+    conflict = ConflictCase.find(params[:id])
+    @conflict_case = ConflictCase.convertToConflictCase(conflict.get_conflict_from_resource_map, @fields)
   end
-
-  # def update
-  #   @conflict_case = ConflictCase.find(params[:id])
-  #   if @conflict_case.update_to_resource_map params[:conflict_case]
-  #     if(@conflict_case.update_attributes(params[:conflict_case]))
-  #       flash[:notice] = "You have successfully update conflict case #{@conflict_case.case_message}."
-  #       redirect_to conflict_cases_path
-  #     else
-  #       render :edit
-  #     end
-  #   else 
-  #     @conflict_types = ConflictType.all
-  #     @conflict_states = ConflictState.all
-  #     @conflict_intensities = ConflictIntensity.all
-  #     flash[:error] = "Failed to update case on resource map application. Please try again later."
-  #     render :edit
-  #   end
-  # end
 
   def update
     @conflict_case = ConflictCase.find(params[:id])
@@ -145,14 +135,15 @@ class ConflictCasesController < ApplicationController
   def apply_update_form
     @conflict_case = ConflictCase.find(params[:id])
     if(@conflict_case and @conflict_case.is_updated and @conflict_case.backup and @conflict_case.backup.user.id != current_user.id)
-      if @conflict_case.update_to_resource_map params[:conflict_case]
-        if(@conflict_case.update_attributes(@conflict_case.backup.data))
+      if @conflict_case.update_to_resource_map_with_form params[:conflict_case]
+        if(@conflict_case.update_attributes(:location_id => params["conflict_case"]["location_id"]))
           flash[:notice] = "You have successfully updated conflict case #{@conflict_case.case_message}."
           @conflict_case.backup.destroy!
           @conflict_case.is_updated = false
           @conflict_case.save
-          redirect_to conflict_cases_path
+          redirect_to conflict_cases_path        
         else
+          flash[:error] = "Failed to update conflict location. Please try again later."
           redirect_to conflict_cases_path
         end
       else 
@@ -168,14 +159,15 @@ class ConflictCasesController < ApplicationController
   def approve_update
     @conflict_case = ConflictCase.find(params[:id])
     if(@conflict_case and @conflict_case.is_updated and @conflict_case.backup and @conflict_case.backup.user.id != current_user.id)
-      if @conflict_case.update_to_resource_map params[:conflict_case]
-        if(@conflict_case.update_attributes(@conflict_case.backup.data))
+      if @conflict_case.update_to_resource_map
+        if(@conflict_case.update_attributes(:location_id => @conflict_case.backup.data["location_id"]))
           flash[:notice] = "You have successfully updated conflict case #{@conflict_case.case_message}."
           @conflict_case.backup.destroy!
           @conflict_case.is_updated = false
           @conflict_case.save
           redirect_to conflict_cases_path
         else
+          flash[:error] = "Failed to update conflict location. Please try again later."
           redirect_to conflict_cases_path
         end
       else 
@@ -185,13 +177,17 @@ class ConflictCasesController < ApplicationController
         flash[:error] = "Failed to update case on resource map application. Please try again later."
         redirect_to conflict_cases_path
       end
+    else
+      flash[:error] = "Process update conflict failed."
+      redirect_to conflict_cases_path
     end
   end
 
   def view_difference
     @locations = Location.all
     @fields = ConflictCase.get_fields
-    @base = ConflictCase.find(params[:id])
+    conflict = ConflictCase.find(params[:id])
+    @base = ConflictCase.convertToConflictCase(conflict.get_conflict_from_resource_map, @fields)
   end
 
   def get_field_options

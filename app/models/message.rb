@@ -10,7 +10,8 @@ class Message < ActiveRecord::Base
 	def process!
 		reporter_number = from
 		self.reply = INVALID_USER unless validate_sender
-		self.reply = self.validate_message		
+		self.reply = self.validate_message
+		self.reply = "Sorry this phone number is not registered as our reporter" unless sender
 		if(self.reply == nil)
 			fields = body.split(" ")
 			if self.save_to_case(fields, sender)
@@ -59,25 +60,25 @@ class Message < ActiveRecord::Base
 
 	def save_to_case fields, sender
 		conflict = {}
+		data = {}
 		fields.each do |f|
-			if f.start_with? "t."
-				conflict[:conflict_type] = f[2..-1].to_i
-			end
 			if f.start_with? "c."
 				l = Location.find_by_code(f[2..-1])
 				conflict[:location_id] = l.id
 			end
-			if f.start_with? "s."
-				l = Location.find_by_code(f[2..-1])
-				conflict[:conflict_state] = f[2..-1].to_i
+			if f.start_with? "t."
+				data[:conflict_type] = f[2..-1].to_i
 			end
 			if f.start_with? "i."
-				conflict[:conflict_intensity] = f[2..-1].to_i
+				data[:conflict_intensity] = f[2..-1].to_i
+			end
+			if f.start_with? "s."
+				data[:conflict_state] = f[2..-1].to_i
 			end
 		end
 		conflict[:reporter_id] = sender.id
 		@conflict_case = ConflictCase.new(conflict)
-		site = @conflict_case.save_case_to_resource_map
+		site = @conflict_case.save_case_to_resource_map data
 		if site
 			@conflict_case.site_id = site["id"]
 			if @conflict_case.save				

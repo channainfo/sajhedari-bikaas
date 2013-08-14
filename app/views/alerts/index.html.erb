@@ -2,3 +2,9 @@
 	<%= link_to "Add New Alert", new_alert_path, :method => :get, :class => 'btn btn-primary to-right' %>    
 </div>
 <div class="clear"></div>
+<br />
+<% @alerts.each do |alert| %>
+	<div class="well">
+		Alert when <%= alert.full_description %> in the past <%= alert.last_days %>days is more than <%= alert.total %>
+	</div>
+<% end %>

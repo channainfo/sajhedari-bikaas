@@ -1,77 +1,80 @@
-<%= form_for(base, :url => apply_update_form_conflict_case_path(base) , :method => :put, :html => {:class => 'form-horizontal'} ) do |f| %>
+
     <div class="row-fluid">
         <div class="span6">
             <h4> Modified</h4>
-            <fieldset>
+            <%= form_for(base, :url => apply_update_form_conflict_case_path(base) , :method => :put, :html => {:class => 'form-horizontal'} ) do |f| %>
+                <fieldset>
 
-                <div class="control-group">
-                    <%= f.label "Conflict Type",:class => "control-label" %>
-                    <div class="controls">
-                        <%= f.select(:conflict_type, options_for_select(field_by_code(@fields, "con_type").collect {|p| [p["label"],p["id"]] }, f.object.backup.data["conflict_type"])) %>
+                    <div class="control-group">
+                        <%= f.label "Conflict Type",:class => "control-label" %>
+                        <div class="controls">
+                            <%= f.select(:conflict_type, options_for_select(field_by_code(@fields, "con_type").collect {|p| [p["label"],p["id"]] }, f.object.backup.data["conflict_type"])) %>
+                        </div>
                     </div>
-                </div>
 
-                <div class="control-group">
-                    <%= f.label "Conflict State",:class => "control-label" %>
-                    <div class="controls">
-                        <%= f.select(:conflict_state, options_for_select(field_by_code(@fields, "con_state").collect {|p| [p["label"],p["id"]] }, f.object.backup.data["conflict_state"])) %>
+                    <div class="control-group">
+                        <%= f.label "Conflict State",:class => "control-label" %>
+                        <div class="controls">
+                            <%= f.select(:conflict_state, options_for_select(field_by_code(@fields, "con_state").collect {|p| [p["label"],p["id"]] }, f.object.backup.data["conflict_state"])) %>
+                        </div>
                     </div>
-                </div>
 
-                <div class="control-group">
-                    <%= f.label "Conflict Intensity",:class => "control-label" %>
-                    <div class="controls">
-                        <%= f.select(:conflict_intensity, options_for_select(field_by_code(@fields, "con_intensity").collect {|p| [p["label"],p["id"]] }, f.object.backup.data["conflict_intensity"])) %>
+                    <div class="control-group">
+                        <%= f.label "Conflict Intensity",:class => "control-label" %>
+                        <div class="controls">
+                            <%= f.select(:conflict_intensity, options_for_select(field_by_code(@fields, "con_intensity").collect {|p| [p["label"],p["id"]] }, f.object.backup.data["conflict_intensity"])) %>
+                        </div>
                     </div>
-                </div>
 
-                <div class="control-group">
-                    <%= f.label "Location",:class => "control-label" %>
-                    <div class="controls">
-                        <%= f.select(:location_id, options_for_select(@locations.collect {|p| [p.name,p.id] }, f.object.backup.data["location_id"])) %>
+                    <div class="control-group">
+                        <%= f.label "Location",:class => "control-label" %>
+                        <div class="controls">
+                            <%= f.select(:location_id, options_for_select(@locations.collect {|p| [p.name,p.id] }, f.object.backup.data["location_id"])) %>
+                        </div>
+                    </div>   
+                    
+                    <!-- Submit -->
+                    <div class="control-group">
+                        <div class="controls">
+                            <button class="btn btn-success">Approve to update</button>
+                            <%=link_to "Cancel", conflict_cases_path, :class => "btn" %>
+                        </div>
                     </div>
-                </div>   
-                
-                <!-- Submit -->
-                <div class="control-group">
-                    <div class="controls">
-                        <button class="btn btn-success">Approve to update</button>
-                        <%=link_to "Cancel", conflict_cases_path, :class => "btn" %>
-                    </div>
-                </div>
-            </fieldset>
+                </fieldset>
+            <% end %>
         </div>
         <div class="span6">
-            <h4> Based</h4>
-            <fieldset>                
-                <div class="control-group">
-                    <%= f.label "Conflict Type",:class => "control-label" %>
-                    <div class="controls">
-                        <%= f.select(:conflict_type, options_for_select(field_by_code(@fields, "con_type").collect {|p| [p["label"],p["id"]] }, f.object.conflict_type)) %>
+            <h4> Original</h4>
+            <%= form_for(base, :url => "#" , :method => :put, :html => {:class => 'form-horizontal'} ) do |f| %>
+                <fieldset>                
+                    <div class="control-group">
+                        <%= f.label "Conflict Type",:class => "control-label" %>
+                        <div class="controls">
+                            <%= f.select(:conflict_type, options_for_select(field_by_code(@fields, "con_type").collect {|p| [p["label"],p["id"]] }, f.object.conflict_type)) %>
+                        </div>
                     </div>
-                </div>
 
-                <div class="control-group">
-                    <%= f.label "Conflict State",:class => "control-label" %>
-                    <div class="controls">
-                        <%= f.select(:conflict_state, options_for_select(field_by_code(@fields, "con_state").collect {|p| [p["label"],p["id"]] }, f.object.conflict_state)) %>
+                    <div class="control-group">
+                        <%= f.label "Conflict State",:class => "control-label" %>
+                        <div class="controls">
+                            <%= f.select(:conflict_state, options_for_select(field_by_code(@fields, "con_state").collect {|p| [p["label"],p["id"]] }, f.object.conflict_state)) %>
+                        </div>
                     </div>
-                </div>
 
-                <div class="control-group">
-                    <%= f.label "Conflict Intensity",:class => "control-label" %>
-                    <div class="controls">
-                        <%= f.select(:conflict_intensity, options_for_select(field_by_code(@fields, "con_intensity").collect {|p| [p["label"],p["id"]] }, f.object.conflict_intensity)) %>
+                    <div class="control-group">
+                        <%= f.label "Conflict Intensity",:class => "control-label" %>
+                        <div class="controls">
+                            <%= f.select(:conflict_intensity, options_for_select(field_by_code(@fields, "con_intensity").collect {|p| [p["label"],p["id"]] }, f.object.conflict_intensity)) %>
+                        </div>
                     </div>
-                </div>
 
-                <div class="control-group">
-                    <%= f.label "Location",:class => "control-label" %>
-                    <div class="controls">
-                        <%= f.select(:location_id, options_for_select(@locations.collect {|p| [p.name,p.id] }, f.object.location_id)) %>
-                    </div>
-                </div> 
-            </fieldset>
+                    <div class="control-group">
+                        <%= f.label "Location",:class => "control-label" %>
+                        <div class="controls">
+                            <%= f.select(:location_id, options_for_select(@locations.collect {|p| [p.name,p.id] }, f.object.location_id)) %>
+                        </div>
+                    </div> 
+                </fieldset>
+            <% end %>
         </div>
     </div>
-<% end %>

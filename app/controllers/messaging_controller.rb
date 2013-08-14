@@ -2,7 +2,6 @@ require 'digest'
 
 class MessagingController < ApplicationController
   protect_from_forgery :except => :index
-	skip_before_filter :authenticate, :only => :getLayerMessaging
 
   USER_NAME, PASSWORD = 'iLab', '1c4989610bce6c4879c01bb65a45ad43'
 

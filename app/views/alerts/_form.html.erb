@@ -27,13 +27,10 @@
         
         <div class="well">
             <div class="control-group" id="conditions" style="margin-bottom:0px">                
-                <!-- <div class="controls navbar-inner" style="padding-top:10px">
+                <div id="condition1" class="controls navbar-inner" style="padding-top:10px; margin-bottom:20px">
                     <div class="row-fluid">
                         <div class="span4">
-                            <select class="input-block-level">
-                                <option value="type">Violent type</option>
-                                <option value="intensity">Violent intensity</option>
-                                <option value="state">Violent state</option>
+                            <select class="input-block-level" id="conflict-info1" name="type[]">
                             </select>
                             
                         </div>
@@ -41,17 +38,14 @@
                             is equal to
                         </div>
                         <div class="span5" style="min-width:330px">
-                            <select class="input-block-level">
-                                <option>2013</option>
-                                <option>...</option>
-                                <option>2015</option>
+                            <select class="input-block-level" id="select-item1" name="item[]">
                             </select>
                         </div>
                         <div class="span1">
-                            <a href="javascript:void(0)" class="btn btn-danger" id="rmbtn" onclick="removeCondition(this)"><i class='icon-minus-sign'></i></a>
+                            <a href="javascript:void(0)" class="btn btn-danger" id="rmbtn1" refdata="1" onclick="removeCondition(this)"><i class='icon-minus-sign'></i></a>
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div> 
             <div class="control-group">
                 <div class="controls">
@@ -161,3 +155,7 @@
         </div>
     </fieldset>
 <% end %>
+<script type="text/javascript">
+    prepareConditionCombo(1);
+    handleConditionCombo(1); 
+</script>
