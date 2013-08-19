@@ -51,6 +51,7 @@ gem "twitter-bootstrap-rails", "~> 2.2.7"
 gem "protected_attributes"
 gem 'will_paginate-bootstrap'
 gem "typhoeus"
+gem 'devise-encryptable'
 
 group :test do
   gem 'faker'

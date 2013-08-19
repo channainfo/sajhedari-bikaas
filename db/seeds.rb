@@ -6,8 +6,11 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-Role.find_or_create_by_name :name => "Admin"
-Role.find_or_create_by_name :name => "Super Admin"
+admin_role = Role.find_or_create_by_name :name => "Admin"
+super_admin_role = Role.find_or_create_by_name :name => "Super Admin"
+
+
+user = User.create :email => 'super@shd.org', :password => '123456', :role_id => super_admin_role.id
 
 # ConflictType.find_or_create_by_name :name => "Gender Based Violence"
 # ConflictType.find_or_create_by_name :name => "Casted Based Violence"

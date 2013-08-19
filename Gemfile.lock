@@ -51,6 +51,8 @@ GEM
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
       warden (~> 1.2.3)
+    devise-encryptable (0.1.2)
+      devise (>= 2.1.0)
     diff-lcs (1.2.4)
     dotenv (0.8.0)
     erubis (2.7.0)
@@ -216,6 +218,7 @@ DEPENDENCIES
   debugger
   decent_exposure
   devise
+  devise-encryptable
   factory_girl
   faker
   foreman
