@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.1">
+
+<Document>
+	<name>Description: No Table</name>
+	<open>1</open>
+	
+	<Style id="volcano">
+		<IconStyle>
+			<Icon>
+				<href>http://squarepeg.net.images.alaska.edu/googlearth/icons/volcano.png</href>
+			</Icon>
+			<scale>1.5</scale>
+		</IconStyle>
+		<LabelStyle>
+			<color>ffffffff</color>
+			<scale>1.5</scale>
+		</LabelStyle>
+
+	</Style>
+
+	<Placemark>
+		<name>Yellowstone</name>
+		<Snippet maxLines="0"></Snippet>	
+			<description>
+			xxxx
+			
+			</description>
+		<LookAt>
+			<longitude>-110.67</longitude>
+			<latitude>44.43</latitude>
+			<altitude>0</altitude>
+			<range>32185</range>
+			<tilt>0</tilt>
+			<heading>0</heading>
+		</LookAt>
+			
+		<styleUrl>#volcano</styleUrl>
+
+		<ExtendedData>
+        <Data name="Type">
+          <value>Identity-based Violence</value>
+        </Data>
+        <Data name="Intensity">
+          <value>High</value>
+        </Data>
+        <Data name="State">
+          <value>At the conflict</value>
+        </Data>
+        <Data name="Location">
+          <value>9.177,104.0844</value>
+        </Data>
+        <Data name="Reporter">
+          <value>Ilab Channa-Ly</value>
+        </Data>
+        <Data name="Phone">
+          <value>855975553553</value>
+        </Data>
+        <Data name="DateSent">
+          <value>2013-08-16 08:39:41 UTC</value>
+        </Data>
+      </ExtendedData>
+
+		<Point>
+			<coordinates>-110.67,44.43,0</coordinates>
+		</Point>
+
+	</Placemark>
+</Document>
+</kml>

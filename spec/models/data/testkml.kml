@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<kml xmlns="http://earth.google.com/kml/2.0">
+<Document>
+<name>GTL-</name>
+<visibility>1</visibility>
+<LookAt><longitude>19.18694051</longitude><latitude>47.44369669</latitude>
+<range>304</range>
+</LookAt>
+
+<Folder><name>GTL-</name>
+<visibility>1</visibility>
+<Placemark>
+
+<name>TrackLog</name>
+<Style id="placemark_start">
+  <IconStyle id="start">
+    <Icon>
+      <href>www.eklsofttrade.com/lk/images/android/placemark_icon_start_rect_16x16.png</href>
+      <scale>1.0</scale>
+    </Icon>
+  </IconStyle>
+</Style>
+
+<Style id="placemark_standard">
+  <IconStyle id="standard">
+    <Icon>
+      <href>http://www.eklsofttrade.com/lk/images/android/placemark_icon_blue_flag_16x16.png
+	</href>
+     <scale>1.0</scale>
+    </Icon>
+  </IconStyle>
+</Style>
+
+<Style id="placemark_pause">
+  <IconStyle id="pause">
+    <Icon>
+      <href>www.eklsofttrade.com/lk/images/android/placemark_icon_pause_rect_16x16.png
+	</href>
+     <scale>1.0</scale>
+    </Icon>
+  </IconStyle>
+</Style>
+
+<Style id="placemark_stop">
+  <IconStyle id="stop">
+    <Icon>
+      <href>www.eklsofttrade.com/lk/images/android/placemark_icon_stop_rect_16x16.png
+	</href>
+     <scale>1.0</scale>
+    </Icon>
+  </IconStyle>
+</Style>
+
+
+<Style>
+<LineStyle>
+<color>ff0000ff</color>
+<width>7</width>
+</LineStyle>
+</Style>
+<LineString>
+<coordinates>
+	19.18674368,47.44349852,184.60000610351563
+	19.18662793,47.44330657,182.8000030517578
+	19.18648399,47.44311264,177.1999969482422
+	19.18634896,47.44290295,173.89999389648438
+</coordinates>
+</LineString>
+</Placemark>
+<Style id="base_data">
+<BallonStyle><text><![CDATA[
+Time $[time]
+Data1 $[data1]
+Data2 $[data2]
+]]></text></BallonStyle>
+</Style>
+<Placemark>
+<name>Start</name>
+<StyleUrl>#base_data</StyleUrl>
+<styleUrl>#placemark_start</styleUrl>
+<ExtendedData>
+<Data name="Data1"><value>Fri Apr 13 11:54:08 GMT+02:00 	2012</value></Data>
+<Data name="Data2"><value>207.1</value></Data>
+</ExtendedData>
+<Point>
+<coordinates>19.18674368,47.44349852,184.60000610351563</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Flag</name>
+<StyleUrl>#base_data</StyleUrl>
+<styleUrl>#placemark_standard</styleUrl>
+<ExtendedData>
+<Data name="time"><value>Fri Apr 13 11:54:10 GMT+02:00 2012</value></Data>
+<Data name="Data1"><value>206.2</value></Data>
+<Data name="Data2"><value>182.8 m</value></Data>
+</ExtendedData>
+<Point>
+<coordinates>19.18662793,47.44330657,182.8000030517578</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Pause</name>
+<StyleUrl>#base_data</StyleUrl>
+<styleUrl>#placemark_pause</styleUrl>
+<ExtendedData>
+<Data name="time"><value>Fri Apr 13 11:54:12 GMT+02:00 2012</value></Data>
+<Data name="Data1"><value>206.4</value></Data>
+<Data name="Data2"><value>177.1 m</value></Data>
+</ExtendedData>
+<Point>
+<coordinates>19.18648399,47.44311264,177.1999969482422</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Stop</name>
+<StyleUrl>#base_data</StyleUrl>
+<styleUrl>#placemark_stop</styleUrl>
+<ExtendedData>
+<Data name="time"><value>Fri Apr 13 11:54:14 GMT+02:00 2012</value></Data>
+<Data name="Data1"><value>204.8</value></Data>
+<Data name="Data2"><value>173.8 m</value></Data>
+</ExtendedData>
+<Point>
+<coordinates>19.18634896,47.44290295,173.89999389648438</coordinates>
+</Point>
+</Placemark>
+</Folder>
+</Document>
+</kml>
+<!--Copyright (c) 2011 by Laszlo Kovary laszlo.kovary@gmail.com-->

@@ -38,6 +38,7 @@ Conflict::Application.routes.draw do
   resources :conflict_cases do
     collection do
       get 'get_field_options'
+      get 'export'
     end
     member do
       get 'cancel_delete'
