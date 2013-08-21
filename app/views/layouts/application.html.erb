@@ -22,7 +22,7 @@
 						<ul class="nav">
 							<li><%= link_to raw('<i class="icon-globe"></i> Map'), @rm["url"] + "collections" , :method => :get, :style => "padding: 10px" %></li>
 							<li class=<%= section_active("reporters")  %>><%= link_to raw('<i class="icon-group"></i> Reporters'), reporters_path, :method => :get, :style => "padding: 10px" %></li>
-							<li><a href="#"><i class="icon-signal"></i> Trend </a></li>
+							<li class=<%= section_active("trends")  %>><%= link_to raw('<i class="icon-signal"></i> Trend'), trends_path, :method => :get, :style => "padding: 10px" %></li>
 							<% if current_user.role.name == "Super Admin" %>
 							<li><%= link_to raw('<i class="icon-bell"></i> Case Based Alert'), @rm["url"] + "plugin/alerts/collections/" + @rm["collection_id"].to_s + "/thresholds" , :method => :get, :style => "padding: 10px" %></li>
 							<% end %>

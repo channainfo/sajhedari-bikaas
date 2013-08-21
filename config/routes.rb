@@ -35,6 +35,8 @@ Conflict::Application.routes.draw do
 
   resources :alerts
 
+  resources :trends
+
   resources :conflict_cases do
     collection do
       get 'get_field_options'
