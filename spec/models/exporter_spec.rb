@@ -31,6 +31,48 @@ describe Exporter do
   	end
   end
 
+  it "should return list of shp distributed file names with #shp_distributed_files" do
+    file = "/x/y/export.shp.shp"
+    files = @exporter.shp_distributed_files file
+    files.should =~ ["/x/y/export.shp.shp", "/x/y/export.shp.shx", "/x/y/export.shp.dbf"]
+  end
+
+  describe '#create_zip' do
+    it "should create zip file" do
+      zip_file = File.expand_path("data/zip/case_shp.zip", File.dirname(__FILE__))
+      File.delete zip_file if File.exist? zip_file
+
+      file1 = File.expand_path("data/zip/protected/file1.shp", File.dirname(__FILE__))
+      file2 = File.expand_path("data/zip/protected/file1.shx", File.dirname(__FILE__))
+      file3 = File.expand_path("data/zip/protected/file1.dbf", File.dirname(__FILE__))
+
+      files_to_zip = [ file1, file2, file3 ]
+      @exporter.create_zip zip_file, files_to_zip
+      File.exist?(zip_file).should be_true
+    end
+
+    it "should raise exception" do
+      zip_file = File.expand_path("data/zip/case_shp.zip", File.dirname(__FILE__))
+      File.delete zip_file if File.exist? zip_file
+
+      file1 = File.expand_path("data/zip/non-xx.shp", File.dirname(__FILE__))
+      file2 = File.expand_path("data/zip/non-xy.shx", File.dirname(__FILE__))
+      file3 = File.expand_path("data/zip/nox-xu.dbf", File.dirname(__FILE__))
+
+      files_to_zip = [ file1, file2, file3 ]
+      expect{@exporter.create_zip(zip_file, files_to_zip)}.to raise_error(RuntimeError, /does not exist/) 
+      File.exist?(zip_file).should be_false
+    end
+  end
+
+  describe '#to_sh_zip' do
+    it "should create zip file" do
+      zip_file = File.expand_path('data/zip/to_zip_file.zip', File.dirname(__FILE__))
+      File.delete(zip_file) if File.exist? zip_file
+      @exporter.to_sh_zip zip_file
+    end
+  end
+
   describe '#as_kml_file' do
     it "should create kml file" do
       kml_file = File.expand_path('../data/export.kml', __FILE__)

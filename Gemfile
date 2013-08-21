@@ -26,6 +26,7 @@ end
 gem 'dbf'
 gem 'georuby'
 gem 'nokogiri'
+gem 'rubyzip'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

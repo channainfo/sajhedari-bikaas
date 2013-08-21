@@ -5,9 +5,9 @@ require 'geo_ruby/shp4r/dbf'
 require 'dbf'
 
 require 'nokogiri'
-# require 'nokogiri/xml'
-
 require 'open-uri'
+
+require 'zip/zip'
 
 class Exporter
 
@@ -53,6 +53,36 @@ class Exporter
   	  end
     end
     shpfile.close
+  end
+
+  def to_sh_zip zip_file
+    file    = File.basename(zip_file, '.zip')
+    sh_file = File.expand_path( file + '.shp' , File.dirname(zip_file) )
+    to_shp_file sh_file
+    files_list  = shp_distributed_files sh_file
+    create_zip zip_file, files_list
+  end
+
+  def shp_distributed_files shp_file
+     file     = File.basename(shp_file, '.shp')
+     dirname  = File.dirname(shp_file) 
+
+     shx_file = File.expand_path( file + ".shx", dirname)
+     dbf_file = File.expand_path( file + ".dbf", dirname)
+
+     [shp_file, shx_file, dbf_file ]
+  end
+
+  def create_zip zip_file_name, files_list
+    files_list.each do |file|
+      raise 'File: ' + file + " does not exist " unless File.exist? file
+    end
+
+    Zip::ZipFile.open(zip_file_name, Zip::ZipFile::CREATE) do |zip|
+      files_list.each do |file|
+        zip.add File.basename(file), file
+      end
+    end
   end
 
   def to_kml_file kml_file_name
