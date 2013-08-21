@@ -23,6 +23,11 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+gem 'dbf'
+gem 'georuby'
+gem 'nokogiri'
+gem 'rubyzip'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -48,6 +53,7 @@ gem "typhoeus"
 gem "whenever"
 gem 'delayed_job_active_record'
 gem "daemon-spawn", "0.4.2"
+gem 'devise-encryptable'
 
 group :test do
   gem 'faker'

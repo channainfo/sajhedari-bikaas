@@ -40,6 +40,8 @@ GEM
     coffee-script-source (1.6.3)
     columnize (0.3.6)
     daemon-spawn (0.4.2)
+    dbf (2.0.6)
+      fastercsv (~> 1.5.4)
     debugger (1.6.1)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.2.0)
@@ -57,6 +59,8 @@ GEM
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
       warden (~> 1.2.3)
+    devise-encryptable (0.1.2)
+      devise (>= 2.1.0)
     diff-lcs (1.2.4)
     erubis (2.7.0)
     ethon (0.6.0)
@@ -67,7 +71,22 @@ GEM
       activesupport (>= 3.0.0)
     faker (1.2.0)
       i18n (~> 0.5)
+    fastercsv (1.5.5)
     ffi (1.9.0)
+<<<<<<< HEAD
+=======
+    foreman (0.63.0)
+      dotenv (>= 0.7)
+      thor (>= 0.13.6)
+    georuby (2.0.0)
+    haml (4.0.3)
+      tilt
+    haml-rails (0.4)
+      actionpack (>= 3.1, < 4.1)
+      activesupport (>= 3.1, < 4.1)
+      haml (>= 3.1, < 4.1)
+      railties (>= 3.1, < 4.1)
+>>>>>>> 2d2fcf8eab6422aacc80c0dd66b048bb89089e97
     hashr (0.0.22)
     hike (1.2.3)
     i18n (0.6.5)
@@ -90,6 +109,7 @@ GEM
     minitest (4.7.5)
     multi_json (1.7.9)
     mysql2 (0.3.13)
+    nokogiri (1.5.9)
     nuntium_api (0.21)
       json
       rest-client
@@ -134,6 +154,15 @@ GEM
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
+<<<<<<< HEAD
+=======
+    rubyzip (0.9.9)
+    sass (3.2.10)
+    sass-rails (4.0.0)
+      railties (>= 4.0.0.beta, < 5.0)
+      sass (>= 3.1.10)
+      sprockets-rails (~> 2.0.0)
+>>>>>>> 2d2fcf8eab6422aacc80c0dd66b048bb89089e97
     sdoc (0.3.20)
       json (>= 1.1.3)
       rdoc (~> 3.10)
@@ -200,24 +229,44 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+<<<<<<< HEAD
   daemon-spawn (= 0.4.2)
+=======
+  breadcrumbs_on_rails
+  coffee-rails (~> 4.0.0)
+  dbf
+>>>>>>> 2d2fcf8eab6422aacc80c0dd66b048bb89089e97
   debugger
   decent_exposure
   delayed_job_active_record
   devise
+  devise-encryptable
   factory_girl
   faker
+<<<<<<< HEAD
+=======
+  foreman
+  georuby
+  haml-rails
+  ice_cube
+>>>>>>> 2d2fcf8eab6422aacc80c0dd66b048bb89089e97
   jbuilder (~> 1.2)
   jquery-rails
   libxml-ruby
   lodash-rails
   machinist (= 1.0.6)
   mysql2
+  nokogiri
   nuntium_api (~> 0.13)
   protected_attributes
   rails (= 4.0.0)
   rspec
   rspec-rails
+<<<<<<< HEAD
+=======
+  rubyzip
+  sass-rails (~> 4.0.0)
+>>>>>>> 2d2fcf8eab6422aacc80c0dd66b048bb89089e97
   sdoc
   shoulda
   simplecov
