@@ -34,6 +34,7 @@ Conflict::Application.routes.draw do
   end
 
   resources :alerts
+  resources :settings
 
   resources :conflict_cases do
     collection do

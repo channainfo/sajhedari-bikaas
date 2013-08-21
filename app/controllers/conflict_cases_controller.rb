@@ -9,9 +9,8 @@ class ConflictCasesController < ApplicationController
       flash[:error] = "Failed to get fields from resourcemap."
     else
       page  = params[:page]? params[:page]:1
-      sites = ConflictCase.get_all_sites_from_resource_map(10, (page-1))
+      sites = ConflictCase.get_paging_sites_from_resource_map(10, (page.to_i - 1))
       @conflict_cases = ConflictCase.transform(sites, @fields)
-      p @conflict_cases
       @conflict_cases = @conflict_cases.paginate(:page => page, :per_page => 10)
     end
   end

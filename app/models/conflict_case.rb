@@ -95,13 +95,40 @@ class ConflictCase < ActiveRecord::Base
     return response == 200
   end
 
-  def self.get_all_sites_from_resource_map(limit, offset)
+  def self.get_all_sites_from_resource_map()
+    yml = load_resource_map
+    request = Typhoeus::Request.new(
+    yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
+      method: :get,
+      body: "this is a request body",
+      headers: { Accept: "text/html" }
+    )
+    request.run
+    response = request.response.response_body
+    return JSON.parse(response)
+  end
+
+  def self.get_paging_sites_from_resource_map(limit, offset)
     yml = load_resource_map
     request = Typhoeus::Request.new(
     yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
       method: :get,
       body: "this is a request body",
       params: {:limit => limit, :offset => offset},
+      headers: { Accept: "text/html" }
+    )
+    request.run
+    response = request.response.response_body
+    return JSON.parse(response)
+  end
+
+  def self.get_all_sites_from_resource_map_by_period(start_date, end_date)
+    yml = load_resource_map
+    request = Typhoeus::Request.new(
+    yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
+      method: :get,
+      body: "this is a request body",
+      params: {:start_date => start_date, :end_date => end_date},
       headers: { Accept: "text/html" }
     )
     request.run
@@ -186,5 +213,20 @@ class ConflictCase < ActiveRecord::Base
       end
     end
     conflict
+  end
+
+  def meet_alert?(condition)
+    return false unless condition.size > 0
+    condition.each do |key, value|
+      case key
+        when "con_state"
+          return false unless self.conflict_state == value.to_i
+        when "con_type"
+          return false unless self.conflict_type == value.to_i
+        when "con_intensity"
+          return false unless self.conflict_intensity == value.to_i
+      end
+    end
+    return true
   end
 end
