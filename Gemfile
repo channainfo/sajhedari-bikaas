@@ -42,20 +42,17 @@ gem 'rubyzip'
 
 gem 'mysql2'
 gem 'devise'
-gem 'haml-rails'
 gem 'decent_exposure'
-gem "breadcrumbs_on_rails"
 gem "tire"
 gem "nuntium_api", "~> 0.13", :require => "nuntium"
-gem 'ice_cube'
 gem 'will_paginate'
-gem 'foreman'
-gem 'uuidtools'
-gem 'rack-offline'
 gem "twitter-bootstrap-rails", "~> 2.2.7"
 gem "protected_attributes"
 gem 'will_paginate-bootstrap'
 gem "typhoeus"
+gem "whenever"
+gem 'delayed_job_active_record'
+gem "daemon-spawn", "0.4.2"
 gem 'devise-encryptable'
 
 group :test do
@@ -77,10 +74,6 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  # Use SCSS for stylesheets
-  gem 'sass-rails', '~> 4.0.0'
-  # Use CoffeeScript for .js.coffee assets and views
-  gem 'coffee-rails', '~> 4.0.0'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer'

@@ -95,3 +95,17 @@ function ajaxRequestField(indexCondition, field_code){
         }
     })
 }
+
+function addToMessage(txt){
+    $('#alert_message').val($('#alert_message').val() + txt); 
+}
+
+function showReporterInfo(first_name, last_name, sex, dob, cast, phone, address){
+    $("#first_name").html(": " + first_name);
+    $("#last_name").html(": " + last_name);
+    $("#phone_number").html(": " + phone);
+    $("#dob").html(": " + dob);
+    $("#address").html(": " + address);
+    $("#cast_ethnicity").html(": " + cast);
+    $("#gender").html(": " + sex);
+}

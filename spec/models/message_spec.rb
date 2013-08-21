@@ -1,6 +1,4 @@
-
 require 'spec_helper'
-
 describe Message do
 
 	describe "check message channel and sender" do

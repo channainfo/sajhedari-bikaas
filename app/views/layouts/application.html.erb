@@ -21,17 +21,37 @@
 					<div class="nav-collapse collapse">
 						<ul class="nav">
 							<li><%= link_to raw('<i class="icon-globe"></i> Map'), @rm["url"] + "collections" , :method => :get, :style => "padding: 10px" %></li>
+							<li class="divider-vertical"></li>
 							<li class=<%= section_active("reporters")  %>><%= link_to raw('<i class="icon-group"></i> Reporters'), reporters_path, :method => :get, :style => "padding: 10px" %></li>
+							<li class="divider-vertical"></li>
 							<li><a href="#"><i class="icon-signal"></i> Trend </a></li>
+							<li class="divider-vertical"></li>
 							<% if current_user.role.name == "Super Admin" %>
-							<li><%= link_to raw('<i class="icon-bell"></i> Case Based Alert'), @rm["url"] + "plugin/alerts/collections/" + @rm["collection_id"].to_s + "/thresholds" , :method => :get, :style => "padding: 10px" %></li>
+								<li class="dropdown <%= section_active("alerts")  %> ">
+									<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+										<i class="icon-warning-sign"></i> Alert <strong class="caret"></strong>
+									</a>
+									<ul class="dropdown-menu">									
+											<li><%= link_to raw('<i class="icon-bell"></i> Case Based Alert'), @rm["url"] + "plugin/alerts/collections/" + @rm["collection_id"].to_s + "/thresholds" , :method => :get, :style => "padding: 10px" %></li>										
+											<li class=<%= section_active("alerts")  %>><%= link_to raw('<i class="icon-warning-sign"></i> Aggregate Threshold Alert'), alerts_path, :method => :get, :style => "padding: 10px" %>
+									</ul>
+								</li>
+							<% else %>
+								<li class=<%= section_active("alerts")  %>><%= link_to raw('<i class="icon-warning-sign"></i> Aggregate Threshold Alert'), alerts_path, :method => :get, :style => "padding: 10px" %>
 							<% end %>
+							<li class="divider-vertical"></li>
+							
 							<li class=<%= section_active("conflict_cases")  %>><%= link_to raw('<i class="icon-comment"></i> Case Reporting'), conflict_cases_path, :method => :get, :style => "padding: 10px" %></li>
-							<li class=<%= section_active("alerts")  %>><%= link_to raw('<i class="icon-warning-sign"></i> Aggregate Threshold Alert'), alerts_path, :method => :get, :style => "padding: 10px" %>
+						<!--	<li class=<%= section_active("alerts")  %>><%= link_to raw('<i class="icon-warning-sign"></i> Aggregate Threshold Alert'), alerts_path, :method => :get, :style => "padding: 10px" %> </li> -->
+							<li class="divider-vertical"></li>
 							<li class=<%= section_active("locations")  %>><%= link_to raw('<i class="icon-map-marker"></i> Location Code'), locations_path, :method => :get, :style => "padding: 10px" %></li>
+							<li class="divider-vertical"></li>
 							<li class=<%= section_active("users")  %>><%= link_to raw('<i class="icon-user"></i> User'), users_path, :method => :get, :style => "padding: 10px" %></li>
-							<li class=<%= section_active("settings")  %>><%= link_to raw('<i class="icon-cog"></i> Setting'), users_path, :method => :get, :style => "padding: 10px" %></li>
+							<li class="divider-vertical"></li>
+							<li class=<%= section_active("settings")  %>><%= link_to raw('<i class="icon-cog"></i> Setting'), settings_path, :method => :get, :style => "padding: 10px" %></li>
+							<li class="divider-vertical"></li>
 						</ul>
+						
 						<div class="btn-group pull-right">
 							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 								<i class="icon-user"></i> <%= current_user.first_name || "UNKNOWN" %> <span class="caret"></span>
