@@ -13,6 +13,45 @@ class ConflictCase < ActiveRecord::Base
   attr_accessible :is_updated
   attr_accessible :reporter_id
 
+  def field_description fields, property
+    property_code = self.translate(property)
+
+    fields.each do |f|
+        if(f["code"] == property)
+          options = f["options"]
+          options.each do |option|
+            return option["label"] if(option["code"] == property_code)
+          end
+        end
+    end
+    raise "Unknow property: " + property + " with code: " + property_code
+  end
+
+  def con_type_description fields
+    field_description fields, 'con_type'
+  end
+
+  def con_intensity_description fields
+    field_description fields, 'con_intensity'
+  end
+
+  def con_state_description fields
+    field_description fields, 'con_state'
+  end
+
+  def translate property
+    if property == "con_type"
+      self.conflict_type.to_s
+    elsif property == "con_intensity"
+      self.conflict_intensity.to_s
+    else property == "con_state"
+      self.conflict_state.to_s     
+    end
+  end
+
+
+
+
   def save_case_to_resource_map option
     yml = self.class.load_resource_map
     request = Typhoeus::Request.new(
@@ -107,6 +146,18 @@ class ConflictCase < ActiveRecord::Base
     request.run
     response = request.response.response_body
     return JSON.parse(response)
+  end
+
+  def self.all_from_resource_map
+    yml = load_resource_map
+    request = Typhoeus::Request.new(
+    yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
+      method: :get,
+      body: "this is a request body",
+      headers: { Accept: "text/html" }
+    )
+    request.run
+    request.response.body
   end
 
   def get_conflict_from_resource_map

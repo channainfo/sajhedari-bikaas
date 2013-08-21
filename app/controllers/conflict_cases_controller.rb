@@ -11,9 +11,19 @@ class ConflictCasesController < ApplicationController
       page  = params[:page]? params[:page]:1
       sites = ConflictCase.get_all_sites_from_resource_map(10, (page-1))
       @conflict_cases = ConflictCase.transform(sites, @fields)
-      p @conflict_cases
       @conflict_cases = @conflict_cases.paginate(:page => page, :per_page => 10)
+
     end
+  end
+
+  def export_as_kml
+    @fields = ConflictCase.get_fields
+    sites   = ConflictCase.all_from_resource_map
+    @conflict_cases = ConflictCase.transform(sites, @fields)
+  end
+
+  def export_as_shp
+
   end
 
   def show
