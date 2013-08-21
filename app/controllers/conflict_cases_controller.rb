@@ -28,6 +28,7 @@ class ConflictCasesController < ApplicationController
   end
 
   def create
+    debugger
     @conflict_case = ConflictCase.new(params[:conflict_case])
     site = @conflict_case.save_case_to_resource_map
     if site
