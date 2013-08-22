@@ -42,7 +42,7 @@ class ConflictCasesController < ApplicationController
                          :disposition   =>  'attachment',
                          :streaming     =>  true,
                          :buffer_size   =>  '4096')
-    File.delete kml_file
+    # File.delete kml_file
 
   end
 
@@ -59,7 +59,7 @@ class ConflictCasesController < ApplicationController
                          :streaming     =>  true,
                          :buffer_size   =>  '4096')
 
-    File.delete zip_file
+    # File.delete zip_file
 
   end
 
