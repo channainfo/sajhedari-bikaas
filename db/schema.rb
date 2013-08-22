@@ -124,8 +124,6 @@ ActiveRecord::Schema.define(version: 20130822085750) do
     t.text     "message_invalid"
     t.text     "message_unknown"
     t.text     "message_invalid_sender"
-    t.text     "message_duplicate"
-    t.text     "message_failed"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "email_send"

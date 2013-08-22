@@ -14,6 +14,10 @@ class Reporter < ActiveRecord::Base
   has_many :conflict_cases
   USER_NAME, PASSWORD = 'iLab', '1c4989610bce6c4879c01bb65a45ad43'
 
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   def create_to_resource_map
     yml = self.load_resource_map
     request = Typhoeus::Request.new(

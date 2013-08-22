@@ -231,6 +231,7 @@ DEPENDENCIES
   protected_attributes
   rails (= 4.0.0)
   rspec
+  rspec-mocks
   rspec-rails
   rubyzip
   sdoc

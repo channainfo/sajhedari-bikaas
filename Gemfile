@@ -67,6 +67,7 @@ end
 group :test, :development do
   gem 'rspec'
   gem 'rspec-rails'
+  gem 'rspec-mocks'
   gem 'debugger'
 end
 
