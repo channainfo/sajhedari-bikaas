@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130821030632) do
+ActiveRecord::Schema.define(version: 20130822085750) do
 
   create_table "alerts", force: true do |t|
     t.text     "condition"
@@ -77,12 +77,12 @@ ActiveRecord::Schema.define(version: 20130821030632) do
   create_table "locations", force: true do |t|
     t.string   "name"
     t.string   "code"
-    t.decimal  "lat",        precision: 10, scale: 6
-    t.decimal  "lng",        precision: 10, scale: 6
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_deleted",                          default: false
-    t.boolean  "is_updated",                          default: false
+    t.boolean  "is_deleted",                           default: false
+    t.boolean  "is_updated",                           default: false
+    t.decimal  "lat",        precision: 15, scale: 11
+    t.decimal  "lng",        precision: 15, scale: 11
   end
 
   create_table "messages", force: true do |t|
@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(version: 20130821030632) do
     t.text     "message_failed"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "email_send"
   end
 
   create_table "users", force: true do |t|

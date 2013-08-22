@@ -114,7 +114,7 @@
                                     <input <%= "checked" if JSON.parse(alert.phone_contacts).include?(ad.id.to_s) %> type="checkbox" name="phone[]" value="<%= ad.id %>" />
                                 </span>
                                 <span class="email-label">
-                                    <%= ad.email %>
+                                    <%= ad.email %> [<%= ad.phone_number %>]
                                 </span>  
                             </div> 
                         <% end %>

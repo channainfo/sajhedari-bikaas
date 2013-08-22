@@ -23,6 +23,14 @@
             </div>
 
         </div>
+        <div class="control-group">
+            <%= f.label "Email",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :email_send, :class =>"input-xlarge", :required => "required" %>
+                <span class="help-inline">  Email contact to send alert.</span>
+            </div>
+
+        </div>
         
         <h4>Message Template</h4>
         <div class="control-group">
@@ -78,7 +86,6 @@
         <div class="control-group">
             <div class="controls">
                 <button class="btn btn-success">Save</button>
-                <%=link_to "Cancel", alerts_path, :class => "btn" %>
             </div>
         </div>
         
