@@ -9,11 +9,13 @@ class ConflictCase < ActiveRecord::Base
   attr_accessible :conflict_state
   attr_accessible :conflict_type
 
-  attr_accessible :reporter, :location
+  attr_accessible :reporter, :location, :conflict_type_description, :conflict_intensity_description, :conflict_state_description
 
   attr_accessible :is_deleted
   attr_accessible :is_updated
   attr_accessible :reporter_id
+
+  attr_accessor :conflict_type_description, :conflict_intensity_description, :conflict_state_description
 
   def field_description fields, property
     property_code = self.translate(property)
@@ -173,7 +175,7 @@ class ConflictCase < ActiveRecord::Base
       method: :get
     )
     request.run
-    request.response.body
+    JSON.parse(request.response.body)
   end
 
   def self.get_all_sites_from_resource_map_by_period(start_date, end_date)
@@ -237,33 +239,36 @@ class ConflictCase < ActiveRecord::Base
     end
   end
 
-  def self.transform sites, field
+  def self.transform sites, fields
     conflict_cases = []
     sites.each do |site|
-      conflict_cases.push(convertToConflictCase(site, field))
+      conflict_cases.push(convertToConflictCase(site, fields))
     end
     conflict_cases
   end
 
-  def self.convertToConflictCase site, field
+  def self.convertToConflictCase site, fields
     conflict = ConflictCase.find_by_site_id(site["id"])
     properties = site["properties"]
     properties.each do |key, value|
-      conflict = assign_value conflict, key, value, field
+      conflict = assign_value conflict, key, value, fields
     end
     conflict
   end
 
-  def self.assign_value conflict, key, value, field
-    field.each do |f|
+  def self.assign_value conflict, key, value, fields
+    fields.each do |f|
       if f["id"] == key.to_i
         case f["code"]
           when "con_state"
             conflict.conflict_state = value
+            conflict.conflict_state_description = conflict.con_state_description fields
           when "con_type"
             conflict.conflict_type = value
+            conflict.conflict_type_description = conflict.con_type_description fields
           when "con_intensity"
             conflict.conflict_intensity = value
+            conflict.conflict_intensity_description = conflict.con_intensity_description fields
         end
       end
     end

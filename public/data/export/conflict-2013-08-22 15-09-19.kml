@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.1">
+  <Document>
+    <name>Sajhedari Bikaas</name>
+    <open>1</open>
+    <Style id="defaultstyle">
+      <IconStyle>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/pushpin/red-pushpin.png</href>
+        </Icon>
+        <scale>1.4</scale>
+      </IconStyle>
+      <LabelStyle>
+        <color>a1ff00ff</color>
+        <scale>1.4</scale>
+      </LabelStyle>
+    </Style>
+    <Placemark>
+      <name>Battambang(21)</name>
+      <styleUrl>#defaultstyle</styleUrl>
+      <LookAt>
+        <longitude>103.213806</longitude>
+        <latitude>13.11158</latitude>
+        <altitude>0</altitude>
+        <range>32185</range>
+        <tilt>0</tilt>
+        <heading>0</heading>
+      </LookAt>
+      <ExtendedData>
+        <Data name="Type">
+          <value>Identity-based Violence</value>
+        </Data>
+        <Data name="Intensity">
+          <value>High</value>
+        </Data>
+        <Data name="State">
+          <value>At the conflict</value>
+        </Data>
+        <Data name="Location">
+          <value>13.11158,103.213806</value>
+        </Data>
+        <Data name="Reporter">
+          <value>Sokmesa Khiev</value>
+        </Data>
+        <Data name="Phone">
+          <value>85516222172</value>
+        </Data>
+        <Data name="DateSent">
+          <value>2013-08-16 08:39:41 UTC</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>13.11158,103.213806,0</coordinates>
+      </Point>
+    </Placemark>
+    <Placemark>
+      <name>Kampong Chnang(23)</name>
+      <styleUrl>#defaultstyle</styleUrl>
+      <LookAt>
+        <longitude>104.669495</longitude>
+        <latitude>12.243392</latitude>
+        <altitude>0</altitude>
+        <range>32185</range>
+        <tilt>0</tilt>
+        <heading>0</heading>
+      </LookAt>
+      <ExtendedData>
+        <Data name="Type">
+          <value>Gender Based Violence</value>
+        </Data>
+        <Data name="Intensity">
+          <value>Low</value>
+        </Data>
+        <Data name="State">
+          <value>Before the conflict</value>
+        </Data>
+        <Data name="Location">
+          <value>12.243392,104.669495</value>
+        </Data>
+        <Data name="Reporter">
+          <value>Sokmesa Khiev</value>
+        </Data>
+        <Data name="Phone">
+          <value>85516222172</value>
+        </Data>
+        <Data name="DateSent">
+          <value>2013-08-16 08:41:07 UTC</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>12.243392,104.669495,0</coordinates>
+      </Point>
+    </Placemark>
+  </Document>
+</kml>

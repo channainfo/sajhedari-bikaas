@@ -5,8 +5,6 @@ require 'geo_ruby/shp4r/dbf'
 require 'dbf'
 
 require 'nokogiri'
-require 'open-uri'
-
 require 'zip/zip'
 
 class Exporter
@@ -54,11 +52,18 @@ class Exporter
   end
 
   def to_sh_zip zip_file
-    file    = File.basename(zip_file, '.zip')
-    sh_file = File.expand_path( file + '.shp' , File.dirname(zip_file) )
+
+    sh_file = "#{Rails.root}/tmp/sb.shp" 
     to_shp_file sh_file
     files_list  = shp_distributed_files sh_file
-    create_zip zip_file, files_list
+
+    create_zip(zip_file, files_list)
+
+    # clean up the files after zipping
+    files_list.each do |file|
+      File.delete file
+    end
+
   end
 
   def shp_distributed_files shp_file
@@ -71,14 +76,18 @@ class Exporter
      [shp_file, shx_file, dbf_file ]
   end
 
-  def create_zip zip_file_name, files_list
+  def create_zip(zip_file_name, files_list)
+
     files_list.each do |file|
       raise 'File: ' + file + " does not exist " unless File.exist? file
     end
 
+    File.delete zip_file_name if File.exist? zip_file_name
+
     Zip::ZipFile.open(zip_file_name, Zip::ZipFile::CREATE) do |zip|
-      files_list.each do |file|
-        zip.add File.basename(file), file
+      files_list.each do |original_file|
+        in_zip = File.basename(original_file)
+        zip.add(in_zip, original_file)
       end
     end
   end
@@ -126,15 +135,15 @@ class Exporter
 
                   xml.ExtendedData {
                     xml.Data(:name => COL_TYPE) {
-                      xml.value row.con_type_description
+                      xml.value row.conflict_type_description
                     }
 
                     xml.Data(:name => COL_INTENSITY) {
-                      xml.value row.con_intensity_description
+                      xml.value row.conflict_intensity_description
                     }
 
                     xml.Data(:name => COL_STATE) {
-                      xml.value row.con_state_description
+                      xml.value row.conflict_state_description
                     }
 
                     xml.Data(:name => COL_LOCATION) {
@@ -182,9 +191,9 @@ class Exporter
 
   def convert_to_shp_data row
   	{
-  		COL_TYPE      => row.con_type_description,
-  		COL_INTENSITY => row.con_intensity_description,
-  		COL_STATE     => row.con_state_description,
+  		COL_TYPE      => row.conflict_type_description,
+  		COL_INTENSITY => row.conflict_intensity_description,
+  		COL_STATE     => row.conflict_state_description,
   		COL_LOCATION  => row.location.latlng,
   		COL_REPORTER  => row.reporter.full_name,
   		COL_PHONE     => row.reporter.phone_number,
