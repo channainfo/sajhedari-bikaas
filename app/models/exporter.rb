@@ -147,7 +147,7 @@ class Exporter
                     }
 
                     xml.Data(:name => COL_LOCATION) {
-                      xml.value row.location.latlng
+                      xml.value row.location.lnglat
                     }
 
                     xml.Data(:name => COL_REPORTER) {
@@ -164,7 +164,7 @@ class Exporter
                   }
 
                   xml.Point {
-                    xml.coordinates "#{row.location.latlng},0"
+                    xml.coordinates "#{row.location.lnglat},0"
                   }
                 }
               end
@@ -194,7 +194,7 @@ class Exporter
   		COL_TYPE      => row.conflict_type_description,
   		COL_INTENSITY => row.conflict_intensity_description,
   		COL_STATE     => row.conflict_state_description,
-  		COL_LOCATION  => row.location.latlng,
+  		COL_LOCATION  => row.location.lnglat,
   		COL_REPORTER  => row.reporter.full_name,
   		COL_PHONE     => row.reporter.phone_number,
   		COL_DATE_SEND => row.created_at

@@ -12,8 +12,8 @@ class Location < ActiveRecord::Base
   attr_accessible :is_updated
   USER_NAME, PASSWORD = 'iLab', '1c4989610bce6c4879c01bb65a45ad43'
 
-  def latlng
-    "#{lat},#{lng}"
+  def lnglat
+    "#{lng},#{lat}"
   end
 
   def description
