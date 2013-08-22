@@ -54,18 +54,20 @@ class ConflictCase < ActiveRecord::Base
 
   def save_case_to_resource_map option
     yml = self.class.load_resource_map
-    request = Typhoeus::Request.new(
-       yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
-       method: :post,
-       body: "this is a request body",
-       params: { lat: self.location.lat, 
+    params = { lat: self.location.lat, 
                  lng: self.location.lng, 
                  name: self.location.name, 
                  phone_number: self.reporter.phone_number,
                  conflict_type: option[:conflict_type],
                  conflict_intensity: option[:conflict_intensity],
-                 conflict_state: option[:conflict_state] },
-       headers: { Accept: "text/html" }
+                 conflict_state: option[:conflict_state] ,
+                 headers: { Accept: "text/html" }
+            }
+    request = Typhoeus::Request.new(
+       yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
+       method: :post,
+       body: "this is a request body",
+       params: params
      )
      request.run
      response = request.response
@@ -175,12 +177,13 @@ class ConflictCase < ActiveRecord::Base
   def self.get_all_sites_from_resource_map_by_period(start_date, end_date)
     yml = load_resource_map
     request = Typhoeus::Request.new(
-      yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
-      method: :get,
-      body: "this is a request body",
-      headers: { Accept: "text/html" }
-      params: {:start_date => start_date, :end_date => end_date},
+          yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
+          method: :get,
+          body: "this is a request body",
+          headers: { Accept: "text/html" },
+          params: {:start_date => start_date, :end_date => end_date } 
     )
+
     request.run
     response = request.response.response_body
     return JSON.parse(response)
