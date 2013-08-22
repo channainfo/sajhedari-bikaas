@@ -11,13 +11,13 @@ require 'zip/zip'
 
 class Exporter
 
-  COL1   = 'Type'
-  COL2   = 'Intensity'
-  COL3   = 'State'
-  COL4   = 'Location'
-  COL5   = 'Reporter'
-  COL6   = 'Phone'
-  COL7   = 'DateSent'	
+  COL_TYPE        = 'Type'
+  COL_INTENSITY   = 'Intensity'
+  COL_STATE       = 'State'
+  COL_LOCATION    = 'Location'
+  COL_REPORTER    = 'Reporter'
+  COL_PHONE       = 'Phone'
+  COL_DATE_SEND   = 'DateSent'	
 
   def initialize data
   	@data_sources = data
@@ -26,13 +26,13 @@ class Exporter
   def to_shp_file sh_file_name
   	fields = []
   	headers = [
-		    [COL1, "C", 20 ],	
-		    [COL2 ,"C", 10 ],
-		    [COL3, "C", 20 ],	
-		    [COL4, "C", 50 ],
-		    [COL5, "C", 30 ],	
-		    [COL6, "C", 20 ],	
-		    [COL7, "C", 50 ]
+		    [COL_TYPE,      "C", 20 ],	
+		    [COL_INTENSITY ,"C", 10 ],
+		    [COL_STATE,     "C", 20 ],	
+		    [COL_LOCATION,  "C", 50 ],
+		    [COL_REPORTER,  "C", 30 ],	
+		    [COL_PHONE,     "C", 20 ],	
+		    [COL_DATE_SEND, "C", 50 ]
 	]
 
 	headers.each do |column|
@@ -45,11 +45,9 @@ class Exporter
 
   	shpfile.transaction do |tr|
   	  @data_sources.each do |row|
-  		data = convert_to_shp_data(row)
-  		latln = convert_to_shp_point(row)
-
-  		point = GeoRuby::SimpleFeatures::Point.from_x_y(latln[0].to_f, latln[1].to_f)
-  		tr.add(GeoRuby::Shp4r::ShpRecord.new(point, data))
+  		  data = convert_to_shp_data(row)
+  		  point = GeoRuby::SimpleFeatures::Point.from_x_y(row.location.lat, row.location.lng)
+  		  tr.add(GeoRuby::Shp4r::ShpRecord.new(point, data))
   	  end
     end
     shpfile.close
@@ -113,54 +111,51 @@ class Exporter
           #   xml.name 'Sajhedari Bikaas'
               @data_sources.each do |row|
                 xml.Placemark {
-                  xml.name "case"
+                  xml.name row.location.description
                   # xml.Snippet(:maxLines => 0)
                   # ßßßxml.description description_kml(row)
                   xml.styleUrl "#defaultstyle"
-
-                  latlng = convert_to_kml_point row
-
                   xml.LookAt {
-                    xml.longitude latlng[1]
-                    xml.latitude latlng[0]
-                    xml.altitude 
+                    xml.longitude row.location.lng
+                    xml.latitude  row.location.lat
+                    xml.altitude  0
                     xml.range 32185
                     xml.tilt 0
                     xml.heading 0
                   }
 
                   xml.ExtendedData {
-                    xml.Data(:name => COL1) {
-                      xml.value row[0]
+                    xml.Data(:name => COL_TYPE) {
+                      xml.value row.con_type_description
                     }
 
-                    xml.Data(:name => COL2) {
-                      xml.value row[1]
+                    xml.Data(:name => COL_INTENSITY) {
+                      xml.value row.con_intensity_description
                     }
 
-                    xml.Data(:name => COL3) {
-                      xml.value row[2]
+                    xml.Data(:name => COL_STATE) {
+                      xml.value row.con_state_description
                     }
 
-                    xml.Data(:name => COL4) {
-                      xml.value row[3]
+                    xml.Data(:name => COL_LOCATION) {
+                      xml.value row.location.latlng
                     }
 
-                    xml.Data(:name => COL5) {
-                      xml.value row[4]
+                    xml.Data(:name => COL_REPORTER) {
+                      xml.value row.reporter.full_name
                     }
 
-                    xml.Data(:name => COL6) {
-                      xml.value row[5]
+                    xml.Data(:name => COL_PHONE) {
+                      xml.value row.reporter.phone_number
                     }
 
-                    xml.Data(:name => COL7) {
-                      xml.value row[6]
+                    xml.Data(:name => COL_DATE_SEND) {
+                      xml.value row.created_at
                     }
                   }
 
                   xml.Point {
-                    xml.coordinates "#{row[3]},0"
+                    xml.coordinates "#{row.location.latlng},0"
                   }
                 }
               end
@@ -185,24 +180,16 @@ class Exporter
     str
   end
 
-  def convert_to_kml_point row
-    convert_to_shp_point row
-  end
-
-  def convert_to_shp_point row
-  	 row[3].split(",")
-  end
-
   def convert_to_shp_data row
-	{
-		COL1 => row[0],
-		COL2 => row[1],
-		COL3 => row[2],
-		COL4 => row[3],
-		COL5 => row[4],
-		COL6 => row[5],
-		COL7 => row[6]
-	}
+  	{
+  		COL_TYPE      => row.con_type_description,
+  		COL_INTENSITY => row.con_intensity_description,
+  		COL_STATE     => row.con_state_description,
+  		COL_LOCATION  => row.location.latlng,
+  		COL_REPORTER  => row.reporter.full_name,
+  		COL_PHONE     => row.reporter.phone_number,
+  		COL_DATE_SEND => row.created_at
+  	}
   end
 
 

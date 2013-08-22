@@ -17,9 +17,9 @@ class ConflictCasesController < ApplicationController
   end
 
   def export_as_kml
-    @fields = ConflictCase.get_fields
+    fields = ConflictCase.get_fields
     sites   = ConflictCase.all_from_resource_map
-    @conflict_cases = ConflictCase.transform(sites, @fields)
+    conflict_cases = ConflictCase.transform(sites, fields)
   end
 
   def export_as_shp

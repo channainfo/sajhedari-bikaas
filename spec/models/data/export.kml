@@ -16,155 +16,117 @@
       </LabelStyle>
     </Style>
     <Placemark>
-      <name>case</name>
+      <name>Phone Penh(855)</name>
       <styleUrl>#defaultstyle</styleUrl>
       <LookAt>
-        <longitude>104.0844</longitude>
-        <latitude>9.177</latitude>
-        <altitude/>
+        <longitude>104.916992</longitude>
+        <latitude>11.550874</latitude>
+        <altitude>0</altitude>
         <range>32185</range>
         <tilt>0</tilt>
         <heading>0</heading>
       </LookAt>
       <ExtendedData>
         <Data name="Type">
-          <value>Identity-based Violence</value>
+          <value>Violence</value>
         </Data>
         <Data name="Intensity">
           <value>High</value>
         </Data>
         <Data name="State">
-          <value>At the conflict</value>
+          <value>Beginning</value>
         </Data>
         <Data name="Location">
-          <value>9.177,104.0844</value>
+          <value>11.550874,104.916992</value>
         </Data>
         <Data name="Reporter">
-          <value>Ilab Channa-Ly</value>
+          <value>Mr Ilab </value>
         </Data>
         <Data name="Phone">
-          <value>855975553553</value>
+          <value>8550202020</value>
         </Data>
         <Data name="DateSent">
-          <value>2013-08-16 08:39:41 UTC</value>
+          <value>2013-08-22 18:49:58 +0700</value>
         </Data>
       </ExtendedData>
       <Point>
-        <coordinates>9.177,104.0844,0</coordinates>
+        <coordinates>11.550874,104.916992,0</coordinates>
       </Point>
     </Placemark>
     <Placemark>
-      <name>case</name>
+      <name>Cambodia(090)</name>
       <styleUrl>#defaultstyle</styleUrl>
       <LookAt>
-        <longitude>104.1844</longitude>
-        <latitude>8.277</latitude>
-        <altitude/>
+        <longitude>104.9169</longitude>
+        <latitude>11.580874</latitude>
+        <altitude>0</altitude>
         <range>32185</range>
         <tilt>0</tilt>
         <heading>0</heading>
       </LookAt>
       <ExtendedData>
         <Data name="Type">
-          <value>Gender Based Violence</value>
+          <value>Dispute</value>
         </Data>
         <Data name="Intensity">
           <value>Low</value>
         </Data>
         <Data name="State">
-          <value>Before the conflict</value>
+          <value>Middle</value>
         </Data>
         <Data name="Location">
-          <value>8.277,104.1844</value>
+          <value>11.580874,104.9169</value>
         </Data>
         <Data name="Reporter">
-          <value>Ilab Kakada</value>
+          <value>Mr SEA </value>
         </Data>
         <Data name="Phone">
-          <value>855975553554</value>
+          <value>8550202030</value>
         </Data>
         <Data name="DateSent">
-          <value>2013-08-16 08:41:07 UTC</value>
+          <value>2013-08-23 18:49:58 +0700</value>
         </Data>
       </ExtendedData>
       <Point>
-        <coordinates>8.277,104.1844,0</coordinates>
+        <coordinates>11.580874,104.9169,0</coordinates>
       </Point>
     </Placemark>
     <Placemark>
-      <name>case</name>
+      <name>Kampong Cham(200)</name>
       <styleUrl>#defaultstyle</styleUrl>
       <LookAt>
-        <longitude>104.2844</longitude>
-        <latitude>7.377</latitude>
-        <altitude/>
+        <longitude>104.917</longitude>
+        <latitude>11.600874</latitude>
+        <altitude>0</altitude>
         <range>32185</range>
         <tilt>0</tilt>
         <heading>0</heading>
       </LookAt>
       <ExtendedData>
         <Data name="Type">
-          <value>X Based Violence</value>
+          <value>Abuse</value>
         </Data>
         <Data name="Intensity">
-          <value>Low</value>
+          <value>Medium</value>
         </Data>
         <Data name="State">
-          <value>Before the conflict</value>
+          <value>Finished</value>
         </Data>
         <Data name="Location">
-          <value>7.377,104.2844</value>
+          <value>11.600874,104.917</value>
         </Data>
         <Data name="Reporter">
-          <value>Ilab Mann</value>
+          <value>Mr Ponhea krek </value>
         </Data>
         <Data name="Phone">
-          <value>855975553555</value>
+          <value>8550202040</value>
         </Data>
         <Data name="DateSent">
-          <value>2013-08-16 08:41:07 UTC</value>
+          <value>2013-08-24 18:49:58 +0700</value>
         </Data>
       </ExtendedData>
       <Point>
-        <coordinates>7.377,104.2844,0</coordinates>
-      </Point>
-    </Placemark>
-    <Placemark>
-      <name>case</name>
-      <styleUrl>#defaultstyle</styleUrl>
-      <LookAt>
-        <longitude>104.3844</longitude>
-        <latitude>11.477</latitude>
-        <altitude/>
-        <range>32185</range>
-        <tilt>0</tilt>
-        <heading>0</heading>
-      </LookAt>
-      <ExtendedData>
-        <Data name="Type">
-          <value>Y Based Violence</value>
-        </Data>
-        <Data name="Intensity">
-          <value>Low</value>
-        </Data>
-        <Data name="State">
-          <value>Before the conflict</value>
-        </Data>
-        <Data name="Location">
-          <value>11.477,104.3844</value>
-        </Data>
-        <Data name="Reporter">
-          <value>Ilab Mesa</value>
-        </Data>
-        <Data name="Phone">
-          <value>855975553556</value>
-        </Data>
-        <Data name="DateSent">
-          <value>2013-08-16 08:41:07 UTC</value>
-        </Data>
-      </ExtendedData>
-      <Point>
-        <coordinates>11.477,104.3844,0</coordinates>
+        <coordinates>11.600874,104.917,0</coordinates>
       </Point>
     </Placemark>
   </Document>

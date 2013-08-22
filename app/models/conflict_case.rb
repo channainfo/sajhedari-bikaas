@@ -9,6 +9,8 @@ class ConflictCase < ActiveRecord::Base
   attr_accessible :conflict_state
   attr_accessible :conflict_type
 
+  attr_accessible :reporter, :location
+
   attr_accessible :is_deleted
   attr_accessible :is_updated
   attr_accessible :reporter_id
