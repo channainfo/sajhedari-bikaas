@@ -8,5 +8,6 @@ class Setting < ActiveRecord::Base
   attr_accessible :message_invalid_sender
   attr_accessible :message_duplicate
   attr_accessible :message_failed
+  attr_accessible :email_send
 
 end

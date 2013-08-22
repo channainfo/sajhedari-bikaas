@@ -39,7 +39,6 @@ class Alert < ActiveRecord::Base
 
   def send_alert
     fields = ConflictCase.get_fields()
-    # nuntium_channel = active_gateway.nil?? Gateway.default_channel : active_gateway.nuntium_name
     start_date = DateTime.now - self.last_days.day
     end_date = DateTime.now
     sites = ConflictCase.get_all_sites_from_resource_map_by_period(start_date, end_date)
@@ -61,8 +60,8 @@ class Alert < ActiveRecord::Base
       JSON.parse(self.phone_contacts).each do |id|
         user = User.find(id)
         if (user.phone_number)
-          # Delayed::Job.enqueue(SmsJob.new(user.phone_number, nuntium_channel , self.message), 1)
-          # addJobToDelayedJobAlert
+          Delayed::Job.enqueue(SmsJob.new(user.phone_number, NuntiumConfig["channel"] , self.message), 1)
+          addJobToDelayedJobAlert
         end
       end
     end

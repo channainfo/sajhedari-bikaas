@@ -32,6 +32,7 @@ Setting.find_or_create_by_id!( :id => 1,
 								:message_unknown => "Unknown reported field", 
 								:message_invalid_sender => "Invalid sender",
 								:message_duplicate => "Report with duplicate information",
-								:message_failed => "Report to System failed. We will check it soon."
+								:message_failed => "Report to System failed. We will check it soon.",
+								:email_send => "noreply@sajhedaribikaas.org"
 								);
 
