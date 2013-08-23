@@ -62,7 +62,7 @@ describe Exporter do
   it "should return list of shp distributed file names with #shp_distributed_files" do
     file = "/x/y/export.shp.shp"
     files = @exporter.shp_distributed_files file
-    files.should =~ ["/x/y/export.shp.shp", "/x/y/export.shp.shx", "/x/y/export.shp.dbf"]
+    files.should =~ ["/x/y/export.shp.shp", "/x/y/export.shp.shx", "/x/y/export.shp.dbf", "/x/y/export.shp.prj"]
   end
 
   describe '#create_zip' do

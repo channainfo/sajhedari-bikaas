@@ -31,12 +31,12 @@ class Exporter
 		    [COL_REPORTER,  "C", 30 ],	
 		    [COL_PHONE,     "C", 20 ],	
 		    [COL_DATE_SEND, "C", 50 ]
-	]
+	  ]
 
-	headers.each do |column|
-	  field = GeoRuby::Shp4r::Dbf::Field.new(*column)
-	  fields << field
-	end
+	  headers.each do |column|
+	    field = GeoRuby::Shp4r::Dbf::Field.new(*column)
+	    fields << field
+	  end
 
   	shpfile = GeoRuby::Shp4r::ShpFile.create(sh_file_name, GeoRuby::Shp4r::ShpType::POINT, fields )
   	shpfile = GeoRuby::Shp4r::ShpFile.open(sh_file_name)
@@ -44,11 +44,13 @@ class Exporter
   	shpfile.transaction do |tr|
   	  @data_sources.each do |row|
   		  data = convert_to_shp_data(row)
-  		  point = GeoRuby::SimpleFeatures::Point.from_x_y(row.location.lat, row.location.lng)
+  		  point = GeoRuby::SimpleFeatures::Point.from_x_y(row.location.lng, row.location.lat)
   		  tr.add(GeoRuby::Shp4r::ShpRecord.new(point, data))
   	  end
+
     end
     shpfile.close
+    shp_prj_create sh_file_name
   end
 
   def to_sh_zip zip_file
@@ -63,7 +65,17 @@ class Exporter
     files_list.each do |file|
       File.delete file
     end
+  end
 
+  def shp_prj_create shp_file
+    file     = File.basename(shp_file, '.shp')
+    dirname  = File.dirname(shp_file) 
+    prj_file = File.expand_path( file + ".prj", dirname)
+
+    epsg_4326_file = "#{Rails.root}/public/data/protected/EPSG-4326.prj" 
+    epsg_4326_content = File.open(epsg_4326_file){|f| f.read}
+    File.open(prj_file,'w'){|f| f.write(epsg_4326_content)}
+    prj_file
   end
 
   def shp_distributed_files shp_file
@@ -72,8 +84,9 @@ class Exporter
 
      shx_file = File.expand_path( file + ".shx", dirname)
      dbf_file = File.expand_path( file + ".dbf", dirname)
+     prj_file = File.expand_path( file + ".prj", dirname)
 
-     [shp_file, shx_file, dbf_file ]
+     [shp_file, shx_file, dbf_file, prj_file ]
   end
 
   def create_zip(zip_file_name, files_list)
