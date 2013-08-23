@@ -31,10 +31,14 @@
 		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
 			<i class="icon-download"></i> Export <span class="caret"></span>
 		</a>
+		<%
+			export_params = params.slice(:from, :to)
+
+		%>
 
 		<ul class="dropdown-menu">
-			<li><%= link_to "as KML", export_as_kml_conflict_cases_path, :title => 'Kml File version 2.1' %>
-			<li><%= link_to "as Shape file", export_as_shp_conflict_cases_path, :title => 'All related shape files are zipped' %></li>
+			<li><%= link_to "as KML", export_as_kml_conflict_cases_path(export_params), :title => 'Kml File version 2.1' %>
+			<li><%= link_to "as Shape file", export_as_shp_conflict_cases_path(export_params), :title => 'All related shape files are zipped' %></li>
 		</ul>
 	</div>
   </div>
@@ -65,9 +69,9 @@
 	    	<% class_name = "updated" %>
 	    <% end %>			    
 		    <tr class=<%= class_name %>>
-			    <td><%= field_desc(@fields, l.conflict_type, "con_type") %></td>
-			    <td><%= field_desc(@fields, l.conflict_intensity, "con_intensity") %></td>
-			    <td><%= field_desc(@fields, l.conflict_state, "con_state") %></td>
+			    <td><%= l.conflict_type_description %></td>
+			    <td><%= l.conflict_intensity_description %></td>
+			    <td><%= l.conflict_state_description %></td>
 			    <td><%= l.location.name %>(<%= l.location.code %>)</td>
 			    <td style="width: 145px;">
 					<a class="" data-toggle="modal" href="#reporterModal" onclick="showReporterInfo('<%= l.reporter.first_name %>', '<%= l.reporter.last_name %>','<%= l.reporter.sex %>','<%= l.reporter.date_of_birth %>','<%= l.reporter.cast_ethnicity %>','<%= l.reporter.phone_number %>','<%= l.reporter.address %>');"><%= l.reporter.phone_number %></a> 
