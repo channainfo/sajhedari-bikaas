@@ -186,17 +186,16 @@ class ConflictCase < ActiveRecord::Base
     conflict
   end
 
-  def self.generate_graph_data conflict_case, con_type
+  def self.generate_graph_data conflict_case, params
     graph_data = {}
     k = 0
-    con_type = con_type.split(",")
-    # con_type = ["1"]
+    con_type = params[:data].split(",")
     if con_type.count > 0
-      arr = generate_daily_array
+      arr = generate_daily_array params[:from], params[:to]
       con_type.each do |con|
         k = k + 1
         conflict_case.each do |c|
-            for day in 1..31
+            for day in 1..arr.count
               if c.created_at.mday == day && c.conflict_type == con.to_i
                 arr[day-1][k] = arr[day-1][k].nil? ? 1 : arr[day-1][k] + 1
               else
@@ -208,7 +207,6 @@ class ConflictCase < ActiveRecord::Base
     else
       arr = [['', 0]]
     end
-    # debugger
     return arr
   end
 
@@ -224,12 +222,25 @@ class ConflictCase < ActiveRecord::Base
     return header
   end
 
-  def self.generate_daily_array
+  def self.generate_daily_array from, to
     arr = []
-    for i in 1..31
-      arr << [i.to_s+"/Aug"]
+    from = from.blank? ? "#{Time.now.mon}/01/#{Time.now.year}" : from
+    to = to.blank? ? "#{Time.now.mon}/31/#{Time.now.year}" : to
+    from = parse_date_format from
+    to = parse_date_format to
+    for i in from..to
+      arr << [reverse_date_format(i)]
     end
     return arr
+  end
+
+  def self.parse_date_format date 
+    array_date = date.split("/")
+    return Date.new(array_date[2].to_i, array_date[0].to_i, array_date[1].to_i)
+  end
+
+  def self.reverse_date_format date
+    return "#{date.mon}/#{date.mday}/#{date.year}"
   end
 
   def self.assign_value conflict, key, value, field

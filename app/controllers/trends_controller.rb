@@ -13,7 +13,7 @@ class TrendsController < ApplicationController
       con_type = params[:data].split(",")
       sites = ConflictCase.get_sites_bases_on_conflict_type_from_resourcemap params
       conflict_cases = ConflictCase.transform(sites, fields)
-      graph_data = ConflictCase.generate_graph_data conflict_cases, params[:data]
+      graph_data = ConflictCase.generate_graph_data conflict_cases, params
       header = ConflictCase.generate_header params[:data]
       graph_data.unshift(header)
       result << graph_data
