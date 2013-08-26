@@ -52,6 +52,7 @@ function generateGraphData() {
 
           var options = {
             title: '',
+            legend: {position: 'none'},
             colors: data[1]
           };
 
