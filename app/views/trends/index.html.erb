@@ -7,28 +7,29 @@
       <h4> Trends </h4>
       <div style="margin-top: 15px; margin-bottom: 15px;">
         <span style="border: 1px solid #FF3333; background-color: #FF3333; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
-        <input type="checkbox" name="conflict_inten[gender_based]" value="gender_based" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" />Gender based violence
-      </div>
-      <div style="margin-top: 15px; margin-bottom: 15px;">
-        <span style="border: 1px solid #FF3399; background-color: #FF3399; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
-        <input type="checkbox" name="conflict_inten[gender_based]" value="gender_based" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" />Case based violence
-      </div>
-      <div style="margin-top: 15px; margin-bottom: 15px;">
-        <span style="border: 1px solid #FFFF33; background-color: #FFFF33; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
-        <input type="checkbox" name="conflict_inten[gender_based]" value="gender_based" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" />Political violence
-      </div>
-      <div style="margin-top: 15px; margin-bottom: 15px;">
-        <span style="border: 1px solid #99FF33; background-color: #99FF33; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
-        <input type="checkbox" name="conflict_inten[gender_based]" value="gender_based" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" />Inter-personal conflict
+        <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="1" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Gender based violence
       </div>
       <div style="margin-top: 15px; margin-bottom: 15px;">
         <span style="border: 1px solid #3333FF; background-color: #3333FF; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
-        <input type="checkbox" name="conflict_inten[gender_based]" value="gender_based" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" />Resource based violence
+        <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="2" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Case based violence
+      </div>
+      <div style="margin-top: 15px; margin-bottom: 15px;">
+        <span style="border: 1px solid #800080; background-color: #800080; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
+        <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="3" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Political violence
+      </div>
+      <div style="margin-top: 15px; margin-bottom: 15px;">
+        <span style="border: 1px solid #556B2F; background-color: #556B2F; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
+        <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="4" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Inter-personal conflict
+      </div>
+      <div style="margin-top: 15px; margin-bottom: 15px;">
+        <span style="border: 1px solid #8B4513; background-color: #8B4513; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
+        <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="5" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Resource based violence
       </div>
       <div class="well">
-        <input type="text" class="datepicker" style="width: 100px;" />
+        From
+        <input type="text" id="from" class="datepicker" style="width: 85px;" />
         To
-        <input type="text" class="datepicker" style="width: 100px;" />
+        <input type="text" id="to" class="datepicker" style="width: 85px;" />
       </div>
     </div>
     <div id="chart_div" style="width: 70%; height: 400px; float: right;"></div>
@@ -40,11 +41,9 @@
     google.setOnLoadCallback(drawChart);
     function drawChart() {
       var data = google.visualization.arrayToDataTable([
-        ['Year', '', ''],
-        ['2004',  1000,      400],
-        ['2005',  1170,      460],
-        ['2006',  660,       1120],
-        ['2007',  1030,      540]
+
+        ['Time', ''],
+    ['', 0],
       ]);
 
       var options = {
@@ -53,6 +52,24 @@
 
       var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
       chart.draw(data, options);
+    }
+
+    function redrawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Day', '', ''],
+        ['1',  900,      400],
+        ['2',  0,      300],
+        ['3',  560,       1120],
+        ['4',  730,      540]
+      ]);
+
+      var options = {
+        title: '',
+        color: ['#FF3333','#FF3333']
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      chart.draw(data, options); 
     }
     $('.datepicker').datepicker()
   </script>

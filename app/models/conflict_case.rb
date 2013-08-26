@@ -163,6 +163,20 @@ class ConflictCase < ActiveRecord::Base
     conflict_cases
   end
 
+  def self.get_sites_bases_on_conflict_type_from_resourcemap params
+    yml = load_resource_map
+    request = Typhoeus::Request.new(
+    yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
+      method: :get,
+      body: "this is a request body",
+      params: {:con_type => params[:data], :from => params[:from], :to => params[:to]},
+      headers: { Accept: "text/html" }
+    )
+    request.run
+    response = request.response.response_body
+    return JSON.parse(response)
+  end
+
   def self.convertToConflictCase site, field
     conflict = ConflictCase.find_by_site_id(site["id"])
     properties = site["properties"]
@@ -170,6 +184,52 @@ class ConflictCase < ActiveRecord::Base
       conflict = assign_value conflict, key, value, field
     end
     conflict
+  end
+
+  def self.generate_graph_data conflict_case, con_type
+    graph_data = {}
+    k = 0
+    con_type = con_type.split(",")
+    # con_type = ["1"]
+    if con_type.count > 0
+      arr = generate_daily_array
+      con_type.each do |con|
+        k = k + 1
+        conflict_case.each do |c|
+            for day in 1..31
+              if c.created_at.mday == day && c.conflict_type == con.to_i
+                arr[day-1][k] = arr[day-1][k].nil? ? 1 : arr[day-1][k] + 1
+              else
+                arr[day-1][k] = arr[day-1][k].nil? ? 0 : arr[day-1][k]
+              end
+            end
+        end
+      end
+    else
+      arr = [['', 0]]
+    end
+    # debugger
+    return arr
+  end
+
+  def self.generate_header con_type
+    header = ["Day"]
+    con_type = con_type.split(",")
+    if con_type.size == 0
+      header << ""
+    end
+    con_type.each do |el|
+      header << ""
+    end
+    return header
+  end
+
+  def self.generate_daily_array
+    arr = []
+    for i in 1..31
+      arr << [i.to_s+"/Aug"]
+    end
+    return arr
   end
 
   def self.assign_value conflict, key, value, field
