@@ -35,15 +35,17 @@ function updateModalPaging(id, offset) {
 function generateGraphData() {
     var case_inten = [];
     var array_checkbox = $(".checkboxes:checked");
+    var select = document.getElementById("frequently");
     var from = document.getElementById("from").value;
     var to = document.getElementById("to").value;
     for (var i=0; i<array_checkbox.size(); i++) {
         case_inten.push(array_checkbox[i].value);
     }
+    var frequently = select.options[select.selectedIndex].text;
     $.ajax({
         url: '/trends/fetchCaseForGraph',
         type: "get",
-        data: "data="+case_inten.join(",")+"&from="+from+"&to="+to,
+        data: "data="+case_inten.join(",")+"&from="+from+"&to="+to+"&frequently="+frequently,
         success: function(data) {
           
           var graph_data = google.visualization.arrayToDataTable(data[0]);
