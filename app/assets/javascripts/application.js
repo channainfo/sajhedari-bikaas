@@ -56,7 +56,10 @@ function generateGraphData() {
             colors: data[1]
           };
 
-          var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+          if (data[0].length <= 2)
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+          else
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
           chart.draw(graph_data, options); 
             }
     })
