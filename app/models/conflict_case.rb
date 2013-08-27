@@ -186,7 +186,31 @@ class ConflictCase < ActiveRecord::Base
     conflict
   end
 
-  def self.generate_graph_data conflict_case, params
+  def self.generate_weekly_graph conflict_case, params
+    graph_data = {}
+    k = 0
+    con_type = params[:data].split(",")
+    if con_type.count > 0
+      arr = generate_weekly_array params[:from], params[:to]
+      con_type.each do |con|
+        k = k + 1
+        conflict_case.each do |c|
+          for week in 1..arr.count
+            if ((7*week)-6..7*week).member?(c.created_at.mday) && c.conflict_type == con.to_i
+              arr[week-1][k] = arr[week-1][k].nil? ? 1 : arr[week-1][k] + 1
+            else
+              arr[week-1][k] = arr[week-1][k].nil? ? 0 : arr[week-1][k]
+            end
+          end
+        end
+      end
+    else
+      arr = [['', 0]]
+    end
+    return arr
+  end
+
+  def self.generate_daily_graph conflict_case, params
     graph_data = {}
     k = 0
     con_type = params[:data].split(",")
@@ -220,6 +244,216 @@ class ConflictCase < ActiveRecord::Base
       header << ""
     end
     return header
+  end
+
+  def self.generate_weekly_array from, to
+    arr = []
+    from = from.blank? ? "#{Time.now.mon}/01/#{Time.now.year}" : from
+    to = to.blank? ? "#{Time.now.mon}/31/#{Time.now.year}" : to
+    from = parse_date_format from
+    to = parse_date_format to
+    day_count = 0
+    for i in from..to
+      day_count = day_count + 1
+      if day_count%7 == 0
+        arr << ["#{i.mon}/w#{day_count/7}/#{i.year}"] 
+      end
+      if day_count >= 28
+        day_count = 0
+      end
+    end
+    return arr
+  end
+
+  def self.generate_montly_graph conflict_case, params
+    graph_data = {}
+    k = 0
+    con_type = params[:data].split(",")
+    if con_type.count > 0
+      arr = generate_montly_array params[:from], params[:to]
+      con_type.each do |con|
+        k = k + 1
+        conflict_case.each do |c|
+            for mon in 1..arr.count
+              month = arr[mon-1][0].split("/")[0].to_i
+              if c.created_at.mon == month && c.conflict_type == con.to_i
+                arr[mon-1][k] = arr[mon-1][k].nil? ? 1 : arr[mon-1][k] + 1
+              else
+                arr[mon-1][k] = arr[mon-1][k].nil? ? 0 : arr[mon-1][k]
+              end
+            end
+        end
+      end
+    else
+      arr = [['', 0]]
+    end
+    return arr
+  end
+
+  def self.generate_yearly_graph conflict_case, params
+    graph_data = {}
+    k = 0
+    con_type = params[:data].split(",")
+    if con_type.count > 0
+      arr = generate_yearly_array params[:from], params[:to]
+      con_type.each do |con|
+        k = k + 1
+        conflict_case.each do |c|
+            for y in 1..arr.count
+              year = arr[y-1][0].split("/")[0].to_i
+              if c.created_at.year == year && c.conflict_type == con.to_i
+                arr[y-1][k] = arr[y-1][k].nil? ? 1 : arr[y-1][k] + 1
+              else
+                arr[y-1][k] = arr[y-1][k].nil? ? 0 : arr[y-1][k]
+              end
+            end
+        end
+      end
+    else
+      arr = [['', 0]]
+    end
+    return arr
+  end
+
+  def self.generate_yearly_array from, to
+    arr = []
+    from = from.blank? ? "#{Time.now.mon}/01/#{Time.now.year}" : from
+    to = to.blank? ? "#{Time.now.mon}/31/#{Time.now.year}" : to
+    from = parse_date_format from
+    to = parse_date_format to
+    for i in from..to
+      arr << ["#{i.year}"] unless arr.include?(["#{i.year}"])
+    end
+    return arr
+  end
+
+  def self.generate_semi_annual_graph conflict_case, params
+    graph_data = {}
+    k = 0
+    con_type = params[:data].split(",")
+    if con_type.count > 0
+      arr = generate_semi_annual_array params[:from], params[:to]
+      con_type.each do |con|
+        k = k + 1
+        conflict_case.each do |c|
+            for q in 1..arr.count
+              quarter = arr[q-1][0].split("/")[0]
+              if quarter == "S1"
+                if (1..6).member?(c.created_at.mon) && c.conflict_type == con.to_i
+                  arr[q-1][k] = arr[q-1][k].nil? ? 1 : arr[q-1][k] + 1
+                else
+                  arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
+                end
+              elsif quarter == "S2"
+                if (7..12).member?(c.created_at.mon) && c.conflict_type == con.to_i
+                  arr[q-1][k] = arr[q-1][k].nil? ? 1 : arr[q-1][k] + 1
+                else
+                  arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
+                end
+              end
+
+            end
+        end
+      end
+    else
+      arr = [['', 0]]
+    end
+    return arr
+  end
+
+  def self.generate_semi_annual_array from, to
+    arr = []
+    from = from.blank? ? "#{Time.now.mon}/01/#{Time.now.year}" : from
+    to = to.blank? ? "#{Time.now.mon}/31/#{Time.now.year}" : to
+    from = parse_date_format from
+    to = parse_date_format to
+    for i in from..to
+      if (1..6).member?(i.mon)
+        arr << ["S1/#{i.year}"] unless arr.include?(["S1/#{i.year}"])
+      elsif (7..12).member?(i.mon)
+        arr << ["S2/#{i.year}"] unless arr.include?(["S2/#{i.year}"])
+      end
+    end
+    return arr
+  end
+
+  def self.generate_quarterly_graph conflict_case, params
+    graph_data = {}
+    k = 0
+    con_type = params[:data].split(",")
+    if con_type.count > 0
+      arr = generate_quarterly_array params[:from], params[:to]
+
+      con_type.each do |con|
+        k = k + 1
+        conflict_case.each do |c|
+            for q in 1..arr.count
+              quarter = arr[q-1][0].split("/")[0]
+              if quarter == "Q1"
+                if (1..3).member?(c.created_at.mon) && c.conflict_type == con.to_i
+                  arr[q-1][k] = arr[q-1][k].nil? ? 1 : arr[q-1][k] + 1
+                else
+                  arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
+                end
+              elsif quarter == "Q2"
+                if (4..6).member?(c.created_at.mon) && c.conflict_type == con.to_i
+                  arr[q-1][k] = arr[q-1][k].nil? ? 1 : arr[q-1][k] + 1
+                else
+                  arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
+                end
+              elsif quarter == "Q3"
+                if (7..9).member?(c.created_at.mon) && c.conflict_type == con.to_i
+                  arr[q-1][k] = arr[q-1][k].nil? ? 1 : arr[q-1][k] + 1
+                else
+                  arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
+                end
+              elsif quarter == "Q4"
+                if (10..12).member?(c.created_at.mon) && c.conflict_type == con.to_i
+                  arr[q-1][k] = arr[q-1][k].nil? ? 1 : arr[q-1][k] + 1
+                else
+                  arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
+                end
+              end
+
+            end
+        end
+      end
+    else
+      arr = [['', 0]]
+    end
+    return arr
+  end
+
+  def self.generate_quarterly_array from, to
+    arr = []
+    from = from.blank? ? "#{Time.now.mon}/01/#{Time.now.year}" : from
+    to = to.blank? ? "#{Time.now.mon}/31/#{Time.now.year}" : to
+    from = parse_date_format from
+    to = parse_date_format to
+    for i in from..to
+      if (1..3).member?(i.mon)
+        arr << ["Q1/#{i.year}"] unless arr.include?(["Q1/#{i.year}"])
+      elsif (4..6).member?(i.mon)
+        arr << ["Q2/#{i.year}"] unless arr.include?(["Q2/#{i.year}"])
+      elsif (7..9).member?(i.mon)
+        arr << ["Q3/#{i.year}"] unless arr.include?(["Q3/#{i.year}"])
+      elsif (10..12).member?(i.mon)
+        arr << ["Q4/#{i.year}"] unless arr.include?(["Q4/#{i.year}"])
+      end
+    end
+    return arr
+  end
+
+  def self.generate_montly_array from, to
+    arr = []
+    from = from.blank? ? "#{Time.now.mon}/01/#{Time.now.year}" : from
+    to = to.blank? ? "#{Time.now.mon}/31/#{Time.now.year}" : to
+    from = parse_date_format from
+    to = parse_date_format to
+    for i in from..to
+      arr << ["#{i.mon}/#{i.year}"] unless arr.include?(["#{i.mon}/#{i.year}"])
+    end
+    return arr
   end
 
   def self.generate_daily_array from, to
