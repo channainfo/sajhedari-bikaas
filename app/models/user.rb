@@ -23,9 +23,8 @@ class User < ActiveRecord::Base
   end
 
   def create_to_resourcemap
-    yml = self.load_resource_map
     request = Typhoeus::Request.new(
-      yml["url"] + 'api/collections/' + yml["collection_id"].to_s + '/memberships',
+      ResourceMapConfig["url"] + 'api/collections/' + ResourceMapConfig["collection_id"].to_s + '/memberships',
       method: :post,
       params: { "user[email]" => self.email, 
                 "user[password]" => self.password, 
@@ -42,9 +41,8 @@ class User < ActiveRecord::Base
   end
 
   def update_to_resourcemap user
-    yml = self.load_resource_map
     request = Typhoeus::Request.new(
-      yml["url"] + 'api/collections/' + yml["collection_id"].to_s + '/memberships',
+      ResourceMapConfig["url"] + 'api/collections/' + ResourceMapConfig["collection_id"].to_s + '/memberships',
       method: :put,
       params: { "user[email]" => user["email"], 
                 "user[phone_number]" => user["phone_number"],
@@ -58,9 +56,8 @@ class User < ActiveRecord::Base
   end
 
   def destroy_from_resourcemap 
-    yml = self.load_resource_map
     request = Typhoeus::Request.new(
-      yml["url"] + 'api/collections/' + yml["collection_id"].to_s + '/destroy_member',
+      ResourceMapConfig["url"] + 'api/collections/' + ResourceMapConfig["collection_id"].to_s + '/destroy_member',
       method: :delete,
       userpwd: "#{USER_NAME}:#{PASSWORD}",
       params: { 
@@ -74,9 +71,8 @@ class User < ActiveRecord::Base
   end
 
   def update_password_to_resourcemap user
-    yml = self.load_resource_map
     request = Typhoeus::Request.new(
-      yml["url"] + 'api/collections/' + yml["collection_id"].to_s + '/memberships',
+      ResourceMapConfig["url"] + 'api/collections/' + ResourceMapConfig["collection_id"].to_s + '/memberships',
       method: :put,
       params: { 
                 "user[password]" => user["password"],
@@ -88,10 +84,6 @@ class User < ActiveRecord::Base
     request.run
     response = request.response.code
     return response == 200
-  end
-
-  def load_resource_map
-    YAML.load_file File.expand_path(Rails.root + "config/resourcemap.yml", __FILE__)
   end
 
 end

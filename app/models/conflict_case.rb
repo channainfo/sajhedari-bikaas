@@ -53,11 +53,7 @@ class ConflictCase < ActiveRecord::Base
     end
   end
 
-
-
-
   def save_case_to_resource_map option
-    yml = self.class.load_resource_map
     params = { lat: self.location.lat, 
                  lng: self.location.lng, 
                  name: self.location.name, 
@@ -68,7 +64,7 @@ class ConflictCase < ActiveRecord::Base
                  headers: { Accept: "text/html" }
             }
     request = Typhoeus::Request.new(
-       yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
+       ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
        method: :post,
        body: "this is a request body",
        params: params
@@ -82,10 +78,9 @@ class ConflictCase < ActiveRecord::Base
   end
 
   def update_to_resource_map
-    yml = self.class.load_resource_map
     site_id = self.site_id.to_s
     request = Typhoeus::Request.new(
-       yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + site_id,
+       ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites/" + site_id,
        method: :put,
        body: "this is a request body",
        params: { phone_number: self.reporter.phone_number,
@@ -104,10 +99,9 @@ class ConflictCase < ActiveRecord::Base
   end
 
   def update_to_resource_map_with_form params
-    yml = self.class.load_resource_map
     site_id = self.site_id.to_s
     request = Typhoeus::Request.new(
-       yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + site_id,
+       ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites/" + site_id,
        method: :put,
        body: "this is a request body",
        params: { phone_number: self.reporter.phone_number,
@@ -126,10 +120,9 @@ class ConflictCase < ActiveRecord::Base
   end
 
   def destroy_case_from_resource_map
-    yml = self.class.load_resource_map
     site_id = self.site_id.to_s
     request = Typhoeus::Request.new(
-    yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + site_id,
+    ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites/" + site_id,
       method: :delete,
       body: "this is a request body",
       params: {},
@@ -141,9 +134,8 @@ class ConflictCase < ActiveRecord::Base
   end
 
   def self.get_all_sites_from_resource_map()
-    yml = load_resource_map
     request = Typhoeus::Request.new(
-    yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
+    ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
       method: :get,
       body: "this is a request body",
       headers: { Accept: "text/html" }
@@ -154,9 +146,8 @@ class ConflictCase < ActiveRecord::Base
   end
 
   def self.get_paging_sites_from_resource_map(limit, offset)
-    yml = load_resource_map
     request = Typhoeus::Request.new(
-    yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
+    ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
       method: :get,
       body: "this is a request body",
       params: {:limit => limit, :offset => offset},
@@ -169,9 +160,8 @@ class ConflictCase < ActiveRecord::Base
 
 
   def self.all_from_resource_map
-    yml = load_resource_map
     request = Typhoeus::Request.new(
-      yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
+      ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
       method: :get
     )
     request.run
@@ -179,9 +169,8 @@ class ConflictCase < ActiveRecord::Base
   end
 
   def self.get_all_sites_from_resource_map_by_period(start_date, end_date)
-    yml = load_resource_map
     request = Typhoeus::Request.new(
-          yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
+          ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
           method: :get,
           body: "this is a request body",
           headers: { Accept: "text/html" },
@@ -194,9 +183,8 @@ class ConflictCase < ActiveRecord::Base
   end
 
   def get_conflict_from_resource_map
-    yml = self.class.load_resource_map
     request = Typhoeus::Request.new(
-      yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + self.site_id.to_s,
+      ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites/" + self.site_id.to_s,
       method: :get,
       body: "this is a request body",
       params: {},
@@ -218,14 +206,9 @@ class ConflictCase < ActiveRecord::Base
     backup
   end
 
-  def self.load_resource_map
-    YAML.load_file File.expand_path(Rails.root + "config/resourcemap.yml", __FILE__)
-  end
-
   def self.get_fields
-    yml = load_resource_map
     request = Typhoeus::Request.new(
-    yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/get_fields.json",
+    ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/get_fields.json",
       method: :get,
       headers: { Accept: "text/html" }
     )

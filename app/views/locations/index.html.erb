@@ -143,8 +143,8 @@
     </div>
 </div>
 
-<% if @rows and @rows[:error_records] %>
-	<script>
+<% if @rows and !@rows[:error_records].empty? %>
+	<script type="text/javascript">
 		  $('#errorModal').modal('show');
 	</script>
 <% end %>

@@ -19,9 +19,8 @@ class Reporter < ActiveRecord::Base
   end
 
   def create_to_resource_map
-    yml = self.load_resource_map
     request = Typhoeus::Request.new(
-      yml["url"] + 'api/collections/' + yml["collection_id"].to_s + '/register_new_member',
+      ResourceMapConfig["url"] + 'api/collections/' + ResourceMapConfig["collection_id"].to_s + '/register_new_member',
       method: :post,
       userpwd: "#{USER_NAME}:#{PASSWORD}",
       params: { "user[email]" => "", 
@@ -36,9 +35,8 @@ class Reporter < ActiveRecord::Base
   end
 
   def update_to_resourcemap reporter
-    yml = self.load_resource_map
     request = Typhoeus::Request.new(
-      yml["url"] + 'api/collections/' + yml["collection_id"].to_s + '/memberships',
+      ResourceMapConfig["url"] + 'api/collections/' + ResourceMapConfig["collection_id"].to_s + '/memberships',
       method: :put,
       userpwd: "#{USER_NAME}:#{PASSWORD}",
       params: { "user[phone_number]" => reporter["phone_number"],
@@ -52,18 +50,13 @@ class Reporter < ActiveRecord::Base
     return response == 200
   end
 
-  def load_resource_map
-    YAML.load_file File.expand_path(Rails.root + "config/resourcemap.yml", __FILE__)
-  end
-
   def never_sent_case
     ConflictCase.find_by_reporter_id(self.id) == nil
   end
 
   def destroy_from_resource_map
-    yml = self.load_resource_map
     request = Typhoeus::Request.new(
-      yml["url"] + 'api/collections/' + yml["collection_id"].to_s + '/destroy_member',
+      ResourceMapConfig["url"] + 'api/collections/' + ResourceMapConfig["collection_id"].to_s + '/destroy_member',
       method: :delete,
       userpwd: "#{USER_NAME}:#{PASSWORD}",
       params: { 
