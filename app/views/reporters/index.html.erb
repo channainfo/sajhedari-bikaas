@@ -1,84 +1,84 @@
-    <div class="btn-toolbar">
-    	<form class="form-search input-append" action=<%= reporters_path() %>>
-		    <div class="input-append" method="#">
-		    	<input type="text" class="span2 search-query" id="query" name="query" value=<%= @query %>>
-		    	<button type="submit" class="btn">Search</button>
-		    </div>
-		</form>
-    	<%= link_to "Add New Reporter", new_reporter_path, :method => :get, :class => 'btn btn-primary to-right' %>	    
-    </div>
-    <div>
-    	<!--<table class="table table-bordered table-striped">-->
-	    <table class="table table-condensed table-hover">
-		    <thead>
-			    <tr>
-				    <th>First Name</th>
-				    <th>Last Name</th>
-				    <th>Gender</th>
-				    <th>Cast/Ethnicity</th>
-				    <th>Phone Number</th>
-				    <th style="width: 36px;"></th>
-			    </tr>
-		    </thead>
-		    <tbody>
-			    <% @reporters.each do |reporter| %>			    
-				    <tr>
-					    <td><%= reporter.first_name %></td>
-					    <td><%= reporter.last_name %></td>
-					    <td><%= reporter.sex %></td>
-					    <td><%= reporter.cast_ethnicity %></td>
-					    <td><%= reporter.phone_number %></td>
-					    <td style="width: 145px;">
-					    	<a class="" data-toggle="modal" href="#betaModal" onclick="updateModalPaging(<%= reporter.id %>, 0);">View Case Reported</a> 
-				    	</td>
-					    <td>
-					    <%= link_to raw("<i class='icon-pencil'></i>"), edit_reporter_path(reporter), :method => :get %>
-					    <%= link_to raw("<i class='icon-remove'></i>"), reporter_path(reporter), :method => :delete, :confirm => "Are you sure to delete reporter #{reporter.first_name} #{reporter.last_name}?" %>
-					    </td>
-
-				    </tr>
-				<% end %>
-			</tbody>
-	    </table>
-    </div>
-    <%= will_paginate @reporters, :param_name => 'reporter_page', renderer: BootstrapPagination::Rails %>
-    <div id="betaModal" class="modal hide fade">
-	    <div class="modal-header">
-	            <button class="close" data-dismiss="modal">×</button>
-	            <h3> Conflict Case Report </h3>
+<div class="btn-toolbar">
+	<form class="form-search input-append" action=<%= reporters_path() %>>
+	    <div class="input-append" method="#">
+	    	<input type="text" class="span4 search-query" placeholder="Search First name, Last name, Phone number ..." id="query" name="query" value=<%= @query %>>
+	    	<button type="submit" class="btn">Search</button>
 	    </div>
-		<div class="modal-body" id="reporter_case">
-		    <div>
-		    	<!--<table class="table table-bordered table-striped">-->
-			    <table class="table table-condensed table-hover" id="mytable">
-				    <thead>
-					    <tr>
-						    <th>Reported date</th>
-						    <th>Type of violent</th>
-						    <th>Intensity</th>
-						    <th>State</th>
-						    <th>Location</th>
-					    </tr>
-				    </thead>
-				    <tbody>
-					</tbody>
-			    </table>
-		    </div>
-		</div>
-		<div class="modal-footer">
-			<a href="#" data-dismiss="modal" class="btn btn-primary">Close</a>
-		</div>
+	</form>
+	<%= link_to "Add New Reporter", new_reporter_path, :method => :get, :class => 'btn btn-primary to-right' %>	    
+</div>
+<div>
+	<!--<table class="table table-bordered table-striped">-->
+    <table class="table table-condensed table-hover">
+	    <thead>
+		    <tr>
+			    <th>First Name</th>
+			    <th>Last Name</th>
+			    <th>Gender</th>
+			    <th>Cast/Ethnicity</th>
+			    <th>Phone Number</th>
+			    <th style="width: 36px;"></th>
+		    </tr>
+	    </thead>
+	    <tbody>
+		    <% @reporters.each do |reporter| %>			    
+			    <tr>
+				    <td><%= reporter.first_name %></td>
+				    <td><%= reporter.last_name %></td>
+				    <td><%= reporter.sex %></td>
+				    <td><%= reporter.cast_ethnicity %></td>
+				    <td><%= reporter.phone_number %></td>
+				    <td style="width: 145px;">
+				    	<a class="" data-toggle="modal" href="#betaModal" onclick="updateModalPaging(<%= reporter.id %>, 0);">View Case Reported</a> 
+			    	</td>
+				    <td>
+				    <%= link_to raw("<i class='icon-pencil'></i>"), edit_reporter_path(reporter), :method => :get %>
+				    <%= link_to raw("<i class='icon-remove'></i>"), reporter_path(reporter), :method => :delete, :confirm => "Are you sure to delete reporter #{reporter.first_name} #{reporter.last_name}?" %>
+				    </td>
+
+			    </tr>
+			<% end %>
+		</tbody>
+    </table>
+</div>
+<%= will_paginate @reporters, :param_name => 'reporter_page', renderer: BootstrapPagination::Rails %>
+<div id="betaModal" class="modal hide fade">
+    <div class="modal-header">
+            <button class="close" data-dismiss="modal">×</button>
+            <h3> Conflict Case Report </h3>
+    </div>
+	<div class="modal-body" id="reporter_case">
+	    <div>
+	    	<!--<table class="table table-bordered table-striped">-->
+		    <table class="table table-condensed table-hover" id="mytable">
+			    <thead>
+				    <tr>
+					    <th>Reported date</th>
+					    <th>Type of violent</th>
+					    <th>Intensity</th>
+					    <th>State</th>
+					    <th>Location</th>
+				    </tr>
+			    </thead>
+			    <tbody>
+				</tbody>
+		    </table>
+	    </div>
 	</div>
-	<div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	    <div class="modal-header">
-		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		    <h3 id="myModalLabel">Delete Confirmation</h3>
-		</div>
-		<div class="modal-body">
-		    <p class="error-text">Are you sure you want to delete the user?</p>
-		</div>
-		<div class="modal-footer">
-		    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-		    <button class="btn btn-danger" data-dismiss="modal">Delete</button>
-	    </div>	    
+	<div class="modal-footer">
+		<a href="#" data-dismiss="modal" class="btn btn-primary">Close</a>
 	</div>
+</div>
+<div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Delete Confirmation</h3>
+	</div>
+	<div class="modal-body">
+	    <p class="error-text">Are you sure you want to delete the user?</p>
+	</div>
+	<div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	    <button class="btn btn-danger" data-dismiss="modal">Delete</button>
+    </div>	    
+</div>

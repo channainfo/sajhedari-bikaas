@@ -106,11 +106,11 @@ class LocationsController < ApplicationController
       end 
 
       if(errors.empty?)
-        @rows = Import::process_import file_obj.path
-        msg = "You have successfully imported #{@rows[:success]} locations to your system with #{@rows[:failed]} failed."
+        @rows = Import::process_import file_obj.path, params[:allow_to_override], current_user
+        msg = "You have successfully imported #{@rows[:success]} locations to your system with #{@rows[:failed]} failed and #{@rows[:updated]} updated on existed location."
         flash[:notice] = msg
         @locations = Location.all.paginate(:page => params[:page], :per_page => 10)
-        render :index
+        redirect_to locations_path
       else
         flash[:error] = "Process import failed. #{errors['error_type']}"
         render :import

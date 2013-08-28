@@ -1,0 +1,20 @@
+production:
+  url: http://nuntium.instedd.org
+  account: ksokmesa@gmail.com
+  application: gateway
+  channel: nepal
+  password: 123456 #password application
+
+development:
+  url: http://nuntium.instedd.org
+  account: ksokmesa@gmail.com
+  application: gateway
+  channel: nepal
+  password: 123456 #password application
+
+testing:
+  url: http://nuntium.instedd.org
+  account: ksokmesa@gmail.com
+  application: gateway
+  channel: nepal
+  password: 123456 #password application

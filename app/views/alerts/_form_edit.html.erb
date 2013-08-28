@@ -1,0 +1,140 @@
+<% if alert.errors.any? %>
+    <div class="alert alert-block">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <div id="error_explanation">
+            <h4><%= pluralize(alert.errors.count, "error") %> prohibited this post from being saved:</h4>
+         
+            <ul>
+            <% alert.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+            </ul>
+        </div>
+    </div>
+<% end %>
+<%= form_for(alert, :url => {action: action} , :html => {:class => 'form-horizontal'} ) do |f| %>    
+    <fieldset>   
+        <div class="control-group">
+            <%= f.label "Alert name",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :name, :class =>"input-xlarge", :required => "required" %>
+            </div>
+
+        </div>
+        <div>
+            <label>If total case of:</label>
+        </div>
+        
+        <div class="well">
+            <div class="control-group" id="conditions" style="margin-bottom:0px">                
+                <% if alert.condition %>
+                    <% i = 1 %>
+                    <% JSON.parse(alert.condition).each do |key, value| %>
+                        <% @fields.each do |f| %>
+                            <% if key == f["code"] %>
+                                <div id="condition<%= i %>" class="controls navbar-inner" style="padding-top:10px; margin-bottom:20px">
+                                    <div class="row-fluid">
+                                        <div class="span4">
+                                            <select class="input-block-level" id="conflict-info<%= i %>" name="type[]">
+                                                <option <%= "selected" if key == "con_state" %> value="con_state">Conflict State</li>
+                                                <option <%= "selected" if key == "con_intensity" %> value="con_intensity">Conflict Intensity</li>
+                                                <option <%= "selected" if key == "con_type" %> value="con_type">Conflict Type</li>
+                                            </select>                                            
+                                        </div>
+                                        <div class="span1" style="min-width:70px;padding-top:5px;">
+                                            is equal to
+                                        </div>
+                                        <div class="span5" style="min-width:330px">
+                                            <select class="input-block-level" id="select-item<%= i %>" name="item[]">
+                                                <% f["options"].each do |op| %>
+                                                    <option <%= "selected" if value == op["code"] %> value="<%= op["id"] %>"><%= op["label"] %></li>
+                                                <% end %>
+                                            </select>
+                                        </div>
+                                        <div class="span1">
+                                            <a href="javascript:void(0)" class="btn btn-danger" id="rmbtn<%= i %>" refdata="<%= i %>" onclick="removeCondition(this)"><i class='icon-minus-sign'></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script type="text/javascript">
+                                    handleConditionCombo(<%= i %>); 
+                                </script>
+                            <% end %>
+                        <% end %>
+                        <% i = i + 1 %>
+                    <% end %>
+                    <script type="text/javascript">
+                        var indexCondition = <%= i %>
+                    </script>
+                <% end %>
+            </div> 
+            <div class="control-group">
+                <div class="controls">
+                    <a href="javascript:void(0)" class="btn btn-info" onclick="addCondition()"><i class='icon-plus-sign'></i> Add condition</a>
+                </div>
+            </div>
+        </div>             
+        <div class="control-group">
+            <%= f.label "In the past",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :last_days, :class =>"input-xlarge", :style =>"width:70px;", :required => "required" %> days
+            </div>
+
+        </div>
+        <div class="control-group">
+            <%= f.label "Is more than",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :total, :class =>"input-xlarge", :style =>"width:70px;", :required => "required" %> cases
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <div class="row-fluid">
+                <div class="well span6">
+                    Send emails to
+                    <div class="list">
+                        <% @admin.each do |ad| %>
+                            <div class="list-item">
+                                <span class="input-group-addon">
+                                    <input <%= "checked" if JSON.parse(alert.email_contacts).include?(ad.id.to_s) %> type="checkbox" name="email[]" value="<%= ad.id %>" />
+                                </span>
+                                <span class="email-label">
+                                    <%= ad.email %>
+                                </span>  
+                            </div> 
+                        <% end %>
+                    </div>
+                </div>
+                <div class="well span6">
+                    Send text messages to
+                    <div class="list">
+                        <% @admin.each do |ad| %>
+                            <div class="list-item">
+                                <span class="input-group-addon">
+                                    <input <%= "checked" if JSON.parse(alert.phone_contacts).include?(ad.id.to_s) %> type="checkbox" name="phone[]" value="<%= ad.id %>" />
+                                </span>
+                                <span class="email-label">
+                                    <%= ad.email %> [<%= ad.phone_number %>]
+                                </span>  
+                            </div> 
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h4>Messages</h4>
+        [<a href="javascript:void(0)" id="con_state"​ onclick="addToMessage('[Conflict State]')">Conflict State</a>]  [<a href="javascript:void(0)" id="con_type"  onclick="addToMessage('[Conflict Type]')"> Conflict Type </a>] [<a href="javascript:void(0)" id="con_intensity" onclick="addToMessage('[Conflict Intensity]')">Conflict Intensity</a>]
+        <br />
+        <div class="control-group">
+                <%= f.text_area :message, :class =>"input-xlarge span12", :required => "required" %>
+        </div>
+        <!-- Submit -->
+        <div class="control-group">
+            <div class="controls">
+                <button class="btn btn-success">Save</button>
+                <%=link_to "Cancel", alerts_path, :class => "btn" %>
+            </div>
+        </div>
+    </fieldset>
+
+<% end %>

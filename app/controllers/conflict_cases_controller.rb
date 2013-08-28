@@ -9,10 +9,58 @@ class ConflictCasesController < ApplicationController
       flash[:error] = "Failed to get fields from resourcemap."
     else
       page  = params[:page]? params[:page]:1
-      sites = ConflictCase.get_all_sites_from_resource_map(10, (page-1))
+      sites = ConflictCase.get_paging_sites_from_resource_map(10, (page.to_i - 1))
       @conflict_cases = ConflictCase.transform(sites, @fields)
       @conflict_cases = @conflict_cases.paginate(:page => page, :per_page => 10)
     end
+  end
+
+  def extract_data_sources
+    fields = ConflictCase.get_fields
+    sites   = ConflictCase.all_from_resource_map
+    conflict_cases = ConflictCase.transform(sites, fields)  
+  end
+
+  def export_file type
+    date_str = DateTime.now.strftime('%Y-%m-%d %H-%M-%S')
+    "conflict-#{date_str}.#{type}"
+  end
+
+  def export_dir 
+    "#{Rails.root}/public/data/export/"
+  end
+
+  def export_as_kml
+    file = export_file 'kml'
+    kml_file = export_dir + file
+
+    exporter = Exporter.new extract_data_sources
+    exporter.to_kml_file kml_file
+
+    send_file( kml_file, :filename      =>  file ,
+                         :type          =>  'application/vnd.google-earth.kml+xml',
+                         :disposition   =>  'attachment',
+                         :streaming     =>  true,
+                         :buffer_size   =>  '4096')
+    # File.delete kml_file
+
+  end
+
+  def export_as_shp
+    file     = export_file 'zip'
+    zip_file = export_dir + file
+
+    exporter = Exporter.new extract_data_sources
+    exporter.to_sh_zip zip_file
+
+    send_file( zip_file, :filename      =>  file ,
+                         :type          =>  'application/x-gzip',
+                         :disposition   =>  'attachment',
+                         :streaming     =>  true,
+                         :buffer_size   =>  '4096')
+
+    # File.delete zip_file
+
   end
 
   def show
@@ -68,8 +116,6 @@ class ConflictCasesController < ApplicationController
       @conflict_case.save
       redirect_to conflict_cases_path
     end
-    
-    
   end
 
   def destroy

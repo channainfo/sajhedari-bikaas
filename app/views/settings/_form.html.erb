@@ -1,0 +1,94 @@
+<% if setting and setting.errors.any? %>
+    <div class="alert alert-block">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <div id="error_explanation">
+            <h4><%= pluralize(setting.errors.count, "error") %> prohibited this post from being saved:</h4>
+         
+            <ul>
+            <% setting.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+            </ul>
+        </div>
+    </div>
+<% end %>
+<%= form_for(setting, :url => setting_path(setting) ,:method => 'put', :html => {:class => 'form-horizontal'} ) do |f| %>    
+    <fieldset> 
+        <h4>Alert Interval</h4>  
+        <div class="control-group">
+            <%= f.label "Check alert every",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :interval_alert, :class =>"input-xlarge", :style =>"width:70px;", :required => "required" %>
+                <span class="help-inline"> hours</span>
+            </div>
+
+        </div>
+        <div class="control-group">
+            <%= f.label "Email",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :email_send, :class =>"input-xlarge", :required => "required" %>
+                <span class="help-inline">  Email contact to send alert.</span>
+            </div>
+
+        </div>
+        
+        <h4>Message Template</h4>
+        <div class="control-group">
+            <%= f.label "Message sucess",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :message_success, :class =>"input-xlarge", :required => "required" %>
+                <span class="help-inline">  When the message is successfully reported to the system.</span>
+            </div>
+
+        </div>
+        <div class="control-group">
+            <%= f.label "Message invalid",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :message_invalid, :class =>"input-xlarge", :required => "required" %>
+                <span class="help-inline">  When the message is considered as incomplete report.</span>
+            </div>
+
+        </div>
+        <div class="control-group">
+            <%= f.label "Message unknown",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :message_unknown, :class =>"input-xlarge", :required => "required" %>
+                <span class="help-inline">  When reported data is incorrect.</span>
+            </div>
+
+        </div>
+        <div class="control-group">
+            <%= f.label "Message invalid sender",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :message_invalid_sender, :class =>"input-xlarge", :required => "required" %>
+                <span class="help-inline">  When sender is not registered as reporter.</span>
+            </div>
+
+        </div>
+        <div class="control-group">
+            <%= f.label "Message duplicate",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :message_duplicate, :class =>"input-xlarge", :required => "required" %>
+                <span class="help-inline">  When sender sent duplicated data.</span>
+            </div>
+
+        </div>
+        <div class="control-group">
+            <%= f.label "Message failed to save",:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :message_failed, :class =>"input-xlarge", :required => "required" %>
+                <span class="help-inline">  When message failed save to the system.</span>
+            </div>
+
+        </div>
+
+        <!-- Submit -->
+        <div class="control-group">
+            <div class="controls">
+                <button class="btn btn-success">Save</button>
+            </div>
+        </div>
+        
+    </fieldset>
+
+<% end %>

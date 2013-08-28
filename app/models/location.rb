@@ -4,6 +4,10 @@ class Location < ActiveRecord::Base
   validates_presence_of :lat
   validates_presence_of :lng
   validates_presence_of :code
+  validates_numericality_of :lat, :greater_than_or_equal_to => -90, :less_than_or_equal_to => 90 ,:message => "must be less than 90 and larger than -90"
+  validates_numericality_of :lng, :greater_than_or_equal_to => -180, :less_than_or_equal_to => 180, :message => "must be less than 180 and larger than -180"
+
+  
   attr_accessible :name
   attr_accessible :lat
   attr_accessible :lng
@@ -12,10 +16,17 @@ class Location < ActiveRecord::Base
   attr_accessible :is_updated
   USER_NAME, PASSWORD = 'iLab', '1c4989610bce6c4879c01bb65a45ad43'
 
+  def lnglat
+    "#{lng},#{lat}"
+  end
+
+  def description
+    name + "(" + code + ")"
+  end
+
   def update_to_resourcemap site_ids, user_emails
-    yml = self.load_resource_map
     request = Typhoeus::Request.new(
-      yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/update_sites",
+      ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/update_sites",
       userpwd: "#{USER_NAME}:#{PASSWORD}",
       method: :put,
       body: "this is a request body",
@@ -26,6 +37,20 @@ class Location < ActiveRecord::Base
     response = request.response.code
     return response == 200
 	end
+
+  def self.update_latlng_to_resourcemap site_ids, user_emails, new_lat, new_lng
+    request = Typhoeus::Request.new(
+      ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/update_sites",
+      userpwd: "#{USER_NAME}:#{PASSWORD}",
+      method: :put,
+      body: "this is a request body",
+      params: { lat: new_lat, lng: new_lng, site_id: site_ids, user_email: user_emails },
+      headers: { Accept: "text/html" }
+    )
+    request.run
+    response = request.response.code
+    return response == 200
+  end
 
   def self.generate_site_id conflict_cases
     array_site = []
@@ -44,10 +69,6 @@ class Location < ActiveRecord::Base
     user_emails = array_email.join(",")
     return user_emails
 	end
-
-  def load_resource_map
-    YAML.load_file File.expand_path(Rails.root + "config/resourcemap.yml", __FILE__)
-  end
 
   def self.get_category
     'location'

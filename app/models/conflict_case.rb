@@ -9,24 +9,65 @@ class ConflictCase < ActiveRecord::Base
   attr_accessible :conflict_state
   attr_accessible :conflict_type
 
+  attr_accessible :reporter, :location, :conflict_type_description, :conflict_intensity_description, :conflict_state_description
+
   attr_accessible :is_deleted
   attr_accessible :is_updated
   attr_accessible :reporter_id
 
+  attr_accessor :conflict_type_description, :conflict_intensity_description, :conflict_state_description
+
+  def field_description fields, property
+    property_code = self.translate(property)
+
+    fields.each do |f|
+        if(f["code"] == property)
+          options = f["options"]
+          options.each do |option|
+            return option["label"] if(option["code"] == property_code)
+          end
+        end
+    end
+    raise "Unknow property: " + property + " with code: " + property_code
+  end
+
+  def con_type_description fields
+    field_description fields, 'con_type'
+  end
+
+  def con_intensity_description fields
+    field_description fields, 'con_intensity'
+  end
+
+  def con_state_description fields
+    field_description fields, 'con_state'
+  end
+
+  def translate property
+    if property == "con_type"
+      self.conflict_type.to_s
+    elsif property == "con_intensity"
+      self.conflict_intensity.to_s
+    else property == "con_state"
+      self.conflict_state.to_s     
+    end
+  end
+
   def save_case_to_resource_map option
-    yml = self.class.load_resource_map
-    request = Typhoeus::Request.new(
-       yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
-       method: :post,
-       body: "this is a request body",
-       params: { lat: self.location.lat, 
+    params = { lat: self.location.lat, 
                  lng: self.location.lng, 
                  name: self.location.name, 
                  phone_number: self.reporter.phone_number,
                  conflict_type: option[:conflict_type],
                  conflict_intensity: option[:conflict_intensity],
-                 conflict_state: option[:conflict_state] },
-       headers: { Accept: "text/html" }
+                 conflict_state: option[:conflict_state] ,
+                 headers: { Accept: "text/html" }
+            }
+    request = Typhoeus::Request.new(
+       ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
+       method: :post,
+       body: "this is a request body",
+       params: params
      )
      request.run
      response = request.response
@@ -37,10 +78,9 @@ class ConflictCase < ActiveRecord::Base
   end
 
   def update_to_resource_map
-    yml = self.class.load_resource_map
     site_id = self.site_id.to_s
     request = Typhoeus::Request.new(
-       yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + site_id,
+       ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites/" + site_id,
        method: :put,
        body: "this is a request body",
        params: { phone_number: self.reporter.phone_number,
@@ -59,10 +99,9 @@ class ConflictCase < ActiveRecord::Base
   end
 
   def update_to_resource_map_with_form params
-    yml = self.class.load_resource_map
     site_id = self.site_id.to_s
     request = Typhoeus::Request.new(
-       yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + site_id,
+       ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites/" + site_id,
        method: :put,
        body: "this is a request body",
        params: { phone_number: self.reporter.phone_number,
@@ -81,10 +120,9 @@ class ConflictCase < ActiveRecord::Base
   end
 
   def destroy_case_from_resource_map
-    yml = self.class.load_resource_map
     site_id = self.site_id.to_s
     request = Typhoeus::Request.new(
-    yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + site_id,
+    ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites/" + site_id,
       method: :delete,
       body: "this is a request body",
       params: {},
@@ -95,10 +133,21 @@ class ConflictCase < ActiveRecord::Base
     return response == 200
   end
 
-  def self.get_all_sites_from_resource_map(limit, offset)
-    yml = load_resource_map
+  def self.get_all_sites_from_resource_map()
     request = Typhoeus::Request.new(
-    yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
+    ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
+      method: :get,
+      body: "this is a request body",
+      headers: { Accept: "text/html" }
+    )
+    request.run
+    response = request.response.response_body
+    return JSON.parse(response)
+  end
+
+  def self.get_paging_sites_from_resource_map(limit, offset)
+    request = Typhoeus::Request.new(
+    ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
       method: :get,
       body: "this is a request body",
       params: {:limit => limit, :offset => offset},
@@ -109,10 +158,33 @@ class ConflictCase < ActiveRecord::Base
     return JSON.parse(response)
   end
 
-  def get_conflict_from_resource_map
-    yml = self.class.load_resource_map
+
+  def self.all_from_resource_map
     request = Typhoeus::Request.new(
-    yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites/" + self.site_id.to_s,
+      ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
+      method: :get
+    )
+    request.run
+    JSON.parse(request.response.body)
+  end
+
+  def self.get_all_sites_from_resource_map_by_period(start_date, end_date)
+    request = Typhoeus::Request.new(
+          ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
+          method: :get,
+          body: "this is a request body",
+          headers: { Accept: "text/html" },
+          params: {:start_date => start_date, :end_date => end_date } 
+    )
+
+    request.run
+    response = request.response.response_body
+    return JSON.parse(response)
+  end
+
+  def get_conflict_from_resource_map
+    request = Typhoeus::Request.new(
+      ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites/" + self.site_id.to_s,
       method: :get,
       body: "this is a request body",
       params: {},
@@ -134,14 +206,9 @@ class ConflictCase < ActiveRecord::Base
     backup
   end
 
-  def self.load_resource_map
-    YAML.load_file File.expand_path(Rails.root + "config/resourcemap.yml", __FILE__)
-  end
-
   def self.get_fields
-    yml = load_resource_map
     request = Typhoeus::Request.new(
-    yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/get_fields.json",
+    ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/get_fields.json",
       method: :get,
       headers: { Accept: "text/html" }
     )
@@ -155,18 +222,17 @@ class ConflictCase < ActiveRecord::Base
     end
   end
 
-  def self.transform sites, field
+  def self.transform sites, fields
     conflict_cases = []
     sites.each do |site|
-      conflict_cases.push(convertToConflictCase(site, field))
+      conflict_cases.push(convertToConflictCase(site, fields))
     end
     conflict_cases
   end
 
   def self.get_sites_bases_on_conflict_type_from_resourcemap params
-    yml = load_resource_map
     request = Typhoeus::Request.new(
-    yml["url"] + "api/collections/" + yml["collection_id"].to_s + "/sites",
+    ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
       method: :get,
       body: "this is a request body",
       params: {:con_type => params[:data], :from => params[:from], :to => params[:to]},
@@ -177,11 +243,11 @@ class ConflictCase < ActiveRecord::Base
     return JSON.parse(response)
   end
 
-  def self.convertToConflictCase site, field
+  def self.convertToConflictCase site, fields
     conflict = ConflictCase.find_by_site_id(site["id"])
     properties = site["properties"]
     properties.each do |key, value|
-      conflict = assign_value conflict, key, value, field
+      conflict = assign_value conflict, key, value, fields
     end
     conflict
   end
@@ -501,19 +567,37 @@ class ConflictCase < ActiveRecord::Base
     return "#{date.mon}/#{date.mday}/#{date.year}"
   end
 
-  def self.assign_value conflict, key, value, field
-    field.each do |f|
+  def self.assign_value conflict, key, value, fields
+    fields.each do |f|
       if f["id"] == key.to_i
         case f["code"]
           when "con_state"
             conflict.conflict_state = value
+            conflict.conflict_state_description = conflict.con_state_description fields
           when "con_type"
             conflict.conflict_type = value
+            conflict.conflict_type_description = conflict.con_type_description fields
           when "con_intensity"
             conflict.conflict_intensity = value
+            conflict.conflict_intensity_description = conflict.con_intensity_description fields
         end
       end
     end
     conflict
+  end
+
+  def meet_alert?(condition)
+    return false unless condition.size > 0
+    condition.each do |key, value|
+      case key
+        when "con_state"
+          return false unless self.conflict_state == value.to_i
+        when "con_type"
+          return false unless self.conflict_type == value.to_i
+        when "con_intensity"
+          return false unless self.conflict_intensity == value.to_i
+      end
+    end
+    return true
   end
 end

@@ -1,4 +1,51 @@
 
+<div class="btn-toolbar row-fluid">
+  <div class='span8'>	
+	<form action=<%= reporters_path() %>  style="margin-bottom:0px;margin-top:10px;" method="GET">
+	    <div class="row-fluid">
+	    	<div class="span4" style="width:290px;">
+	    		<div class="control-group">
+	    			<label class="control-label span2" style="text-align:right;padding-right:10px;">From</label>
+	    			<div class="controls">
+	    				<input type="text" class="datepicker" name="startDate">
+	    			</div>
+	    		</div>
+	    	</div>
+	    	<div class="span4" style="width:260px;">
+	    		<div class="control-group">
+	    			<label class="control-label span2" style="text-align:right;padding-right:10px;">To</label>
+	    			<div class="controls">
+	    				<input type="text" class="datepicker" name="endDate">\
+	    			</div>
+	    		</div>
+	    	</div>
+	    	<div class="span1" style="margin-left:10px;">
+	    		<%= link_to "Go", conflict_cases_path, :method => :get, :class => 'btn btn-primary to-right' %>
+	    	</div>
+	    </div>	    	 
+	</form>
+  </div>
+
+  <div class='span4'>
+  	<div class="btn-group pull-right btn-toolbar" >
+		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+			<i class="icon-download"></i> Export <span class="caret"></span>
+		</a>
+		<%
+			export_params = params.slice(:from, :to)
+
+		%>
+
+		<ul class="dropdown-menu">
+			<li><%= link_to "as KML", export_as_kml_conflict_cases_path(export_params), :title => 'Kml File version 2.1' %>
+			<li><%= link_to "as Shapefile", export_as_shp_conflict_cases_path(export_params), :title => 'All related shapefiles are zipped' %></li>
+		</ul>
+	</div>
+  </div>
+
+</div>
+
+
 <div>
 	<!--<table class="table table-bordered table-striped">-->
     <table class="table table-condensed table-hover">
@@ -8,7 +55,6 @@
 			    <th>Conflict Intensity</th>
 			    <th>Conflict state</th>
 			    <th>Location</th>
-			    <th>Reporter Name</th>
 			    <th>Phone Number</th>
 			    <th>Date sent</th>
 			    <th style="width: 36px;"></th>
@@ -23,13 +69,14 @@
 	    	<% class_name = "updated" %>
 	    <% end %>			    
 		    <tr class=<%= class_name %>>
-			    <td><%= field_desc(@fields, l.conflict_type, "con_type") %></td>
-			    <td><%= field_desc(@fields, l.conflict_intensity, "con_intensity") %></td>
-			    <td><%= field_desc(@fields, l.conflict_state, "con_state") %></td>
+			    <td><%= l.conflict_type_description %></td>
+			    <td><%= l.conflict_intensity_description %></td>
+			    <td><%= l.conflict_state_description %></td>
 			    <td><%= l.location.name %>(<%= l.location.code %>)</td>
-			    <td><%= l.reporter.first_name %> <%= l.reporter.last_name %></td>
-			    <td><%= l.reporter.phone_number %></td>
-			    <td><%= l.updated_at %>
+			    <td style="width: 145px;">
+					<a class="" data-toggle="modal" href="#reporterModal" onclick="showReporterInfo('<%= l.reporter.first_name %>', '<%= l.reporter.last_name %>','<%= l.reporter.sex %>','<%= l.reporter.date_of_birth %>','<%= l.reporter.cast_ethnicity %>','<%= l.reporter.phone_number %>','<%= l.reporter.address %>');"><%= l.reporter.phone_number %></a> 
+				</td>
+			    <td><%= l.created_at %>
 			    <td>
 			    <% if l.is_deleted %>				    	
 			    	<div class="btn-group pull-right">
@@ -106,3 +153,63 @@
 	    <button class="btn btn-danger" data-dismiss="modal">Delete</button>
     </div>
 </div>
+
+<div id="reporterModal" class="modal hide fade">
+    <div class="modal-header">
+            <button class="close" data-dismiss="modal">×</button>
+            <h3> Reporter </h3>
+    </div>
+	<div class="modal-body" id="reporter_case">
+	    <fieldset>                
+	        <!-- Name -->
+	        <div class="control-group">
+	            <label for="reporter_First Name" style="text-align:right; padding-right:10px" class="control-label span2">First name</label>
+	            <div class="controls" id="first_name">		                
+	            </div>
+	        </div>
+
+	        <div class="control-group">
+	            <label for="reporter_Last Name" style="text-align:right; padding-right:10px" class="control-label span2">Last name</label>
+	            <div class="controls" id="last_name">
+	            </div>
+	        </div>
+
+	        <div class="control-group">
+	            <label for="reporter_Gender" style="text-align:right; padding-right:10px" class="control-label span2">Gender</label>
+	            <div class="controls" id="gender">
+	            </div>
+	        </div>
+	        
+	        <div class="control-group">
+	            <label for="reporter_Date of birth" style="text-align:right; padding-right:10px" class="control-label span2">Date of birth</label>
+	            <div class="controls" id="dob">
+	            </div>
+	        </div>        
+
+	        <div class="control-group">
+	            <label for="reporter_Cast/Ethnicity" style="text-align:right; padding-right:10px" class="control-label span2">Cast/ethnicity</label>
+	            <div class="controls" id="cast_ethnicity">
+	            </div>
+	        </div>
+
+	        <div class="control-group">
+	            <label for="reporter_Phone Number" style="text-align:right; padding-right:10px" class="control-label span2">Phone number</label>
+	            <div class="controls"  id="phone_number">
+	            </div>
+	        </div>
+
+	        <div class="control-group">
+	            <label for="reporter_Address" style="text-align:right; padding-right:10px" class="control-label span2">Address</label>
+	            <div class="controls" id="address">
+	            </div>
+	        </div>
+	      
+	    </fieldset>
+	</div>
+	<div class="modal-footer">
+		<a href="#" data-dismiss="modal" class="btn btn-primary">Close</a>
+	</div>
+</div>
+<script>
+    $('.datepicker').datepicker()
+</script>

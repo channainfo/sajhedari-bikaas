@@ -8,13 +8,29 @@ class AlertsController < ApplicationController
 	def new
 		@fields = ConflictCase.get_fields
 		@alert = Alert.new()
+		@admin = User.all()
 	end
 
 	def create
 		@alert = Alert.new(params[:alert])
 		@alert.condition = generate_condition(params[:type], params[:item]);
+		@alert.phone_contacts = params[:phone].to_json
+		@alert.email_contacts = params[:email].to_json
 	  	if @alert.save
 			flash[:notice] = "You have successfully created alert #{@alert.name}."      
+			redirect_to alerts_path
+	    else
+	      render :new
+	    end
+	end
+
+	def update
+		@alert = Alert.find(params[:id])
+		params["alert"]["condition"] = generate_condition(params[:type], params[:item]);
+		params["alert"]["phone_contacts"] = params[:phone].to_json
+		params["alert"]["email_contacts"] = params[:email].to_json
+	  	if @alert.update_attributes!(params[:alert])
+			flash[:notice] = "You have successfully updated alert #{@alert.name}."      
 			redirect_to alerts_path
 	    else
 	      render :new
@@ -25,5 +41,22 @@ class AlertsController < ApplicationController
 		condition_obj = {}
 		types.each_with_index {|k,i| condition_obj[k] = items[i] }
 		condition_obj.to_json
+	end
+
+	def edit
+		@alert = Alert.find(params[:id])
+		@fields = ConflictCase.get_fields	
+		@admin = User.all()	
+	end
+
+	def destroy
+		@alert = Alert.find(params[:id])
+		if @alert.destroy      
+			flash[:notice] = "You have successfully deleted alert #{@alert.name}."
+			redirect_to alerts_path
+		else
+			flash[:error] = "Failed to delete alert #{@alert.name}. Please try again later."
+			redirect_to alerts_path
+		end
 	end
 end

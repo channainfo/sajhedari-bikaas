@@ -56,14 +56,14 @@
         <div class="control-group">
             <%= f.label "In the past",:class => "control-label" %>
             <div class="controls">
-                <%= f.text_field :last_days, :class =>"input-xlarge", :required => "required" %> days
+                <%= f.text_field :last_days, :class =>"input-xlarge", :style =>"width:70px;", :required => "required" %> days
             </div>
 
         </div>
         <div class="control-group">
             <%= f.label "Is more than",:class => "control-label" %>
             <div class="controls">
-                <%= f.text_field :total, :class =>"input-xlarge", :required => "required" %> cases
+                <%= f.text_field :total, :class =>"input-xlarge", :style =>"width:70px;", :required => "required" %> cases
             </div>
         </div>
         
@@ -72,80 +72,41 @@
                 <div class="well span6">
                     Send emails to
                     <div class="list">
-                        <div>
-                            <span class="input-group-addon">
-                                <input type="checkbox" value="" />
-                            </span>
-                            <span class="email-label">
-                                rockesh@pactworld.org
-                            </span>  
-                        </div> 
-                        <div class="list-item">
-                            <span class="input-group-addon">
-                                <input type="checkbox" value="" />
-                            </span>
-                            <span class="email-label">
-                                raju@pactworld.org
-                            </span>  
-                        </div>
-                        <div class="list-item">
-                            <span class="input-group-addon">
-                                <input type="checkbox" value="" />
-                            </span>
-                            <span class="email-label">
-                                sila@pactworld.org
-                            </span>  
-                        </div>
-                        <div class="list-item">
-                            <span class="input-group-addon">
-                                <input type="checkbox" value="" />
-                            </span>
-                            <span class="email-label">
-                                equalaccess@pactworld.org
-                            </span>  
-                        </div>
+                        <% @admin.each do |ad| %>
+                            <div class="list-item">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="email[]" value="<%= ad.id %>" />
+                                </span>
+                                <span class="email-label">
+                                    <%= ad.email %>
+                                </span>  
+                            </div> 
+                        <% end %>
                     </div>
                 </div>
                 <div class="well span6">
                     Send text messages to
                     <div class="list">
-                        <div>
-                            <span class="input-group-addon">
-                                <input type="checkbox" value="" />
-                            </span>
-                            <span class="email-label">
-                                rockesh@pactworld.org
-                            </span>  
-                        </div> 
-                        <div class="list-item">
-                            <span class="input-group-addon">
-                                <input type="checkbox" value="" />
-                            </span>
-                            <span class="email-label">
-                                raju@pactworld.org
-                            </span>  
-                        </div>
-                        <div class="list-item">
-                            <span class="input-group-addon">
-                                <input type="checkbox" value="" />
-                            </span>
-                            <span class="email-label">
-                                sila@pactworld.org
-                            </span>  
-                        </div>
-                        <div class="list-item">
-                            <span class="input-group-addon">
-                                <input type="checkbox" value="" />
-                            </span>
-                            <span class="email-label">
-                                equalaccess@pactworld.org
-                            </span>  
-                        </div>
+                        <% @admin.each do |ad| %>
+                            <div class="list-item">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="phone[]" value="<%= ad.id %>" />
+                                </span>
+                                <span class="email-label">
+                                    <%= ad.email %> [<%= ad.phone_number %>]
+                                </span>  
+                            </div> 
+                        <% end %>
                     </div>
                 </div>
             </div>
         </div>
-
+        <h4>Messages</h4>
+        [<a href="javascript:void(0)" id="con_state"​ onclick="addToMessage('[Conflict State]')">Conflict State</a>]  [<a href="javascript:void(0)" id="con_type"  onclick="addToMessage('[Conflict Type]')"> Conflict Type </a>] [<a href="javascript:void(0)" id="con_intensity" onclick="addToMessage('[Conflict Intensity]')">Conflict Intensity</a>]
+        <br />
+        <div class="control-group">
+                <%= f.text_area :message, :class =>"input-xlarge span12", :required => "required" %>
+        </div>
         <!-- Submit -->
         <div class="control-group">
             <div class="controls">
@@ -154,6 +115,7 @@
             </div>
         </div>
     </fieldset>
+
 <% end %>
 <script type="text/javascript">
     prepareConditionCombo(1);

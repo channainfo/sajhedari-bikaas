@@ -11,13 +11,13 @@ class Message < ActiveRecord::Base
 		reporter_number = from
 		self.reply = INVALID_USER unless validate_sender
 		self.reply = self.validate_message
-		self.reply = "Sorry this phone number is not registered as our reporter" unless sender
+		self.reply = Setting.first.message_invalid_sender unless sender
 		if(self.reply == nil)
 			fields = body.split(" ")
 			if self.save_to_case(fields, sender)
-				self.reply = "Successfully submited report to the system."
+				self.reply = Setting.first.message_success
 			else
-				self.reply = "Failed to submit report to the system. Please try again later."
+				self.reply = Setting.first.message_failed
 			end
 		end
 	end
@@ -28,16 +28,16 @@ class Message < ActiveRecord::Base
 		fields.each do |f|
 			if((f.start_with? "t.") or (f.start_with? "s.") or (f.start_with? "c.") or (f.start_with? "i."))
 				unless self.is_i? f[2..-1]
-					return "#{f} is not valid."
+					return "Error with #{f}." + Setting.first.message_unknown
 				else
 					list["#{f[0]}"] = f[2..-1]
 				end
 			else
-				return "#{f} is unknown."
+				return "Error with #{f}." + Setting.first.message_unknown
 			end
 		end
-		return "Message missing some field. Please follow the message template." unless fields.size == 4
-		return "Duplicate information reported." if list.size != 4
+		return Setting.first.message_invalid unless fields.size == 4
+		return Setting.first.message_duplicate if list.size != 4
 	end
 
 	def validate_sender

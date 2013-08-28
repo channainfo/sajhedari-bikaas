@@ -12,6 +12,18 @@
                 <%= f.file_field :file_import, :class =>"input-xlarge", :required => "required" %>
             </div>
         </div>
+        <div class="list-item">
+            <%= f.label " ",:class => "control-label" %>
+            <div class="controls">
+                <span class="input-group-addon">
+                    <input type="checkbox" value="1" name="allow_to_override"/>
+                </span>
+                <span class="email-label">
+                    Allows to override existing location
+                </span>  
+            </div>
+        </div> 
+        <br />
         <div class="control-group">
             <div class="controls">
                 <button class="btn btn-success">Upload</button>

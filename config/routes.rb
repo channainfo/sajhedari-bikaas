@@ -34,6 +34,7 @@ Conflict::Application.routes.draw do
   end
 
   resources :alerts
+  resources :settings
 
   resources :trends do
     collection do
@@ -44,7 +45,8 @@ Conflict::Application.routes.draw do
   resources :conflict_cases do
     collection do
       get 'get_field_options'
-      get 'export'
+      get 'export_as_kml'
+      get 'export_as_shp'
     end
     member do
       get 'cancel_delete'

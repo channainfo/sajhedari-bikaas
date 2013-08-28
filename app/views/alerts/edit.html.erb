@@ -1,0 +1,8 @@
+
+<div class="row-fluid">
+    <div id="legend">                    
+        <legend class="">Edit Alert - <%= @alert.name %></legend>
+    </div>
+    <!-- Name -->
+    <%= render "form_edit", {:alert => @alert, :action => "update" } %>
+</div>

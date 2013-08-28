@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130808081038) do
+ActiveRecord::Schema.define(version: 20130822085750) do
 
   create_table "alerts", force: true do |t|
     t.text     "condition"
@@ -21,6 +21,9 @@ ActiveRecord::Schema.define(version: 20130808081038) do
     t.integer  "priority"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "message"
+    t.text     "phone_contacts"
+    t.text     "email_contacts"
   end
 
   create_table "backups", force: true do |t|
@@ -65,15 +68,38 @@ ActiveRecord::Schema.define(version: 20130808081038) do
 
   add_index "conflict_cases", ["location_id"], name: "index_conflict_cases_on_location_id", using: :btree
 
+  create_table "delayed_job_alerts", force: true do |t|
+    t.integer  "delayed_job_id"
+    t.integer  "alerts_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "delayed_jobs", force: true do |t|
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
   create_table "locations", force: true do |t|
     t.string   "name"
     t.string   "code"
-    t.decimal  "lat",        precision: 10, scale: 6
-    t.decimal  "lng",        precision: 10, scale: 6
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_deleted",                          default: false
-    t.boolean  "is_updated",                          default: false
+    t.boolean  "is_deleted",                           default: false
+    t.boolean  "is_updated",                           default: false
+    t.decimal  "lat",        precision: 15, scale: 11
+    t.decimal  "lng",        precision: 15, scale: 11
   end
 
   create_table "messages", force: true do |t|
@@ -107,6 +133,19 @@ ActiveRecord::Schema.define(version: 20130808081038) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "settings", force: true do |t|
+    t.integer  "interval_alert"
+    t.text     "message_success"
+    t.text     "message_invalid"
+    t.text     "message_unknown"
+    t.text     "message_invalid_sender"
+    t.text     "message_duplicate"
+    t.text     "message_failed"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "email_send"
   end
 
   create_table "users", force: true do |t|
