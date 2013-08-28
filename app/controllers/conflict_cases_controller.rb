@@ -5,13 +5,15 @@ class ConflictCasesController < ApplicationController
 
   def index
     @fields = ConflictCase.get_fields
+    @from = params[:from]
+    @to = params[:to]
     unless @fields
       flash[:error] = "Failed to get fields from resourcemap."
     else
       page  = params[:page]? params[:page]:1
-      sites = ConflictCase.get_paging_sites_from_resource_map(10, (page.to_i - 1))
-      @conflict_cases = ConflictCase.transform(sites, @fields)
-      @conflict_cases = @conflict_cases.paginate(:page => page, :per_page => 10)
+      sites = ConflictCase.get_paging_sites_from_resource_map(10, 10*(page.to_i - 1), @from, @to)
+      @conflict_cases = ConflictCase.transform(sites["sites"], @fields)
+      @paging = ([1] * sites["total"].to_i).paginate(:page => page, :per_page => 10)
     end
   end
 

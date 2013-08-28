@@ -145,13 +145,12 @@ class ConflictCase < ActiveRecord::Base
     return JSON.parse(response)
   end
 
-  def self.get_paging_sites_from_resource_map(limit, offset)
+  def self.get_paging_sites_from_resource_map(limit, offset, from, to)
     request = Typhoeus::Request.new(
     ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
       method: :get,
       body: "this is a request body",
-      params: {:limit => limit, :offset => offset},
-      headers: { Accept: "text/html" }
+      params: {:limit => limit, :offset => offset, :from => from, :to => to}
     )
     request.run
     response = request.response.response_body
