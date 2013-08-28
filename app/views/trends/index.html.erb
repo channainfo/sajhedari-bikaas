@@ -1,0 +1,72 @@
+
+  <head>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  </head>
+  <div>
+    <div id="chart_condition" style="width: 30%; float: left; margin-top: 30px;">
+      <h4> Trends </h4>
+      <div style="margin-top: 15px; margin-bottom: 15px;">
+        <span style="border: 1px solid #FF3333; background-color: #FF3333; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
+        <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="1" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Gender based violence
+      </div>
+      <div style="margin-top: 15px; margin-bottom: 15px;">
+        <span style="border: 1px solid #3333FF; background-color: #3333FF; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
+        <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="2" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Case based violence
+      </div>
+      <div style="margin-top: 15px; margin-bottom: 15px;">
+        <span style="border: 1px solid #800080; background-color: #800080; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
+        <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="3" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Political violence
+      </div>
+      <div style="margin-top: 15px; margin-bottom: 15px;">
+        <span style="border: 1px solid #556B2F; background-color: #556B2F; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
+        <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="4" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Inter-personal conflict
+      </div>
+      <div style="margin-top: 15px; margin-bottom: 15px;">
+        <span style="border: 1px solid #8B4513; background-color: #8B4513; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
+        <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="5" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Resource based violence
+      </div>
+      <div class="well">
+        From
+        <input type="text" id="from" class="datepicker" style="width: 85px;" onchange="generateGraphData()"/>
+        To
+        <input type="text" id="to" class="datepicker" style="width: 85px;" onchange="generateGraphData()"/>
+      </div>
+      
+    </div>
+    <div id="chart_div" style="width: 70%; height: 400px; float: right;"></div>
+    <div>
+      <select id="frequently" style="width: 200px;" onchange="generateGraphData()">
+        <option value="Daily">Daily</option>
+        <option value="Weekly">Weekly</option>
+        <option value="Montly">Montly</option>
+        <option value="Quarterly">Quarterly</option>
+        <option value="SemiAnnual">Semi annual</option>
+        <option value="Yearly">Yearly</option>
+      </select>
+      <a href="#">Export to excel</a>
+    </div>
+
+  </div>
+
+  <script type="text/javascript">
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+
+        ['Time', ''],
+        ['', 0],
+      ]);
+
+      var options = {
+        title: '',
+        legend: {position: 'none'}
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    }
+    $('.datepicker').datepicker().on('changeDate', function(en) {
+      generateGraphData();
+   });
+  </script>

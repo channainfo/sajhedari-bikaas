@@ -35,15 +35,32 @@ ActiveRecord::Schema.define(version: 20130822085750) do
     t.datetime "updated_at"
   end
 
+  create_table "cases", force: true do |t|
+    t.string   "message"
+    t.integer  "conflict_type_id"
+    t.integer  "conflict_intensity_id"
+    t.integer  "conflict_state_id"
+    t.integer  "location_id"
+    t.string   "user_id"
+    t.string   "site_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cases", ["conflict_intensity_id"], name: "index_cases_on_conflict_intensity_id", using: :btree
+  add_index "cases", ["conflict_state_id"], name: "index_cases_on_conflict_state_id", using: :btree
+  add_index "cases", ["conflict_type_id"], name: "index_cases_on_conflict_type_id", using: :btree
+  add_index "cases", ["location_id"], name: "index_cases_on_location_id", using: :btree
+
   create_table "conflict_cases", force: true do |t|
     t.string   "case_message"
     t.integer  "location_id"
     t.integer  "site_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "reporter_id"
     t.boolean  "is_deleted",         default: false
     t.boolean  "is_updated",         default: false
+    t.integer  "reporter_id"
     t.integer  "conflict_type"
     t.integer  "conflict_state"
     t.integer  "conflict_intensity"
@@ -124,6 +141,8 @@ ActiveRecord::Schema.define(version: 20130822085750) do
     t.text     "message_invalid"
     t.text     "message_unknown"
     t.text     "message_invalid_sender"
+    t.text     "message_duplicate"
+    t.text     "message_failed"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "email_send"

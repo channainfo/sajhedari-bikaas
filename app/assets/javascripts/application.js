@@ -32,6 +32,39 @@ function updateModalPaging(id, offset) {
 	})
 }
 
+function generateGraphData() {
+    var case_inten = [];
+    var array_checkbox = $(".checkboxes:checked");
+    var select = document.getElementById("frequently");
+    var from = document.getElementById("from").value;
+    var to = document.getElementById("to").value;
+    for (var i=0; i<array_checkbox.size(); i++) {
+        case_inten.push(array_checkbox[i].value);
+    }
+    var frequently = select.options[select.selectedIndex].text;
+    $.ajax({
+        url: '/trends/fetchCaseForGraph',
+        type: "get",
+        data: "data="+case_inten.join(",")+"&from="+from+"&to="+to+"&frequently="+frequently,
+        success: function(data) {
+          
+          var graph_data = google.visualization.arrayToDataTable(data[0]);
+
+          var options = {
+            title: '',
+            legend: {position: 'none'},
+            colors: data[1]
+          };
+
+          if (data[0].length <= 2)
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+          else
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+          chart.draw(graph_data, options); 
+            }
+    })
+}
+
 var indexCondition = 2;
 function addCondition(){
     conditionHtml =                 '<div id="condition' + indexCondition.toString() + '" class="controls navbar-inner" style="padding-top:10px; margin-bottom:20px">';

@@ -36,6 +36,12 @@ Conflict::Application.routes.draw do
   resources :alerts
   resources :settings
 
+  resources :trends do
+    collection do
+      get 'fetchCaseForGraph'
+    end
+  end
+
   resources :conflict_cases do
     collection do
       get 'get_field_options'
