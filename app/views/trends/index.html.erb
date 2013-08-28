@@ -27,15 +27,15 @@
       </div>
       <div class="well">
         From
-        <input type="text" id="from" class="datepicker" style="width: 85px;" />
+        <input type="text" id="from" class="datepicker" style="width: 85px;" onchange="generateGraphData()"/>
         To
-        <input type="text" id="to" class="datepicker" style="width: 85px;" />
+        <input type="text" id="to" class="datepicker" style="width: 85px;" onchange="generateGraphData()"/>
       </div>
       
     </div>
     <div id="chart_div" style="width: 70%; height: 400px; float: right;"></div>
     <div>
-      <select id="frequently" style="width: 200px;">
+      <select id="frequently" style="width: 200px;" onchange="generateGraphData()">
         <option value="Daily">Daily</option>
         <option value="Weekly">Weekly</option>
         <option value="Montly">Montly</option>
@@ -66,5 +66,7 @@
       var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
       chart.draw(data, options);
     }
-    $('.datepicker').datepicker()
+    $('.datepicker').datepicker().on('changeDate', function(en) {
+      generateGraphData();
+   });
   </script>

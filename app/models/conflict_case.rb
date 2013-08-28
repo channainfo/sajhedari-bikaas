@@ -195,13 +195,35 @@ class ConflictCase < ActiveRecord::Base
       con_type.each do |con|
         k = k + 1
         conflict_case.each do |c|
-          for week in 1..arr.count
-            if ((7*week)-6..7*week).member?(c.created_at.mday) && c.conflict_type == con.to_i
-              arr[week-1][k] = arr[week-1][k].nil? ? 1 : arr[week-1][k] + 1
-            else
-              arr[week-1][k] = arr[week-1][k].nil? ? 0 : arr[week-1][k]
+            for w in 1..arr.count
+              week = arr[w-1][0].split("/")[0]
+              if week == "W1"
+                if (1..7).member?(c.created_at.mday) && c.conflict_type == con.to_i
+                  arr[w-1][k] = arr[w-1][k].nil? ? 1 : arr[w-1][k] + 1
+                else
+                  arr[w-1][k] = arr[w-1][k].nil? ? 0 : arr[w-1][k]
+                end
+              elsif week == "W2"
+                if (8..14).member?(c.created_at.mday) && c.conflict_type == con.to_i
+                  arr[w-1][k] = arr[w-1][k].nil? ? 1 : arr[w-1][k] + 1
+                else
+                  arr[w-1][k] = arr[w-1][k].nil? ? 0 : arr[w-1][k]
+                end
+              elsif week == "W3"
+                if (15..21).member?(c.created_at.mday) && c.conflict_type == con.to_i
+                  arr[w-1][k] = arr[w-1][k].nil? ? 1 : arr[w-1][k] + 1
+                else
+                  arr[w-1][k] = arr[w-1][k].nil? ? 0 : arr[w-1][k]
+                end
+              elsif week == "W4"
+                if (22..31).member?(c.created_at.mday) && c.conflict_type == con.to_i
+                  arr[w-1][k] = arr[w-1][k].nil? ? 1 : arr[w-1][k] + 1
+                else
+                  arr[w-1][k] = arr[w-1][k].nil? ? 0 : arr[w-1][k]
+                end
+              end
+
             end
-          end
         end
       end
     else
@@ -220,7 +242,8 @@ class ConflictCase < ActiveRecord::Base
         k = k + 1
         conflict_case.each do |c|
             for day in 1..arr.count
-              if c.created_at.mday == day && c.conflict_type == con.to_i
+              tmp_day = arr[day-1][0].split("/")[1].to_i
+              if c.created_at.mday == tmp_day && c.conflict_type == con.to_i
                 arr[day-1][k] = arr[day-1][k].nil? ? 1 : arr[day-1][k] + 1
               else
                 arr[day-1][k] = arr[day-1][k].nil? ? 0 : arr[day-1][k]
@@ -252,14 +275,15 @@ class ConflictCase < ActiveRecord::Base
     to = to.blank? ? "#{Time.now.mon}/31/#{Time.now.year}" : to
     from = parse_date_format from
     to = parse_date_format to
-    day_count = 0
     for i in from..to
-      day_count = day_count + 1
-      if day_count%7 == 0
-        arr << ["#{i.mon}/w#{day_count/7}/#{i.year}"] 
-      end
-      if day_count >= 28
-        day_count = 0
+      if (1..7).member?(i.mday)
+        arr << ["W1/#{i.mon}/#{i.year}"] unless arr.include?(["W1/#{i.mon}/#{i.year}"])
+      elsif (7..14).member?(i.mday)
+        arr << ["W2/#{i.mon}/#{i.year}"] unless arr.include?(["W2/#{i.mon}/#{i.year}"])
+      elsif (15..21).member?(i.mday)
+        arr << ["W3/#{i.mon}/#{i.year}"] unless arr.include?(["W3/#{i.mon}/#{i.year}"])
+      elsif (22..31).member?(i.mday)
+        arr << ["W4/#{i.mon}/#{i.year}"] unless arr.include?(["W4/#{i.mon}/#{i.year}"])
       end
     end
     return arr
