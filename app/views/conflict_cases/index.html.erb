@@ -1,13 +1,13 @@
 
 <div class="btn-toolbar row-fluid">
   <div class='span8'>	
-	<form action=<%= reporters_path() %>  style="margin-bottom:0px;margin-top:10px;" method="GET">
+	<form action=<%= conflict_cases_path() %>  style="margin-bottom:0px;margin-top:10px;" method="GET">
 	    <div class="row-fluid">
 	    	<div class="span4" style="width:290px;">
 	    		<div class="control-group">
 	    			<label class="control-label span2" style="text-align:right;padding-right:10px;">From</label>
 	    			<div class="controls">
-	    				<input type="text" class="datepicker" name="startDate">
+	    				<input type="text" class="datepicker" value="<%= @from %>" name="from">
 	    			</div>
 	    		</div>
 	    	</div>
@@ -15,12 +15,12 @@
 	    		<div class="control-group">
 	    			<label class="control-label span2" style="text-align:right;padding-right:10px;">To</label>
 	    			<div class="controls">
-	    				<input type="text" class="datepicker" name="endDate">\
+	    				<input type="text" class="datepicker" value="<%= @to %>" name="to">\
 	    			</div>
 	    		</div>
 	    	</div>
 	    	<div class="span1" style="margin-left:10px;">
-	    		<%= link_to "Go", conflict_cases_path, :method => :get, :class => 'btn btn-primary to-right' %>
+	    		<button class="btn btn-info">Go</button>
 	    	</div>
 	    </div>	    	 
 	</form>
@@ -139,7 +139,7 @@
     </div>
 </div>
 
-<%= will_paginate @conflict_cases, renderer: BootstrapPagination::Rails %>
+<%= will_paginate @paging, renderer: BootstrapPagination::Rails %>
 <div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -211,5 +211,5 @@
 	</div>
 </div>
 <script>
-    $('.datepicker').datepicker()
+    $('.datepicker').datepicker({format: 'yyyy-mm-dd'})
 </script>
