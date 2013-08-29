@@ -32,6 +32,15 @@ function updateModalPaging(id, offset) {
 	})
 }
 
+function exportExcel(){
+    $.ajax({
+        url: '/trends/downloadCSV.csv',
+        type: "get",
+        data: "data=",
+        success: function(data) {}
+    })
+}
+
 function generateGraphData() {
     var case_inten = [];
     var array_checkbox = $(".checkboxes:checked");

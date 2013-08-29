@@ -43,7 +43,7 @@
         <option value="SemiAnnual">Semi annual</option>
         <option value="Yearly">Yearly</option>
       </select>
-      <a href="#">Export to excel</a>
+      <a href="#" id="download_csv">Export to excel</a>
     </div>
 
   </div>
@@ -69,4 +69,17 @@
     $('.datepicker').datepicker().on('changeDate', function(en) {
       generateGraphData();
    });
+
+    $('a#download_csv').click(function(){
+      var case_inten = [];
+      var array_checkbox = $(".checkboxes:checked");
+      var select = document.getElementById("frequently");
+      var from = document.getElementById("from").value;
+      var to = document.getElementById("to").value;
+      for (var i=0; i<array_checkbox.size(); i++) {
+          case_inten.push(array_checkbox[i].value);
+      }
+      var frequently = select.options[select.selectedIndex].text;
+      document.location.href = '/trends/download_csv.csv?data='+case_inten.join(",")+'&from='+from+'&to='+to+'&frequently='+frequently;
+    });
   </script>

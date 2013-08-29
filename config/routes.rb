@@ -39,6 +39,7 @@ Conflict::Application.routes.draw do
   resources :trends do
     collection do
       get 'fetchCaseForGraph'
+      get 'download_csv'
     end
   end
 

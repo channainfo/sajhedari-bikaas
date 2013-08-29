@@ -98,6 +98,10 @@ class ConflictCase < ActiveRecord::Base
     return response == 200
   end
 
+  def to_csv
+
+  end
+
   def update_to_resource_map_with_form params
     site_id = self.site_id.to_s
     request = Typhoeus::Request.new(
@@ -584,6 +588,42 @@ class ConflictCase < ActiveRecord::Base
       end
     end
     conflict
+  end
+
+  def self.generate_csv_headers con_type
+    arr_conflict = ["Date"]
+    con_type.each do |el|
+      if el == "1"
+        arr_conflict << "Gender based violence"
+      elsif el == "2"
+        arr_conflict << "Case based violence"
+      elsif el == "3"
+        arr_conflict << "Political violence"
+      elsif el == "4"
+        arr_conflict << "Inter-personal conflict"
+      elsif el == "5"
+        arr_conflict << "Resource based violence"
+      end
+    end
+    return arr_conflict
+  end
+
+  def self.generate_csv_content graph_data
+    CSV.generate do |csv|
+      graph_data.each do |el|
+        csv << el
+      end
+    end
+  end
+
+  def self.generate_trends_header
+    return ["Date","type1"]
+  end
+
+  def self.generate_trends_content graph_data
+    graph_data.each do |el|
+      return el
+    end
   end
 
   def meet_alert?(condition)

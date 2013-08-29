@@ -4,6 +4,35 @@ class TrendsController < ApplicationController
 		
 	end
 
+  def download_csv
+    fields = ConflictCase.get_fields
+    if fields
+      con_type = params[:data].split(",")
+      header = ConflictCase.generate_csv_headers(con_type)
+      sites = ConflictCase.get_sites_bases_on_conflict_type_from_resourcemap params
+      conflict_cases = ConflictCase.transform(sites, fields)
+      if params[:frequently] == "Daily"
+        graph_data = ConflictCase.generate_daily_graph conflict_cases, params
+      elsif params[:frequently] == "Weekly"
+        graph_data = ConflictCase.generate_weekly_graph conflict_cases, params
+      elsif params[:frequently] == "Montly"
+        graph_data = ConflictCase.generate_montly_graph conflict_cases, params
+      elsif params[:frequently] == "Quarterly"
+        graph_data = ConflictCase.generate_quarterly_graph conflict_cases, params
+      elsif params[:frequently] == "Semi annual"
+        graph_data = ConflictCase.generate_semi_annual_graph conflict_cases, params
+      elsif params[:frequently] == "Yearly"
+        graph_data = ConflictCase.generate_yearly_graph conflict_cases, params
+      end
+      graph_data.unshift(header)
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv {render text: ConflictCase.generate_csv_content(graph_data)}
+    end
+  end
+
 	def fetchCaseForGraph
     fields = ConflictCase.get_fields
     result = []
