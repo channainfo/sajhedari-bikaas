@@ -38,8 +38,9 @@
       
     </div>
     <div id="chart_div" style="width: 70%; height: 400px; float: right;"></div>
+    <div class="clear">
     <div>
-      <select id="frequently" style="width: 180px;" onchange="generateGraphData()">
+      <select id="frequently" style="width: 180px;  margin-top:10px;" onchange="generateGraphData()">
         <option value="Daily">Daily</option>
         <option value="Weekly">Weekly</option>
         <option value="Montly">Montly</option>
@@ -47,7 +48,7 @@
         <option value="SemiAnnual">Semi annual</option>
         <option value="Yearly">Yearly</option>
       </select>
-      <a href="#" id="download_csv" style="cursor: pointer;">Export to excel</a>
+      <a href="#" id="download_csv" class="btn" style="cursor: pointer;"><i class="icon-download"></i> Export to excel</a>
     </div>
 
   </div>
