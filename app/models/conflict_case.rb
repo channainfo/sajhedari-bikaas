@@ -595,12 +595,14 @@ class ConflictCase < ActiveRecord::Base
       if el == "1"
         arr_conflict << "Gender based violence"
       elsif el == "2"
-        arr_conflict << "Case based violence"
+        arr_conflict << "Identity-based violence"
       elsif el == "3"
-        arr_conflict << "Political violence"
+        arr_conflict << "Case based violence"
       elsif el == "4"
-        arr_conflict << "Inter-personal conflict"
+        arr_conflict << "Political violence"
       elsif el == "5"
+        arr_conflict << "Inter-personal conflict"
+      elsif el == "6"
         arr_conflict << "Resource based violence"
       end
     end
