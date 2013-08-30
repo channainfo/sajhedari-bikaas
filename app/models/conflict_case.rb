@@ -146,7 +146,7 @@ class ConflictCase < ActiveRecord::Base
     )
     request.run
     response = request.response.response_body
-    return JSON.parse(response)
+    return JSON.parse(response)["sites"]
   end
 
   def self.get_paging_sites_from_resource_map(limit, offset, from, to)
@@ -168,7 +168,7 @@ class ConflictCase < ActiveRecord::Base
       method: :get
     )
     request.run
-    JSON.parse(request.response.body)
+    JSON.parse(request.response.body)["sites"]
   end
 
   def self.get_all_sites_from_resource_map_by_period(start_date, end_date)
@@ -182,7 +182,7 @@ class ConflictCase < ActiveRecord::Base
 
     request.run
     response = request.response.response_body
-    return JSON.parse(response)
+    return JSON.parse(response)["sites"]
   end
 
   def get_conflict_from_resource_map
