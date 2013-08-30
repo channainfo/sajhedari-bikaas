@@ -63,7 +63,8 @@ function generateGraphData() {
             title: '',
             legend: {position: 'none'},
             colors: data[1],
-            vAxis: {format: '0', maxValue: data[0][1]}
+            vAxis: {format: '0', maxValue: data[0][1]},
+            width: 850
             // vAxis: {format: '0', minValue:0,maxValue:5,gridlines:{count:6}}
           };
 
