@@ -235,7 +235,7 @@ class ConflictCase < ActiveRecord::Base
 
   def self.get_sites_bases_on_conflict_type_from_resourcemap params
     request = Typhoeus::Request.new(
-    ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
+    ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/get_sites_conflict.json",
       method: :get,
       body: "this is a request body",
       params: {:con_type => params[:data], :from => params[:from], :to => params[:to]},

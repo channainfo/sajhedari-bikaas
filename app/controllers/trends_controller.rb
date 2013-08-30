@@ -37,7 +37,7 @@ class TrendsController < ApplicationController
     fields = ConflictCase.get_fields
     result = []
     arr_color = []
-    colors = ['#FF3333','#3333FF', '#800080', '#556B2F', '#8B4513']
+    colors = ['#FF3333', '#000000','#3333FF', '#800080', '#556B2F', '#8B4513']
     if fields
       con_type = params[:data].split(",")
       sites = ConflictCase.get_sites_bases_on_conflict_type_from_resourcemap params
