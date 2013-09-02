@@ -25,10 +25,10 @@ class TrendsController < ApplicationController
         elsif params[:frequently] == "Yearly"
           graph_data = ConflictCase.generate_yearly_graph conflict_cases, params
         end
-        graph_data.unshift(header)
+        graph_data[0].unshift(header)
         respond_to do |format|
           format.html
-          format.csv {render text: ConflictCase.generate_csv_content(graph_data)}
+          format.csv {render text: ConflictCase.generate_csv_content(graph_data[0])}
         end
       else
         flash[:error] = "Failed to download excel, please choose conflict type."
