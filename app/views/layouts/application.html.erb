@@ -23,7 +23,9 @@
 							<li><%= link_to raw('<i class="icon-globe"></i> Map'), @rm["url"] + "collections" , :method => :get, :style => "padding: 10px" %></li>
 							<li class="divider-vertical"></li>
 							<li class=<%= section_active("reporters")  %>><%= link_to raw('<i class="icon-group"></i> Reporters'), reporters_path, :method => :get, :style => "padding: 10px" %></li>
+							<li class="divider-vertical"></li>
 							<li class=<%= section_active("trends")  %>><%= link_to raw('<i class="icon-signal"></i> Trend'), trends_path, :method => :get, :style => "padding: 10px" %></li>
+							<li class="divider-vertical"></li>
 							<% if current_user.role.name == "Super Admin" %>
 								<li class="dropdown <%= section_active("alerts")  %> ">
 									<a class="dropdown-toggle" href="#" data-toggle="dropdown">
@@ -38,7 +40,6 @@
 								<li class=<%= section_active("alerts")  %>><%= link_to raw('<i class="icon-warning-sign"></i> Aggregate Threshold Alert'), alerts_path, :method => :get, :style => "padding: 10px" %>
 							<% end %>
 							<li class="divider-vertical"></li>
-							
 							<li class=<%= section_active("conflict_cases")  %>><%= link_to raw('<i class="icon-comment"></i> Case Reporting'), conflict_cases_path, :method => :get, :style => "padding: 10px" %></li>
 						<!--	<li class=<%= section_active("alerts")  %>><%= link_to raw('<i class="icon-warning-sign"></i> Aggregate Threshold Alert'), alerts_path, :method => :get, :style => "padding: 10px" %> </li> -->
 							<li class="divider-vertical"></li>
