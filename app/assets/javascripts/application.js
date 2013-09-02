@@ -57,15 +57,18 @@ function generateGraphData() {
         data: "data="+case_inten.join(",")+"&from="+from+"&to="+to+"&frequently="+frequently,
         success: function(data) {
           
-          var graph_data = google.visualization.arrayToDataTable(data[0]);
+          var graph_data = google.visualization.arrayToDataTable(data[0][0]);
 
           var options = {
             title: '',
             legend: {position: 'none'},
-            colors: data[1]
+            colors: data[1],
+            vAxis: {format: '0', minValue: 0, maxValue: data[0][1]},
+            width: 850
+            // vAxis: {format: '0', minValue:0,maxValue:5,gridlines:{count:6}}
           };
 
-          if (data[0].length <= 2)
+          if (data[0][0].length <= 2)
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
           else
             var chart = new google.visualization.LineChart(document.getElementById('chart_div'));

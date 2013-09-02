@@ -259,6 +259,8 @@ class ConflictCase < ActiveRecord::Base
     graph_data = {}
     k = 0
     con_type = params[:data].split(",")
+    tmp_value = []
+    result = []
     if con_type.count > 0
       arr = generate_weekly_array params[:from], params[:to]
       con_type.each do |con|
@@ -291,20 +293,25 @@ class ConflictCase < ActiveRecord::Base
                   arr[w-1][k] = arr[w-1][k].nil? ? 0 : arr[w-1][k]
                 end
               end
-
+              tmp_value << arr[w-1][k]
             end
         end
       end
+      max_value = calculate_max_vAxis(tmp_value)
+      result << arr
+      result << [max_value.to_s]
     else
-      arr = [['', 0]]
+      result = [['', 0],["4"]]
     end
-    return arr
+    return result
   end
 
   def self.generate_daily_graph conflict_case, params
     graph_data = {}
     k = 0
     con_type = params[:data].split(",")
+    tmp_value = []
+    result = []
     if con_type.count > 0
       arr = generate_daily_array params[:from], params[:to]
       con_type.each do |con|
@@ -317,13 +324,36 @@ class ConflictCase < ActiveRecord::Base
               else
                 arr[day-1][k] = arr[day-1][k].nil? ? 0 : arr[day-1][k]
               end
+              tmp_value << arr[day-1][k]
             end
         end
       end
+      max_value = calculate_max_vAxis(tmp_value)
+      result << arr
+      result << [max_value.to_s]
     else
-      arr = [['', 0]]
+      result = [['', 0],["4"]]
     end
-    return arr
+    return result
+  end
+
+  def self.calculate_max_vAxis tmp_value
+    if tmp_value.count > 0
+      if (tmp_value.max() < 6)
+          max_value = 6
+      else
+        res = tmp_value.max() % 6
+        if (res != 0)
+          max_value = tmp_value.max() + (6 - res)
+        else
+          max_value = tmp_value.max()
+        end
+        max_value = tmp_value.max()
+      end
+    else
+      max_value = 6
+    end
+    return max_value
   end
 
   def self.generate_header con_type
@@ -361,6 +391,8 @@ class ConflictCase < ActiveRecord::Base
   def self.generate_montly_graph conflict_case, params
     graph_data = {}
     k = 0
+    tmp_value = []
+    result = []
     con_type = params[:data].split(",")
     if con_type.count > 0
       arr = generate_montly_array params[:from], params[:to]
@@ -374,18 +406,24 @@ class ConflictCase < ActiveRecord::Base
               else
                 arr[mon-1][k] = arr[mon-1][k].nil? ? 0 : arr[mon-1][k]
               end
+              tmp_value << arr[mon-1][k]
             end
         end
       end
+      max_value = calculate_max_vAxis(tmp_value)
+      result << arr
+      result << [max_value.to_s]
     else
-      arr = [['', 0]]
+      result = [['', 0],["4"]]
     end
-    return arr
+    return result
   end
 
   def self.generate_yearly_graph conflict_case, params
     graph_data = {}
     k = 0
+    tmp_value = []
+    result = []
     con_type = params[:data].split(",")
     if con_type.count > 0
       arr = generate_yearly_array params[:from], params[:to]
@@ -399,13 +437,17 @@ class ConflictCase < ActiveRecord::Base
               else
                 arr[y-1][k] = arr[y-1][k].nil? ? 0 : arr[y-1][k]
               end
+              tmp_value << arr[y-1][k]
             end
         end
       end
+      max_value = calculate_max_vAxis(tmp_value)
+      result << arr
+      result << [max_value.to_s]
     else
-      arr = [['', 0]]
+      result = [['', 0],["4"]]
     end
-    return arr
+    return result
   end
 
   def self.generate_yearly_array from, to
@@ -423,6 +465,8 @@ class ConflictCase < ActiveRecord::Base
   def self.generate_semi_annual_graph conflict_case, params
     graph_data = {}
     k = 0
+    tmp_value = []
+    result = []
     con_type = params[:data].split(",")
     if con_type.count > 0
       arr = generate_semi_annual_array params[:from], params[:to]
@@ -444,14 +488,17 @@ class ConflictCase < ActiveRecord::Base
                   arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
                 end
               end
-
+              tmp_value << arr[q-1][k]
             end
         end
       end
+      max_value = calculate_max_vAxis(tmp_value)
+      result << arr
+      result << [max_value.to_s]
     else
-      arr = [['', 0]]
+      result = [['', 0],["4"]]
     end
-    return arr
+    return result
   end
 
   def self.generate_semi_annual_array from, to
@@ -473,6 +520,8 @@ class ConflictCase < ActiveRecord::Base
   def self.generate_quarterly_graph conflict_case, params
     graph_data = {}
     k = 0
+    tmp_value = []
+    result = []
     con_type = params[:data].split(",")
     if con_type.count > 0
       arr = generate_quarterly_array params[:from], params[:to]
@@ -507,14 +556,17 @@ class ConflictCase < ActiveRecord::Base
                   arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
                 end
               end
-
+              tmp_value << arr[q-1][k]
             end
         end
       end
+      max_value = calculate_max_vAxis(tmp_value)
+      result << arr
+      result << [max_value.to_s]
     else
-      arr = [['', 0]]
+      result = [['', 0],["4"]]
     end
-    return arr
+    return result
   end
 
   def self.generate_quarterly_array from, to
