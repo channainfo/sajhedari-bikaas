@@ -56,14 +56,27 @@
         <div class="control-group">
             <%= f.label "In the past",:class => "control-label" %>
             <div class="controls">
-                <%= f.text_field :last_days, :class =>"input-xlarge", :style =>"width:70px;", :required => "required" %> days
+                <div class="row-fluid">
+                    <div class="span2" style="width:90px;">
+                        <%= f.text_field :last_days, :class =>"input-xlarge", :style =>"width:70px;", :required => "required" %> 
+                    </div>
+                    <div class="span2" style="margin-left:0px; padding-top:5px;">
+                        <span class="help-inline"> days </span>
+                    </div>
+                </div>
             </div>
-
         </div>
         <div class="control-group">
             <%= f.label "Is more than",:class => "control-label" %>
             <div class="controls">
-                <%= f.text_field :total, :class =>"input-xlarge", :style =>"width:70px;", :required => "required" %> cases
+                <div class="row-fluid">
+                    <div class="span2" style="width:90px;">
+                        <%= f.text_field :total, :class =>"input-xlarge", :style =>"width:70px;", :required => "required" %> 
+                    </div>
+                    <div class="span2" style="margin-left:0px; padding-top:5px;">
+                        <span class="help-inline"> cases </span>
+                    </div>
+                </div>
             </div>
         </div>
         
