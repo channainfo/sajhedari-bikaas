@@ -26,7 +26,7 @@ class Message < ActiveRecord::Base
 		fields = body.split(" ")
 		list = {}
 		fields.each do |f|
-			if((f.start_with? "t.") or (f.start_with? "s.") or (f.start_with? "c.") or (f.start_with? "i."))
+			if((f.downcase.start_with? "t.") or (f.downcase.start_with? "s.") or (f.downcase.start_with? "c.") or (f.downcase.start_with? "i."))
 				unless self.is_i? f[2..-1]
 					return "Error with #{f}." + Setting.first.message_unknown
 				else
@@ -62,17 +62,17 @@ class Message < ActiveRecord::Base
 		conflict = {}
 		data = {}
 		fields.each do |f|
-			if f.start_with? "c."
+			if f.downcase.start_with? "c."
 				l = Location.find_by_code(f[2..-1])
 				conflict[:location_id] = l.id
 			end
-			if f.start_with? "t."
+			if f.downcase.start_with? "t."
 				data[:conflict_type] = f[2..-1].to_i
 			end
-			if f.start_with? "i."
+			if f.downcase.start_with? "i."
 				data[:conflict_intensity] = f[2..-1].to_i
 			end
-			if f.start_with? "s."
+			if f.downcase.start_with? "s."
 				data[:conflict_state] = f[2..-1].to_i
 			end
 		end
