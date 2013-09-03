@@ -10,6 +10,10 @@ Sham.email do
  "add#{(1..8).map { rand(1000).to_i }.join}@yahoo.com"
 end
 
+Role.blueprint do
+  name {Sham.name}
+end
+
 User.blueprint do
 	first_name { Sham.user_name }
   last_name { Sham.user_name}

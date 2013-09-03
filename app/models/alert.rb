@@ -4,7 +4,7 @@ class Alert < ActiveRecord::Base
   validates_presence_of :total
   validates_presence_of :condition
   validates_presence_of :message
-  attr_accessible :name
+  validate :validate_total_and_last_days
   attr_accessible :last_days
   attr_accessible :total
   attr_accessible :condition
@@ -29,6 +29,16 @@ class Alert < ActiveRecord::Base
   		end
   	end
   	condition_list.join(" and ")
+  end
+
+  def validate_total_and_last_days
+    return if [total.blank?, last_days.blank?].any?
+    if total <= 0
+      errors.add(:total, 'must be greater than 0')
+    end
+    if last_days < 0
+      errors.add(:last_days, 'must be greater than or equal to 0')
+    end
   end
 
   def self.process_schedule    

@@ -77,14 +77,28 @@
         <div class="control-group">
             <%= f.label "In the past",:class => "control-label" %>
             <div class="controls">
-                <%= f.text_field :last_days, :class =>"input-xlarge", :style =>"width:70px;", :required => "required" %> days
+                <div class="row-fluid">
+                    <div class="span2" style="width:90px;">
+                        <%= f.text_field :last_days, :class =>"input-xlarge", :style =>"width:70px;", :required => "required" %>
+                    </div>
+                    <div class="span2" style="margin-left:0px; padding-top:5px;">
+                        <span class="help-inline"> days </span>
+                    </div>
+                </div>
             </div>
 
         </div>
         <div class="control-group">
             <%= f.label "Is more than",:class => "control-label" %>
             <div class="controls">
-                <%= f.text_field :total, :class =>"input-xlarge", :style =>"width:70px;", :required => "required" %> cases
+                <div class="row-fluid">
+                    <div class="span2" style="width:90px;">
+                    <%= f.text_field :total, :class =>"input-xlarge", :style =>"width:70px;", :required => "required" %>
+                    </div>
+                    <div class="span2" style="margin-left:0px; padding-top:5px;">
+                        <span class="help-inline"> cases </span>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -96,7 +110,7 @@
                         <% @admin.each do |ad| %>
                             <div class="list-item">
                                 <span class="input-group-addon">
-                                    <input <%= "checked" if JSON.parse(alert.email_contacts).include?(ad.id.to_s) %> type="checkbox" name="email[]" value="<%= ad.id %>" />
+                                    <input <%= "checked" if(alert.email_contacts and alert.email_contacts != "null" and JSON.parse(alert.email_contacts).include?(ad.id.to_s)) %> type="checkbox" name="email[]" value="<%= ad.id %>" />
                                 </span>
                                 <span class="email-label">
                                     <%= ad.email %>
@@ -111,7 +125,8 @@
                         <% @admin.each do |ad| %>
                             <div class="list-item">
                                 <span class="input-group-addon">
-                                    <input <%= "checked" if JSON.parse(alert.phone_contacts).include?(ad.id.to_s) %> type="checkbox" name="phone[]" value="<%= ad.id %>" />
+
+                                    <input <%= "checked" if(alert.phone_contacts and alert.phone_contacts != "null" and JSON.parse(alert.phone_contacts).include?(ad.id.to_s)) %> type="checkbox" name="phone[]" value="<%= ad.id %>" />
                                 </span>
                                 <span class="email-label">
                                     <%= ad.email %> [<%= ad.phone_number %>]

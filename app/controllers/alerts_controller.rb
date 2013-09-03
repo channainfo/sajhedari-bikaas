@@ -13,27 +13,39 @@ class AlertsController < ApplicationController
 
 	def create
 		@alert = Alert.new(params[:alert])
+		@alert.name = params["alert"]["name"]
 		@alert.condition = generate_condition(params[:type], params[:item]);
-		@alert.phone_contacts = params[:phone].to_json
-		@alert.email_contacts = params[:email].to_json
+		params["alert"]["phone_contacts"] = params[:phone]? params[:phone].to_json : {}.to_json
+		params["alert"]["email_contacts"] = params[:email]? params[:email].to_json : {}.to_json
 	  	if @alert.save
 			flash[:notice] = "You have successfully created alert #{@alert.name}."      
 			redirect_to alerts_path
 	    else
-	      render :new
+	    	@fields = ConflictCase.get_fields	
+			@admin = User.all()	
+	    	render :new
 	    end
 	end
 
 	def update
 		@alert = Alert.find(params[:id])
 		params["alert"]["condition"] = generate_condition(params[:type], params[:item]);
-		params["alert"]["phone_contacts"] = params[:phone].to_json
-		params["alert"]["email_contacts"] = params[:email].to_json
-	  	if @alert.update_attributes!(params[:alert])
+		params["alert"]["phone_contacts"] = params[:phone]? params[:phone].to_json : {}.to_json
+		params["alert"]["email_contacts"] = params[:email]? params[:email].to_json : {}.to_json
+		@alert.phone_contacts = params["alert"]["phone_contacts"]
+		@alert.email_contacts = params["alert"]["email_contacts"]
+		@alert.name = params["alert"]["name"]
+		@alert.condition = params["alert"]["condition"]
+		@alert.total = params["alert"]["total"]
+		@alert.last_days = params["alert"]["last_days"]
+		@alert.message = params["alert"]["message"]
+	  	if @alert.save
 			flash[:notice] = "You have successfully updated alert #{@alert.name}."      
 			redirect_to alerts_path
 	    else
-	      render :new
+	    	@admin = User.all()
+	    	@fields = ConflictCase.get_fields
+	    	render :edit
 	    end
 	end
 
