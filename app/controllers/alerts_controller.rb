@@ -14,8 +14,8 @@ class AlertsController < ApplicationController
 	def create
 		@alert = Alert.new(params[:alert])
 		@alert.condition = generate_condition(params[:type], params[:item]);
-		@alert.phone_contacts = params[:phone].to_json
-		@alert.email_contacts = params[:email].to_json
+		params["alert"]["phone_contacts"] = params[:phone]? params[:phone].to_json : {}.to_json
+		params["alert"]["email_contacts"] = params[:email]? params[:email].to_json : {}.to_json
 	  	if @alert.save
 			flash[:notice] = "You have successfully created alert #{@alert.name}."      
 			redirect_to alerts_path
@@ -27,8 +27,8 @@ class AlertsController < ApplicationController
 	def update
 		@alert = Alert.find(params[:id])
 		params["alert"]["condition"] = generate_condition(params[:type], params[:item]);
-		params["alert"]["phone_contacts"] = params[:phone].to_json
-		params["alert"]["email_contacts"] = params[:email].to_json
+		params["alert"]["phone_contacts"] = params[:phone]? params[:phone].to_json : {}.to_json
+		params["alert"]["email_contacts"] = params[:email]? params[:email].to_json : {}.to_json
 	  	if @alert.update_attributes!(params[:alert])
 			flash[:notice] = "You have successfully updated alert #{@alert.name}."      
 			redirect_to alerts_path

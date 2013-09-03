@@ -4,7 +4,8 @@ class Alert < ActiveRecord::Base
   validates_presence_of :total
   validates_presence_of :condition
   validates_presence_of :message
-  attr_accessible :name
+  validates_numericality_of :last_days, :greater_than_or_equal_to => 0
+  validates_numericality_of :total, :greater_than => 0
   attr_accessible :last_days
   attr_accessible :total
   attr_accessible :condition
