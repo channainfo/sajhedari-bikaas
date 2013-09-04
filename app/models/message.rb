@@ -68,6 +68,7 @@ class Message < ActiveRecord::Base
 					conflict[:location_id] = l.id 
 				else
 					self.reply = "Error with location #{f[2..-1]}." + Setting.first.message_unknown
+					return false
 				end
 			end
 			if f.downcase.start_with? "t."
