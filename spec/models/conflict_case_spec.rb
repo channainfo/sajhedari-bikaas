@@ -70,63 +70,63 @@ describe ConflictCase do
                   ["9/7/2013", 0], ["9/8/2013", 0], ["9/9/2013", 0], ["9/10/2013", 0], ["9/11/2013", 0], ["9/12/2013", 0],
                   ["9/13/2013", 0], ["9/14/2013", 0], ["9/15/2013", 0], ["9/16/2013", 0], ["9/17/2013", 0], ["9/18/2013", 0],
                   ["9/19/2013", 0], ["9/20/2013", 0], ["9/21/2013", 0], ["9/22/2013", 0], ["9/23/2013", 0], ["9/24/2013", 0],
-                  ["9/25/2013", 0], ["9/26/2013", 0], ["9/27/2013", 0], ["9/28/2013", 0], ["9/29/2013", 0], ["9/30/2013", 0]], ["6"]]
+                  ["9/25/2013", 0], ["9/26/2013", 0], ["9/27/2013", 0], ["9/28/2013", 0], ["9/29/2013", 0], ["9/30/2013", 0]], ["4"]]
 
         ConflictCase.generate_daily_graph(@conflict_case, @params).should eq expected_result
       end
 
       it "should generate array format for display weekly report on google chart" do
         expected_result = [[["W1/8/2013", 0], ["W2/8/2013", 0], ["W3/8/2013", 0], ["W4/8/2013", 0],
-                          ["W1/9/2013", 2], ["W2/9/2013", 0], ["W3/9/2013", 0], ["W4/9/2013", 0]],["6"]]
+                          ["W1/9/2013", 2], ["W2/9/2013", 0], ["W3/9/2013", 0], ["W4/9/2013", 0]],["4"]]
 
         ConflictCase.generate_weekly_graph(@conflict_case, @params).should eq expected_result
       end
 
       it "should generate array format for disply montly report on google chart" do
-        expected_result = [[["8/2013", 0], ["9/2013", 2]], ["6"]]
+        expected_result = [[["8/2013", 0], ["9/2013", 2]], ["4"]]
         ConflictCase.generate_montly_graph(@conflict_case, @params).should eq expected_result
       end
 
       it "should generate array format for display quarterly report on google chart" do
-        expected_result = [[["Q3/2013", 2]], ["6"]]
+        expected_result = [[["Q3/2013", 2]], ["4"]]
         ConflictCase.generate_quarterly_graph(@conflict_case, @params).should eq expected_result
       end
 
       it "should generate array format for display semi-annualy report on google chart" do
-        expected_result = [[["S2/2013", 2]], ["6"]]
+        expected_result = [[["S2/2013", 2]], ["4"]]
         ConflictCase.generate_semi_annual_graph(@conflict_case, @params).should eq expected_result
       end
 
       it "should generate array format for display yearly report on google chart" do
-        expected_result = [[["2013", 2]], ["6"]]
+        expected_result = [[["2013", 2]], ["4"]]
         ConflictCase.generate_yearly_graph(@conflict_case, @params).should eq expected_result
       end
     end
 
     describe "manualy set the max high of google chart" do
 
-      it "should return 6 when the array is empty" do
+      it "should return 4 when the array is empty" do
         array_value = []
         max_value = ConflictCase.calculate_max_vAxis(array_value)
-        max_value.should eq 6
+        max_value.should eq 4
       end
 
-      it "should return 6 when the max value in array less than 6" do
+      it "should return 4 when the max value in array less than 4" do
+        array_value = [1, 2, 3]
+        max_value = ConflictCase.calculate_max_vAxis(array_value)
+        max_value.should eq 4
+      end
+
+      it "should return the max value if it is devided by 4" do
         array_value = [1, 2, 3, 4]
         max_value = ConflictCase.calculate_max_vAxis(array_value)
-        max_value.should eq 6
+        max_value.should eq 4
       end
 
-      it "should return the max value if it is devided by 6" do
-        array_value = [1, 2, 3, 4, 5, 6]
-        max_value = ConflictCase.calculate_max_vAxis(array_value)
-        max_value.should eq 6
-      end
-
-      it "should return the value division of 6 if it is not devided by 6" do
+      it "should return the value division of 4 if it is not devided by 4" do
         array_value = [1, 2, 3, 4, 5, 6, 7]
         max_value = ConflictCase.calculate_max_vAxis(array_value)
-        max_value.should eq 12
+        max_value.should eq 8
       end
     end
 
