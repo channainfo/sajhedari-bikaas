@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :role_id , :cast_ethnicity, :date_of_birth, :sex, :first_name, :last_name, :address, :phone_number
   belongs_to :role  
   validates_uniqueness_of :phone_number, :allow_blank => true
+  validates_uniqueness_of :email, :allow_blank => true
 
 
   USER_NAME, PASSWORD = 'iLab', '1c4989610bce6c4879c01bb65a45ad43'
