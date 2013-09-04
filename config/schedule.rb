@@ -18,9 +18,17 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
+
+
+
 require File.expand_path('../environment', __FILE__)
 Setting.first.reload
 alert_interval = Setting.first.interval_alert || 24
 every alert_interval.to_i.hours do
   runner 'Alert.process_schedule'
 end
+
+
+# every :day , :at => "09:49 am" do		
+#    runner "Alert.process_schedule", :environment => 'development'
+# end

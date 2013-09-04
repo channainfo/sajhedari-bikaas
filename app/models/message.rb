@@ -64,7 +64,11 @@ class Message < ActiveRecord::Base
 		fields.each do |f|
 			if f.downcase.start_with? "c."
 				l = Location.find_by_code(f[2..-1])
-				conflict[:location_id] = l.id
+				if l
+					conflict[:location_id] = l.id 
+				else
+					self.reply = "Error with location #{f[2..-1]}." + Setting.first.message_unknown
+				end
 			end
 			if f.downcase.start_with? "t."
 				data[:conflict_type] = f[2..-1].to_i
