@@ -265,45 +265,51 @@ class ConflictCase < ActiveRecord::Base
       arr = generate_weekly_array params[:from], params[:to]
       con_type.each do |con|
         k = k + 1
-        conflict_case.each do |c|
-            for w in 1..arr.count
-              week = arr[w-1][0].split("/")[0]
-              month = arr[w-1][0].split("/")[1].to_i
-              year = arr[w-1][0].split("/")[2].to_i
-              if week == "W1"
-                if (1..7).member?(c.created_at.mday) && c.created_at.mon == month && c.created_at.year == year && c.conflict_type == con.to_i
-                  arr[w-1][k] = arr[w-1][k].nil? ? 1 : arr[w-1][k] + 1
-                else
-                  arr[w-1][k] = arr[w-1][k].nil? ? 0 : arr[w-1][k]
+        if conflict_case.count > 0
+          conflict_case.each do |c|
+              for w in 1..arr.count
+                week = arr[w-1][0].split("/")[0]
+                month = arr[w-1][0].split("/")[1].to_i
+                year = arr[w-1][0].split("/")[2].to_i
+                if week == "W1"
+                  if (1..7).member?(c.created_at.mday) && c.created_at.mon == month && c.created_at.year == year && c.conflict_type == con.to_i
+                    arr[w-1][k] = arr[w-1][k].nil? ? 1 : arr[w-1][k] + 1
+                  else
+                    arr[w-1][k] = arr[w-1][k].nil? ? 0 : arr[w-1][k]
+                  end
+                elsif week == "W2"
+                  if (8..14).member?(c.created_at.mday) && c.created_at.mon == month && c.created_at.year == year && c.conflict_type == con.to_i
+                    arr[w-1][k] = arr[w-1][k].nil? ? 1 : arr[w-1][k] + 1
+                  else
+                    arr[w-1][k] = arr[w-1][k].nil? ? 0 : arr[w-1][k]
+                  end
+                elsif week == "W3"
+                  if (15..21).member?(c.created_at.mday) && c.created_at.mon == month && c.created_at.year == year && c.conflict_type == con.to_i
+                    arr[w-1][k] = arr[w-1][k].nil? ? 1 : arr[w-1][k] + 1
+                  else
+                    arr[w-1][k] = arr[w-1][k].nil? ? 0 : arr[w-1][k]
+                  end
+                elsif week == "W4"
+                  if (22..31).member?(c.created_at.mday) && c.created_at.mon == month && c.created_at.year == year && c.conflict_type == con.to_i
+                    arr[w-1][k] = arr[w-1][k].nil? ? 1 : arr[w-1][k] + 1
+                  else
+                    arr[w-1][k] = arr[w-1][k].nil? ? 0 : arr[w-1][k]
+                  end
                 end
-              elsif week == "W2"
-                if (8..14).member?(c.created_at.mday) && c.created_at.mon == month && c.created_at.year == year && c.conflict_type == con.to_i
-                  arr[w-1][k] = arr[w-1][k].nil? ? 1 : arr[w-1][k] + 1
-                else
-                  arr[w-1][k] = arr[w-1][k].nil? ? 0 : arr[w-1][k]
-                end
-              elsif week == "W3"
-                if (15..21).member?(c.created_at.mday) && c.created_at.mon == month && c.created_at.year == year && c.conflict_type == con.to_i
-                  arr[w-1][k] = arr[w-1][k].nil? ? 1 : arr[w-1][k] + 1
-                else
-                  arr[w-1][k] = arr[w-1][k].nil? ? 0 : arr[w-1][k]
-                end
-              elsif week == "W4"
-                if (22..31).member?(c.created_at.mday) && c.created_at.mon == month && c.created_at.year == year && c.conflict_type == con.to_i
-                  arr[w-1][k] = arr[w-1][k].nil? ? 1 : arr[w-1][k] + 1
-                else
-                  arr[w-1][k] = arr[w-1][k].nil? ? 0 : arr[w-1][k]
-                end
+                tmp_value << arr[w-1][k]
               end
-              tmp_value << arr[w-1][k]
-            end
+          end
+        else
+          for w in 1..arr.count
+            arr[w-1][k] = arr[w-1][k].nil? ? 0 : arr[w-1][k]
+          end
         end
       end
       max_value = calculate_max_vAxis(tmp_value)
       result << arr
       result << [max_value.to_s]
     else
-      result = [['', 0],["4"]]
+      result = [[["", 0]], ["4"]]
     end
     return result
   end
@@ -318,43 +324,49 @@ class ConflictCase < ActiveRecord::Base
       arr = generate_daily_array params[:from], params[:to]
       con_type.each do |con|
         k = k + 1
-        conflict_case.each do |c|
-            for day in 1..arr.count
-              tmp_day = arr[day-1][0].split("/")[1].to_i
-              month = arr[day-1][0].split("/")[0].to_i
-              year = arr[day-1][0].split("/")[2].to_i
-              if c.created_at.mday == tmp_day && c.created_at.mon == month && c.created_at.year == year && c.conflict_type == con.to_i
-                arr[day-1][k] = arr[day-1][k].nil? ? 1 : arr[day-1][k] + 1
-              else
-                arr[day-1][k] = arr[day-1][k].nil? ? 0 : arr[day-1][k]
+        if conflict_case.count > 0
+          conflict_case.each do |c|
+              for day in 1..arr.count
+                tmp_day = arr[day-1][0].split("/")[1].to_i
+                month = arr[day-1][0].split("/")[0].to_i
+                year = arr[day-1][0].split("/")[2].to_i
+                if c.created_at.mday == tmp_day && c.created_at.mon == month && c.created_at.year == year && c.conflict_type == con.to_i
+                  arr[day-1][k] = arr[day-1][k].nil? ? 1 : arr[day-1][k] + 1
+                else
+                  arr[day-1][k] = arr[day-1][k].nil? ? 0 : arr[day-1][k]
+                end
+                tmp_value << arr[day-1][k]
               end
-              tmp_value << arr[day-1][k]
-            end
+          end
+        else
+          for day in 1..arr.count
+            arr[day-1][k] = arr[day-1][k].nil? ? 0 : arr[day-1][k]
+          end
         end
       end
       max_value = calculate_max_vAxis(tmp_value)
       result << arr
       result << [max_value.to_s]
     else
-      result = [['', 0],["4"]]
+      result = [[["", 0]], ["4"]]
     end
     return result
   end
 
   def self.calculate_max_vAxis tmp_value
     if tmp_value.count > 0
-      if (tmp_value.max() < 6)
-          max_value = 6
+      if (tmp_value.max() < 4)
+          max_value = 4
       else
-        res = tmp_value.max() % 6
+        res = tmp_value.max() % 4
         if (res != 0)
-          max_value = tmp_value.max() + (6 - res)
+          max_value = tmp_value.max() + (4 - res)
         else
           max_value = tmp_value.max()
         end
       end
     else
-      max_value = 6
+      max_value = 4
     end
     return max_value
   end
@@ -374,9 +386,9 @@ class ConflictCase < ActiveRecord::Base
   def self.generate_weekly_array from, to
     arr = []
     from = from.blank? ? "#{Time.now.mon}/01/#{Time.now.year}" : from
-    to = to.blank? ? "#{Time.now.mon}/31/#{Time.now.year}" : to
+    to = to.blank? ? "#{Time.now.mon}/30/#{Time.now.year}" : to
     from = parse_date_format from
-    to = parse_date_format to
+    to = parse_date_format(to).end_of_month
     for i in from..to
       if (1..7).member?(i.mday)
         arr << ["W1/#{i.mon}/#{i.year}"] unless arr.include?(["W1/#{i.mon}/#{i.year}"])
@@ -401,24 +413,30 @@ class ConflictCase < ActiveRecord::Base
       arr = generate_montly_array params[:from], params[:to]
       con_type.each do |con|
         k = k + 1
-        conflict_case.each do |c|
-            for mon in 1..arr.count
-              month = arr[mon-1][0].split("/")[0].to_i
-              year = arr[mon-1][0].split("/")[1].to_i
-              if c.created_at.mon == month && c.created_at.year == year && c.conflict_type == con.to_i
-                arr[mon-1][k] = arr[mon-1][k].nil? ? 1 : arr[mon-1][k] + 1
-              else
-                arr[mon-1][k] = arr[mon-1][k].nil? ? 0 : arr[mon-1][k]
+        if conflict_case.count > 0
+          conflict_case.each do |c|
+              for mon in 1..arr.count
+                month = arr[mon-1][0].split("/")[0].to_i
+                year = arr[mon-1][0].split("/")[1].to_i
+                if c.created_at.mon == month && c.created_at.year == year && c.conflict_type == con.to_i
+                  arr[mon-1][k] = arr[mon-1][k].nil? ? 1 : arr[mon-1][k] + 1
+                else
+                  arr[mon-1][k] = arr[mon-1][k].nil? ? 0 : arr[mon-1][k]
+                end
+                tmp_value << arr[mon-1][k]
               end
-              tmp_value << arr[mon-1][k]
-            end
+          end
+        else
+          for mon in 1..arr.count
+            arr[mon-1][k] = arr[mon-1][k].nil? ? 0 : arr[mon-1][k]
+          end
         end
       end
       max_value = calculate_max_vAxis(tmp_value)
       result << arr
       result << [max_value.to_s]
     else
-      result = [['', 0],["4"]]
+      result = [[["", 0]], ["4"]]
     end
     return result
   end
@@ -433,23 +451,29 @@ class ConflictCase < ActiveRecord::Base
       arr = generate_yearly_array params[:from], params[:to]
       con_type.each do |con|
         k = k + 1
-        conflict_case.each do |c|
-            for y in 1..arr.count
-              year = arr[y-1][0].split("/")[0].to_i
-              if c.created_at.year == year && c.conflict_type == con.to_i
-                arr[y-1][k] = arr[y-1][k].nil? ? 1 : arr[y-1][k] + 1
-              else
-                arr[y-1][k] = arr[y-1][k].nil? ? 0 : arr[y-1][k]
+        if conflict_case.count > 0
+          conflict_case.each do |c|
+              for y in 1..arr.count
+                year = arr[y-1][0].split("/")[0].to_i
+                if c.created_at.year == year && c.conflict_type == con.to_i
+                  arr[y-1][k] = arr[y-1][k].nil? ? 1 : arr[y-1][k] + 1
+                else
+                  arr[y-1][k] = arr[y-1][k].nil? ? 0 : arr[y-1][k]
+                end
+                tmp_value << arr[y-1][k]
               end
-              tmp_value << arr[y-1][k]
-            end
+          end
+        else
+          for y in 1..arr.count
+            arr[y-1][k] = arr[y-1][k].nil? ? 0 : arr[y-1][k]
+          end
         end
       end
       max_value = calculate_max_vAxis(tmp_value)
       result << arr
       result << [max_value.to_s]
     else
-      result = [['', 0],["4"]]
+      result = [[["", 0]], ["4"]]
     end
     return result
   end
@@ -457,9 +481,9 @@ class ConflictCase < ActiveRecord::Base
   def self.generate_yearly_array from, to
     arr = []
     from = from.blank? ? "#{Time.now.mon}/01/#{Time.now.year}" : from
-    to = to.blank? ? "#{Time.now.mon}/31/#{Time.now.year}" : to
+    to = to.blank? ? "#{Time.now.mon}/30/#{Time.now.year}" : to
     from = parse_date_format from
-    to = parse_date_format to
+    to = parse_date_format(to).end_of_month
     for i in from..to
       arr << ["#{i.year}"] unless arr.include?(["#{i.year}"])
     end
@@ -476,32 +500,38 @@ class ConflictCase < ActiveRecord::Base
       arr = generate_semi_annual_array params[:from], params[:to]
       con_type.each do |con|
         k = k + 1
-        conflict_case.each do |c|
-            for s in 1..arr.count
-              semester = arr[s-1][0].split("/")[0]
-              year = arr[s-1][0].split("/")[1].to_i
-              if semester == "S1"
-                if (1..6).member?(c.created_at.mon) && c.created_at.year == year && c.conflict_type == con.to_i
-                  arr[s-1][k] = arr[s-1][k].nil? ? 1 : arr[s-1][k] + 1
-                else
-                  arr[s-1][k] = arr[s-1][k].nil? ? 0 : arr[s-1][k]
+        if conflict_case.count > 0
+          conflict_case.each do |c|
+              for s in 1..arr.count
+                semester = arr[s-1][0].split("/")[0]
+                year = arr[s-1][0].split("/")[1].to_i
+                if semester == "S1"
+                  if (1..6).member?(c.created_at.mon) && c.created_at.year == year && c.conflict_type == con.to_i
+                    arr[s-1][k] = arr[s-1][k].nil? ? 1 : arr[s-1][k] + 1
+                  else
+                    arr[s-1][k] = arr[s-1][k].nil? ? 0 : arr[s-1][k]
+                  end
+                elsif semester == "S2"
+                  if (7..12).member?(c.created_at.mon) && c.created_at.year == year && c.conflict_type == con.to_i
+                    arr[s-1][k] = arr[s-1][k].nil? ? 1 : arr[s-1][k] + 1
+                  else
+                    arr[s-1][k] = arr[s-1][k].nil? ? 0 : arr[s-1][k]
+                  end
                 end
-              elsif semester == "S2"
-                if (7..12).member?(c.created_at.mon) && c.created_at.year == year && c.conflict_type == con.to_i
-                  arr[s-1][k] = arr[s-1][k].nil? ? 1 : arr[s-1][k] + 1
-                else
-                  arr[s-1][k] = arr[s-1][k].nil? ? 0 : arr[s-1][k]
-                end
+                tmp_value << arr[s-1][k]
               end
-              tmp_value << arr[s-1][k]
-            end
+          end
+        else
+          for s in 1..arr.count
+            arr[s-1][k] = arr[s-1][k].nil? ? 0 : arr[s-1][k]
+          end
         end
       end
       max_value = calculate_max_vAxis(tmp_value)
       result << arr
       result << [max_value.to_s]
     else
-      result = [['', 0],["4"]]
+      result = [[["", 0]], ["4"]]
     end
     return result
   end
@@ -509,9 +539,9 @@ class ConflictCase < ActiveRecord::Base
   def self.generate_semi_annual_array from, to
     arr = []
     from = from.blank? ? "#{Time.now.mon}/01/#{Time.now.year}" : from
-    to = to.blank? ? "#{Time.now.mon}/31/#{Time.now.year}" : to
+    to = to.blank? ? "#{Time.now.mon}/30/#{Time.now.year}" : to
     from = parse_date_format from
-    to = parse_date_format to
+    to = parse_date_format(to).end_of_month
     for i in from..to
       if (1..6).member?(i.mon)
         arr << ["S1/#{i.year}"] unless arr.include?(["S1/#{i.year}"])
@@ -533,44 +563,50 @@ class ConflictCase < ActiveRecord::Base
 
       con_type.each do |con|
         k = k + 1
-        conflict_case.each do |c|
-            for q in 1..arr.count
-              quarter = arr[q-1][0].split("/")[0]
-              year = arr[q-1][0].split("/")[1].to_i
-              if quarter == "Q1"
-                if (1..3).member?(c.created_at.mon) && c.created_at.year == year && c.conflict_type == con.to_i
-                  arr[q-1][k] = arr[q-1][k].nil? ? 1 : arr[q-1][k] + 1
-                else
-                  arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
+        if conflict_case.count > 0
+          conflict_case.each do |c|
+              for q in 1..arr.count
+                quarter = arr[q-1][0].split("/")[0]
+                year = arr[q-1][0].split("/")[1].to_i
+                if quarter == "Q1"
+                  if (1..3).member?(c.created_at.mon) && c.created_at.year == year && c.conflict_type == con.to_i
+                    arr[q-1][k] = arr[q-1][k].nil? ? 1 : arr[q-1][k] + 1
+                  else
+                    arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
+                  end
+                elsif quarter == "Q2"
+                  if (4..6).member?(c.created_at.mon) && c.created_at.year == year && c.conflict_type == con.to_i
+                    arr[q-1][k] = arr[q-1][k].nil? ? 1 : arr[q-1][k] + 1
+                  else
+                    arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
+                  end
+                elsif quarter == "Q3"
+                  if (7..9).member?(c.created_at.mon) && c.created_at.year == year && c.conflict_type == con.to_i
+                    arr[q-1][k] = arr[q-1][k].nil? ? 1 : arr[q-1][k] + 1
+                  else
+                    arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
+                  end
+                elsif quarter == "Q4"
+                  if (10..12).member?(c.created_at.mon) && c.created_at.year == year && c.conflict_type == con.to_i
+                    arr[q-1][k] = arr[q-1][k].nil? ? 1 : arr[q-1][k] + 1
+                  else
+                    arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
+                  end
                 end
-              elsif quarter == "Q2"
-                if (4..6).member?(c.created_at.mon) && c.created_at.year == year && c.conflict_type == con.to_i
-                  arr[q-1][k] = arr[q-1][k].nil? ? 1 : arr[q-1][k] + 1
-                else
-                  arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
-                end
-              elsif quarter == "Q3"
-                if (7..9).member?(c.created_at.mon) && c.created_at.year == year && c.conflict_type == con.to_i
-                  arr[q-1][k] = arr[q-1][k].nil? ? 1 : arr[q-1][k] + 1
-                else
-                  arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
-                end
-              elsif quarter == "Q4"
-                if (10..12).member?(c.created_at.mon) && c.created_at.year == year && c.conflict_type == con.to_i
-                  arr[q-1][k] = arr[q-1][k].nil? ? 1 : arr[q-1][k] + 1
-                else
-                  arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
-                end
+                tmp_value << arr[q-1][k]
               end
-              tmp_value << arr[q-1][k]
-            end
+          end
+        else
+          for q in 1..arr.count
+            arr[q-1][k] = arr[q-1][k].nil? ? 0 : arr[q-1][k]
+          end
         end
       end
       max_value = calculate_max_vAxis(tmp_value)
       result << arr
       result << [max_value.to_s]
     else
-      result = [['', 0],["4"]]
+      result = [[["", 0]], ["4"]]
     end
     return result
   end
@@ -578,9 +614,9 @@ class ConflictCase < ActiveRecord::Base
   def self.generate_quarterly_array from, to
     arr = []
     from = from.blank? ? "#{Time.now.mon}/01/#{Time.now.year}" : from
-    to = to.blank? ? "#{Time.now.mon}/31/#{Time.now.year}" : to
+    to = to.blank? ? "#{Time.now.mon}/30/#{Time.now.year}" : to
     from = parse_date_format from
-    to = parse_date_format to
+    to = parse_date_format(to).end_of_month
     for i in from..to
       if (1..3).member?(i.mon)
         arr << ["Q1/#{i.year}"] unless arr.include?(["Q1/#{i.year}"])
@@ -598,9 +634,9 @@ class ConflictCase < ActiveRecord::Base
   def self.generate_montly_array from, to
     arr = []
     from = from.blank? ? "#{Time.now.mon}/01/#{Time.now.year}" : from
-    to = to.blank? ? "#{Time.now.mon}/31/#{Time.now.year}" : to
+    to = to.blank? ? "#{Time.now.mon}/30/#{Time.now.year}" : to
     from = parse_date_format from
-    to = parse_date_format to
+    to = parse_date_format(to).end_of_month
     for i in from..to
       arr << ["#{i.mon}/#{i.year}"] unless arr.include?(["#{i.mon}/#{i.year}"])
     end
@@ -610,9 +646,9 @@ class ConflictCase < ActiveRecord::Base
   def self.generate_daily_array from, to
     arr = []
     from = from.blank? ? "#{Time.now.mon}/01/#{Time.now.year}" : from
-    to = to.blank? ? "#{Time.now.mon}/31/#{Time.now.year}" : to
+    to = to.blank? ? "#{Time.now.mon}/30/#{Time.now.year}" : to
     from = parse_date_format from
-    to = parse_date_format to
+    to = parse_date_format(to).end_of_month
     for i in from..to
       arr << [reverse_date_format(i)]
     end
