@@ -8,7 +8,10 @@ class ConflictCasesController < ApplicationController
     @from = params[:from]
     @to = params[:to]
     unless @fields
-      flash[:error] = "Failed to get fields from resourcemap."
+      flash[:error] = "Failed to connect to resourcemap."
+      @fields = []
+      @conflict_cases = []
+      @paging = [].paginate(:page => 1, :per_page => 10)
     else
       page  = params[:page]? params[:page]:1
       sites = ConflictCase.get_paging_sites_from_resource_map(10, 10*(page.to_i - 1), @from, @to)

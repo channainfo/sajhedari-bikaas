@@ -3,6 +3,10 @@ class AlertsController < ApplicationController
 	def index
 		@alerts = Alert.all.paginate(:page => params[:page], :per_page => 10)
 		@fields = ConflictCase.get_fields
+		unless @fields
+			flash[:error] = "Failed to connect to resourcemap."
+			@fields = []
+		end
 	end
 
 	def new

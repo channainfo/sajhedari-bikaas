@@ -14,19 +14,22 @@ class Alert < ActiveRecord::Base
 
   has_many :delayed_job_alerts
 
-  def full_description
-  	fields = ConflictCase.get_fields
+  def full_description fields
   	condition_list = []
   	JSON.parse(self.condition).each do |key,value|
-  		fields.each do |f|
-  			if f["code"] == key
-          f["options"].each do |op|
-            if(op["code"] == value)
-  				    condition_list.push(f["name"].to_s + " is equal to " + op["label"])
+      unless fields.empty?
+    		fields.each do |f|
+    			if f["code"] == key
+            f["options"].each do |op|
+              if(op["code"] == value)
+    				    condition_list.push(f["name"].to_s + " is equal to " + op["label"])
+              end
             end
-          end
-  			end
-  		end
+    			end
+    		end
+      else
+        condition_list.push(key + " is equal to " + value)
+      end
   	end
   	condition_list.join(" and ")
   end

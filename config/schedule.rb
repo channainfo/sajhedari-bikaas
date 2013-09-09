@@ -24,11 +24,21 @@
 require File.expand_path('../environment', __FILE__)
 Setting.first.reload
 alert_interval = Setting.first.interval_alert || 24
-every alert_interval.to_i.hours do
+time = Time.now
+hour = time.hour
+min = time.min
+if alert_interval >= 24 
+	if (alert_interval % 24 == 0)
+		day = alert_interval / 24		
+		interval = "#{min} #{hour} */#{day} * *"
+	else
+		interval = "#{min} */#{alert_interval} * * *"
+	end
+else
+	interval = "#{min} */#{alert_interval} * * *"
+end
+
+every interval do
   runner 'Alert.process_schedule'
 end
 
-
-# every :day , :at => "09:49 am" do		
-#    runner "Alert.process_schedule", :environment => 'development'
-# end

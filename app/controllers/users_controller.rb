@@ -26,6 +26,7 @@ class UsersController < ApplicationController
 
   def register
     @user = User.new(params[:user])
+    @user.date_of_birth = DateTime.strptime(params["user"]["date_of_birth"], "%m-%d-%Y")
     if @user.create_to_resourcemap
       if @user.save
         flash[:notice] = "You have successfully created user #{@user.first_name} #{@user.last_name}."
@@ -44,6 +45,7 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    @user.date_of_birth = @user.date_of_birth.strftime("%m-%d-%Y")
     assign_role_list
   end
 
@@ -81,6 +83,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if @user.update_to_resourcemap params[:user]
       if(@user.update_attributes!(params[:user]))
+        @user.date_of_birth = DateTime.strptime(params["user"]["date_of_birth"], "%m-%d-%Y")
+        @user.save
         flash[:notice] = "You have successfully updated user #{@user.first_name} #{@user.last_name}."
         redirect_to users_path
       else

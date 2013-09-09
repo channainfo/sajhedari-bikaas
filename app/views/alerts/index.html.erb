@@ -7,9 +7,13 @@
 	<div class="well">
 		<div class="row-fluid">
 			<div class="span11">
-				<%= link_to raw('<i class="icon-warning-sign"></i> ' + alert.name ),  edit_alert_path(alert), :method => :get%>
+				<% unless @fields.empty? %>
+					<%= link_to raw('<i class="icon-warning-sign"></i> ' + alert.name ),  edit_alert_path(alert), :method => :get%>
+				<% else %>
+					<i class="icon-warning-sign"></i> <%= alert.name %>
+				<% end %>
 				<br>
-				Alert when total of case with <%= alert.full_description %> in the past <%= alert.last_days %> days is more than <%= alert.total %>.
+				Alert when total of case with <%= alert.full_description(@fields) %> in the past <%= alert.last_days %> days is more than <%= alert.total %>.
 			</div>
 			<div class="span1" style="text-align:right;">
 				<%= link_to raw("<i class='icon-trash'></i>"), alert_path(alert), :method => :delete, :confirm => "Are you sure to delete alert #{alert.name}?", :class => "btn btn-danger" %>

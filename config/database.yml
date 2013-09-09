@@ -6,6 +6,7 @@ development:
   pool: 5
   username: root
   password: 
+  reconnect: true
 
 test:
   adapter: mysql2
@@ -13,7 +14,8 @@ test:
   database: conflict_reporting_test
   pool: 5
   username: root
-  password: 
+  password:
+  reconnect: true 
 
 production:
   adapter: mysql2
@@ -22,3 +24,4 @@ production:
   pool: 5
   username: root
   password: 
+  reconnect: true

@@ -29,8 +29,12 @@ Reporter.blueprint do
 end
 
 Location.blueprint do
-  code
+  code { Sham.name }
   name { Sham.location_name }
-  lat
-  lng
+  lat { rand(180) - 90 }
+  lng { rand(360) - 180 }
+end
+
+ConflictCase.blueprint do
+  
 end
