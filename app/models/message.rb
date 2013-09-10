@@ -30,7 +30,16 @@ class Message < ActiveRecord::Base
 				unless self.is_i? f[2..-1]
 					return "Error with #{f}." + Setting.first.message_unknown
 				else
-					list["#{f[0]}"] = f[2..-1]
+					if f.downcase.start_with? "c."
+						l = Location.find_by_code(f[2..-1])
+						if l
+							list["#{f[0]}"] = f[2..-1]
+						else
+							return "Error #{f[2..-1]}." + Setting.first.message_unknown
+						end
+					else
+						list["#{f[0]}"] = f[2..-1]
+					end
 				end
 			else
 				return "Error with #{f}." + Setting.first.message_unknown
@@ -67,7 +76,7 @@ class Message < ActiveRecord::Base
 				if l
 					conflict[:location_id] = l.id 
 				else
-					self.reply = "Error with location #{f[2..-1]}." + Setting.first.message_unknown
+					self.reply = "Error #{f[2..-1]}." + Setting.first.message_unknown
 					return false
 				end
 			end
