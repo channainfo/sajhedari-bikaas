@@ -28,17 +28,17 @@ class Message < ActiveRecord::Base
 		fields.each do |f|
 			if((f.downcase.start_with? "t.") or (f.downcase.start_with? "s.") or (f.downcase.start_with? "c.") or (f.downcase.start_with? "i."))
 				unless self.is_i? f[2..-1]
-					return "Error with #{f}." + Setting.first.message_unknown
+					return "Error #{f}." + Setting.first.message_unknown
 				else
 					if f.downcase.start_with? "c."
 						l = Location.find_by_code(f[2..-1])
 						if l
-							list["#{f[0]}"] = f[2..-1]
+							list["#{f[0]}".downcase] = f[2..-1]
 						else
 							return "Error #{f[2..-1]}." + Setting.first.message_unknown
 						end
 					else
-						list["#{f[0]}"] = f[2..-1]
+						list["#{f[0]}".downcase] = f[2..-1]
 					end
 				end
 			else
