@@ -47,7 +47,19 @@ class ReportersController < ApplicationController
     @fields = ConflictCase.get_fields
     json_data = {}
     table_rows = ""
-    @reporter_cases = ConflictCase.all.where(:reporter_id => params[:id]).offset(params[:offset].to_i).limit(5)
+    site_ids = []
+
+    cases = ConflictCase.all.where(:reporter_id => params[:id]).offset(params[:offset].to_i).limit(5)
+    unless cases.empty?
+      cases.each do |c|
+        site_ids.push(c.site_id)
+      end
+      sites = ConflictCase.get_some_sites_from_resourcemap(site_ids)
+      @reporter_cases = ConflictCase.transform(sites, @fields)
+    else
+      @reporter_cases = []
+    end
+
     @reporter_cases.count == 0 ? table_rows = "<tr><td colspan='5' style='text-align: center; color: red; padding-top: 20px;'>No records found</td></tr>" : table_row = ""
     @reporter_cases.each do |el|
       location = Location.find_by_id(el.location_id)

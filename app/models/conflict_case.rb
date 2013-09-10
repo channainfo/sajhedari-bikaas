@@ -173,16 +173,28 @@ class ConflictCase < ActiveRecord::Base
 
   def self.get_all_sites_from_resource_map_by_period(start_date, end_date)
     request = Typhoeus::Request.new(
-          ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
-          method: :get,
-          body: "this is a request body",
-          headers: { Accept: "text/html" },
-          params: {:start_date => start_date, :end_date => end_date } 
+      ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
+      method: :get,
+      body: "this is a request body",
+      headers: { Accept: "text/html" },
+      params: {:start_date => start_date, :end_date => end_date } 
     )
-
     request.run
     response = request.response.response_body
     return JSON.parse(response)["sites"]
+  end
+
+  def self.get_some_sites_from_resourcemap site_ids
+    request = Typhoeus::Request.new(
+      ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/get_some_sites",
+      method: :get,
+      body: "this is a request body",
+      headers: { Accept: "text/html" },
+      params: {:sites => site_ids.join(",")} 
+    )
+    request.run
+    response = request.response.response_body
+    return JSON.parse(response)
   end
 
   def get_conflict_from_resource_map
