@@ -20,7 +20,7 @@ class ReportersController < ApplicationController
 
   def create
     @reporter = Reporter.new(params[:reporter])
-    @reporter.date_of_birth = DateTime.strptime(params["reporter"]["date_of_birth"], "%m-%d-%Y")
+    @reporter.date_of_birth = DateTime.strptime(params["reporter"]["date_of_birth"], "%m-%d-%Y") unless params["reporter"]["date_of_birth"].strip.empty?
     if @reporter.create_to_resource_map
     	if @reporter.save
         flash[:notice] = "You have successfully created reporter #{@reporter.first_name} #{@reporter.last_name}."
@@ -40,7 +40,7 @@ class ReportersController < ApplicationController
 
   def edit
     @reporter = Reporter.find(params[:id])
-    @reporter.date_of_birth = @reporter.date_of_birth.strftime("%m-%d-%Y")
+    @reporter.date_of_birth = @reporter.date_of_birth.strftime("%m-%d-%Y") if @reporter.date_of_birth
   end
 
   def getReporterCasesPagination
@@ -85,7 +85,7 @@ class ReportersController < ApplicationController
     @reporter = Reporter.find(params[:id])
     if @reporter.update_to_resourcemap params[:reporter]
       if(@reporter.update_attributes(params[:reporter]))
-        @reporter.date_of_birth = DateTime.strptime(params["reporter"]["date_of_birth"], "%m-%d-%Y")
+        @reporter.date_of_birth = DateTime.strptime(params["reporter"]["date_of_birth"], "%m-%d-%Y")  unless params["reporter"]["date_of_birth"].strip.empty?
         @reporter.save
         flash[:notice] = "You have successfully updated reporter #{@reporter.first_name} #{@reporter.last_name}."
         redirect_to reporters_path
