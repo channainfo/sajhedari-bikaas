@@ -77,3 +77,7 @@
 .list-item{
 	margin-bottom: 10px;
 }
+
+.action {
+	min-width: 50px;
+}

@@ -1,0 +1,40 @@
+<div class="row-fluid">
+    <div id="legend">                    
+        <legend class="">Failed Messages</legend>
+    </div>
+</div>
+<!--<table class="table table-bordered table-striped">-->
+<table class="table table-condensed table-hover" id="mytable_failed_messages">
+    <thead>
+	    <tr>
+		    <th>Country</th>
+		    <th>Carrier</th>
+		    <th>Channel</th>
+		    <th>Application</th>
+		    <th>From</th>
+		    <th>To</th>
+		    <th>Message body</th>
+		    <th>Message reply</th>
+	    </tr>
+    </thead>
+    <tbody>
+	<% @messages.each do |m| %>	     
+	    <tr>
+	    	<td><%= m.country %></td>
+	    	<td><%= m.carrier %></td>
+	    	<td><%= m.channel %></td>
+	    	<td><%= m.application %></td>
+	    	<td><%= m.from %></td>
+	    	<td><%= m.to %></td>
+	    	<td><%= m.body %></td>
+	    	<td><%= m.reply %></td>
+	   	</tr>
+	<% end %>
+	</tbody>
+</table>
+<div>
+	<span class="badge" style="padding:5px;margin-right:5px;">Display record : <%= @messages.size %> / <%= @messages.total_entries %>
+	</span>
+</div>
+<%= will_paginate @messages, :param_name => 'reporter_page', renderer: BootstrapPagination::Rails %>
+	    

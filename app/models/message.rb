@@ -9,12 +9,14 @@ class Message < ActiveRecord::Base
 
 	def process!
 		reporter_number = from
+		self.is_success = false
 		self.reply = INVALID_USER unless validate_sender
 		self.reply = self.validate_message
 		self.reply = Setting.first.message_invalid_sender unless sender
 		if(self.reply == nil)
 			fields = body.split(" ")
 			if self.save_to_case(fields, sender)
+				self.is_success = true
 				self.reply = Setting.first.message_success
 			else
 				self.reply = Setting.first.message_failed
@@ -35,14 +37,14 @@ class Message < ActiveRecord::Base
 						if l
 							list["#{f[0]}".downcase] = f[2..-1]
 						else
-							return "Error #{f[2..-1]}." + Setting.first.message_unknown
+							return "Error #{f}." + Setting.first.message_unknown
 						end
 					else
 						list["#{f[0]}".downcase] = f[2..-1]
 					end
 				end
 			else
-				return "Error with #{f}." + Setting.first.message_unknown
+				return "Error #{f}." + Setting.first.message_unknown
 			end
 		end
 		return Setting.first.message_invalid unless fields.size == 4
@@ -76,7 +78,6 @@ class Message < ActiveRecord::Base
 				if l
 					conflict[:location_id] = l.id 
 				else
-					self.reply = "Error #{f[2..-1]}." + Setting.first.message_unknown
 					return false
 				end
 			end
@@ -91,7 +92,7 @@ class Message < ActiveRecord::Base
 			end
 		end
 		conflict[:reporter_id] = sender.id
-		conflict[:case_message] = self.body
+		conflict[:message_id] = self.id
 		@conflict_case = ConflictCase.new(conflict)
 		site = @conflict_case.save_case_to_resource_map data
 		if site

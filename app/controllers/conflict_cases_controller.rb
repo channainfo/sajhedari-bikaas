@@ -87,7 +87,7 @@ class ConflictCasesController < ApplicationController
     if site
       @conflict_case.site_id = site["id"]
     	if @conflict_case.save
-        flash[:notice] = "You have successfully created conflict case #{@conflict_case.case_message}."      
+        flash[:notice] = "You have successfully created conflict case #{@conflict_case.location.name}."      
         redirect_to conflict_cases_path
       else
         render :new
@@ -109,10 +109,10 @@ class ConflictCasesController < ApplicationController
     @conflict_case = ConflictCase.find(params[:id])
     if @conflict_case.is_updated       
       unless @conflict_case.backup.user.id == current_user.id
-        flash[:error] = "Case #{@conflict_case.case_message} is marked as updated please click Approve to update to confirm update location."
+        flash[:error] = "Case #{@conflict_case.location.name} is marked as updated please click Approve to update to confirm update location."
         redirect_to conflict_cases_path
       else
-        flash[:error] = "Failed to update case #{@conflict_case.case_message}. Please try again later."
+        flash[:error] = "Failed to update case #{@conflict_case.location.name}. Please try again later."
         redirect_to conflict_cases_path
       end
 
@@ -147,7 +147,7 @@ class ConflictCasesController < ApplicationController
   def cancel_delete
     @conflict_case = ConflictCase.find(params[:id])
     if(@conflict_case.is_deleted and @conflict_case.backup)
-      flash[:notice] = "#{@conflict_case.case_message} is marked as undeleted."
+      flash[:notice] = "#{@conflict_case.location.name} is marked as undeleted."
       @conflict_case.backup.destroy
       @conflict_case.is_deleted = false
       @conflict_case.save
@@ -160,7 +160,7 @@ class ConflictCasesController < ApplicationController
   def cancel_update
     @conflict_case = ConflictCase.find(params[:id])
     if(@conflict_case.is_updated and @conflict_case.backup)
-      flash[:notice] = "#{@conflict_case.case_message} is marked as not updated."
+      flash[:notice] = "#{@conflict_case.location.name} is marked as not updated."
       @conflict_case.backup.destroy
       @conflict_case.is_updated = false
       @conflict_case.save
@@ -176,10 +176,10 @@ class ConflictCasesController < ApplicationController
     if(@conflict_case and @conflict_case.is_deleted and @conflict_case.backup and @conflict_case.backup.user.id != current_user.id and site)
       @conflict_case.destroy!
       @conflict_case.backup.destroy!
-      flash[:notice] = "You have successfully deleted #{@conflict_case.case_message}."
+      flash[:notice] = "You have successfully deleted #{@conflict_case.location.name}."
       redirect_to conflict_cases_path
     else
-      flash[:error] = "Process delete #{@conflict_case.case_message} failed."
+      flash[:error] = "Process delete #{@conflict_case.location.name} failed."
       redirect_to conflict_cases_path
     end
   end
@@ -189,7 +189,7 @@ class ConflictCasesController < ApplicationController
     if(@conflict_case and @conflict_case.is_updated and @conflict_case.backup and @conflict_case.backup.user.id != current_user.id)
       if @conflict_case.update_to_resource_map_with_form params[:conflict_case]
         if(@conflict_case.update_attributes(:location_id => params["conflict_case"]["location_id"]))
-          flash[:notice] = "You have successfully updated conflict case #{@conflict_case.case_message}."
+          flash[:notice] = "You have successfully updated conflict case #{@conflict_case.location.name}."
           @conflict_case.backup.destroy!
           @conflict_case.is_updated = false
           @conflict_case.save
@@ -213,7 +213,7 @@ class ConflictCasesController < ApplicationController
     if(@conflict_case and @conflict_case.is_updated and @conflict_case.backup and @conflict_case.backup.user.id != current_user.id)
       if @conflict_case.update_to_resource_map
         if(@conflict_case.update_attributes(:location_id => @conflict_case.backup.data["location_id"]))
-          flash[:notice] = "You have successfully updated conflict case #{@conflict_case.case_message}."
+          flash[:notice] = "You have successfully updated conflict case #{@conflict_case.location.name}."
           @conflict_case.backup.destroy!
           @conflict_case.is_updated = false
           @conflict_case.save
@@ -254,5 +254,10 @@ class ConflictCasesController < ApplicationController
     unless success
       render :json => {:error => "field not found"}
     end
+  end
+
+  def failed_messages
+    @messages = Message.where('is_success = false')
+    @messages = @messages.paginate(:page => params[:page], :per_page => PageSize)
   end
 end

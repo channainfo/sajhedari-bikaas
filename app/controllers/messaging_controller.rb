@@ -13,6 +13,7 @@ class MessagingController < ApplicationController
     rescue => err
       message.reply = err.message
     ensure
+      message.save
       render :text => message.reply, :content_type => "text/plain"
     end
     # message.save

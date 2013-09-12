@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130822085750) do
+ActiveRecord::Schema.define(version: 20130912022825) do
 
   create_table "alerts", force: true do |t|
     t.text     "condition"
@@ -36,7 +36,6 @@ ActiveRecord::Schema.define(version: 20130822085750) do
   end
 
   create_table "conflict_cases", force: true do |t|
-    t.string   "case_message"
     t.integer  "location_id"
     t.integer  "site_id"
     t.datetime "created_at"
@@ -47,6 +46,7 @@ ActiveRecord::Schema.define(version: 20130822085750) do
     t.integer  "conflict_type"
     t.integer  "conflict_state"
     t.integer  "conflict_intensity"
+    t.integer  "message_id"
   end
 
   add_index "conflict_cases", ["location_id"], name: "index_conflict_cases_on_location_id", using: :btree
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20130822085750) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "reply"
+    t.boolean  "is_success"
   end
 
   create_table "reporters", force: true do |t|

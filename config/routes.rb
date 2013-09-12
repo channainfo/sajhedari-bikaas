@@ -48,6 +48,7 @@ Conflict::Application.routes.draw do
       get 'get_field_options'
       get 'export_as_kml'
       get 'export_as_shp'
+      get 'failed_messages'
     end
     member do
       get 'cancel_delete'

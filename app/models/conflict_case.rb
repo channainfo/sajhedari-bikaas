@@ -1,15 +1,17 @@
 class ConflictCase < ActiveRecord::Base
   belongs_to :location
   belongs_to :reporter
+  belongs_to :message
 
   attr_accessible :location_id
+  attr_accessible :message_id
   attr_accessible :case_message
   attr_accessible :site_id
   attr_accessible :conflict_intensity
   attr_accessible :conflict_state
   attr_accessible :conflict_type
 
-  attr_accessible :reporter, :location, :conflict_type_description, :conflict_intensity_description, :conflict_state_description
+  attr_accessible :reporter, :location, :message, :conflict_type_description, :conflict_intensity_description, :conflict_state_description
 
   attr_accessible :is_deleted
   attr_accessible :is_updated
