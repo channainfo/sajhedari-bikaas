@@ -2,7 +2,7 @@ class LocationsController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    @locations = Location.all.paginate(:page => params[:page], :per_page => 10)
+    @locations = Location.all.paginate(:page => params[:page], :per_page => PageSize)
   end
 
   def show

@@ -6,7 +6,7 @@ class UsersController < ApplicationController
       @query = params[:query]
       @users = User.where('last_name like ? OR first_name like ? OR phone_number like ?',"%#{@query}%","%#{@query}%","%#{@query}%").paginate(:page => params[:page], :per_page => 10)
     else
-      @users = User.all.paginate(:page => params[:page], :per_page => 10)
+      @users = User.all.paginate(:page => params[:page], :per_page => PageSize)
     end
     
   end

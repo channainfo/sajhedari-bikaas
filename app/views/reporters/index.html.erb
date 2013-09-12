@@ -41,6 +41,10 @@
 		</tbody>
     </table>
 </div>
+<div>
+	<span class="badge" style="padding:5px;margin-right:5px;">Display record : <%= @reporters.size %> / <%= @reporters.total_entries %>
+	</span>
+</div>
 <%= will_paginate @reporters, :param_name => 'reporter_page', renderer: BootstrapPagination::Rails %>
 <div id="betaModal" class="modal hide fade" style="width:800px; margin-left:-400px">
     <div class="modal-header">

@@ -91,6 +91,7 @@ class Message < ActiveRecord::Base
 			end
 		end
 		conflict[:reporter_id] = sender.id
+		conflict[:case_message] = self.body
 		@conflict_case = ConflictCase.new(conflict)
 		site = @conflict_case.save_case_to_resource_map data
 		if site

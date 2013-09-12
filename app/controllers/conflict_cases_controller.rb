@@ -7,18 +7,16 @@ class ConflictCasesController < ApplicationController
     @fields = ConflictCase.get_fields
     @from = DateTime.strptime(params[:from], "%m-%d-%Y").to_date.to_s if params[:from]
     @to = DateTime.strptime(params[:to], "%m-%d-%Y").to_date.to_s if params[:to]
-    # @from = params[:from]
-    # @to = params[:to]
     unless @fields
       flash[:error] = "Failed to connect to resourcemap."
       @fields = []
       @conflict_cases = []
-      @paging = [].paginate(:page => 1, :per_page => 10)
+      @paging = [].paginate(:page => 1, :per_page => PageSize)
     else
       page  = params[:page]? params[:page]:1
-      sites = ConflictCase.get_paging_sites_from_resource_map(10, 10*(page.to_i - 1), @from, @to)
+      sites = ConflictCase.get_paging_sites_from_resource_map(PageSize, PageSize*(page.to_i - 1), @from, @to)
       @conflict_cases = ConflictCase.transform(sites["sites"], @fields)
-      @paging = ([1] * sites["total"].to_i).paginate(:page => page, :per_page => 10)
+      @paging = ([1] * sites["total"].to_i).paginate(:page => page, :per_page => PageSize)
     end
     @from = params[:from]
     @to = params[:to]

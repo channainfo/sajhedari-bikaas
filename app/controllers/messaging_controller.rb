@@ -15,6 +15,7 @@ class MessagingController < ApplicationController
     ensure
       render :text => message.reply, :content_type => "text/plain"
     end
+    # message.save
   end
 
   def authenticate

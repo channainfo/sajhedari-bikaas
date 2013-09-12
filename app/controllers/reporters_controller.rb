@@ -6,7 +6,7 @@ class ReportersController < ApplicationController
       @query = params[:query]
       @reporters = Reporter.where('last_name like ? OR first_name like ? OR phone_number like ?',"%#{@query}%","%#{@query}%","%#{@query}%").paginate(:page => params[:page], :per_page => 3)
     else
-      @reporters = Reporter.all.paginate(:page => params[:reporter_page], :per_page => 10)
+      @reporters = Reporter.all.paginate(:page => params[:reporter_page], :per_page => PageSize)
     end
   end
 
