@@ -155,9 +155,8 @@ function showReporterInfo(first_name, last_name, sex, dob, cast, phone, address)
     $("#gender").html(": " + sex);
 }
 
-function showMessageInfo(country, carrier, channel, from, to, message_text, message_reply){
+function showMessageInfo(country, channel, from, to, message_text, message_reply){
     $("#country").html(": " + country);
-    $("#carrier").html(": " + carrier);
     $("#channel").html(": " + channel);
     $("#from").html(": " + from);
     $("#to").html(": " + to);

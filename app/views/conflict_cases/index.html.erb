@@ -117,7 +117,7 @@
 					</div>		
 				<% else %>	
 					<% if l.message %>
-				    	<a class="" data-toggle="modal" href="#messageModal" onclick="showMessageInfo('<%= l.message.country %>', '<%= l.message.carrier %>','<%= l.message.channel %>','<%= l.message.from %>','<%= l.message.to %>','<%= l.message.body %>','<%= l.message.reply %>');"><i class='icon-envelope'></i></a>
+				    	<a class="" data-toggle="modal" href="#messageModal" onclick="showMessageInfo('<%= l.message.country %>','<%= l.message.channel %>','<%= l.message.from %>','<%= l.message.to %>','<%= l.message.body %>','<%= l.message.reply %>');"><i class='icon-envelope'></i></a>
 				    <% end %> 					
 				    <%= link_to raw("<i class='icon-pencil'></i>"), edit_conflict_case_path(l), :method => :get %>
 				    <%= link_to raw("<i class='icon-remove'></i>"), conflict_case_path(l), :method => :delete, :confirm => "Are you sure to delete this case ?" %>
@@ -237,12 +237,6 @@
 	        <div class="control-group">
 	            <label for="reporter_First Name" style="text-align:right; padding-right:10px" class="control-label span2">Country code</label>
 	            <div class="controls" id="country">		                
-	            </div>
-	        </div>
-
-	        <div class="control-group">
-	            <label for="reporter_Last Name" style="text-align:right; padding-right:10px" class="control-label span2">Carrier</label>
-	            <div class="controls" id="carrier">
 	            </div>
 	        </div>
 
