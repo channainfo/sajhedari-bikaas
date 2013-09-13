@@ -73,7 +73,7 @@
       var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
       chart.draw(data, options);
     }
-    $('.datepicker').datepicker().on('changeDate', function(en) {
+    $('.datepicker').datepicker({format: 'mm-dd-yyyy'}).on('changeDate', function(en) {
       generateGraphData();
    });
 

@@ -670,7 +670,7 @@ class ConflictCase < ActiveRecord::Base
   end
 
   def self.parse_date_format date 
-    array_date = date.split("/")
+    array_date = date.split("-")
     return Date.new(array_date[2].to_i, array_date[0].to_i, array_date[1].to_i)
   end
 
