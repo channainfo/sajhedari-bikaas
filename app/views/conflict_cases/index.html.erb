@@ -40,7 +40,7 @@
 		</ul>
 	</div> 
 	<div class="pull-right btn-toolbar" style="margin-right:10px;">
-		<a class="btn" href="<%= failed_messages_conflict_cases_path %>"><i class="icon-remove"></i> Failed Messages</a>
+		<a class="btn" href="<%= failed_messages_conflict_cases_path %>"><i class="icon-envelope"></i> Failed Messages</a>
 	</div>
 </div>
 
@@ -70,7 +70,7 @@
 	    <% elsif l.is_updated %>
 	    	<% class_name = "updated" %>
 	    <% end %>			    
-		    <tr class=<%= class_name %>>
+		    <tr class=<%= class_name %> align="right">
 			    <td><%= l.conflict_type_description %></td>
 			    <td><%= l.conflict_intensity_description %></td>
 			    <td><%= l.conflict_state_description %></td>
@@ -78,7 +78,7 @@
 			    <td style="width: 145px;">
 					<a class="" data-toggle="modal" href="#reporterModal" onclick="showReporterInfo('<%= l.reporter.first_name %>', '<%= l.reporter.last_name %>','<%= l.reporter.sex %>','<%= l.reporter.date_of_birth %>','<%= l.reporter.cast_ethnicity %>','<%= l.reporter.phone_number %>','<%= l.reporter.address %>');"><%= l.reporter.phone_number %></a> 
 				</td>
-			    <td><%= l.created_at %>
+			    <td><%= l.created_at.strftime("%m-%d-%Y %H:%M:%S") %>
 			    <td class="action">
 			    <% if l.is_deleted %>
 			    	<% @is_deleted = true %>		    	
@@ -115,12 +115,12 @@
 							<% end %>
 						</ul>
 					</div>		
-				<% else %>						
+				<% else %>	
+					<% if l.message %>
+				    	<a class="" data-toggle="modal" href="#messageModal" onclick="showMessageInfo('<%= l.message.country %>', '<%= l.message.carrier %>','<%= l.message.channel %>','<%= l.message.from %>','<%= l.message.to %>','<%= l.message.body %>','<%= l.message.reply %>');"><i class='icon-envelope'></i></a>
+				    <% end %> 					
 				    <%= link_to raw("<i class='icon-pencil'></i>"), edit_conflict_case_path(l), :method => :get %>
 				    <%= link_to raw("<i class='icon-remove'></i>"), conflict_case_path(l), :method => :delete, :confirm => "Are you sure to delete this case ?" %>
-				    <% if l.message %>
-				    	<a class="" data-toggle="modal" href="#messageModal" onclick="showMessageInfo('<%= l.message.country %>', '<%= l.message.carrier %>','<%= l.message.channel %>','<%= l.message.from %>','<%= l.message.to %>','<%= l.message.body %>','<%= l.message.reply %>');"><i class='icon-envelope'></i></a>
-				    <% end %> 
 			    <% end %>	
 			    </td>
 		    </tr>
