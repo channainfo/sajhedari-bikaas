@@ -77,7 +77,7 @@ class ReportersController < ApplicationController
         paging += "<li class='active'><a>Prev</a></li>"
         paging += "<li><a style='cursor: pointer;' onclick='updateModalPaging(#{params[:id]},#{params[:offset]} + 5)'>Next</a></li>"
         paging += "</ul> </div>"
-      elsif (ConflictCase.count - 5) <= params[:offset].to_i 
+      elsif (ConflictCase.count - 5) < params[:offset].to_i 
         paging = "<div class='pagination' id='paginate_report'><ul>"
         paging += "<li><a style='cursor: pointer;' onclick='updateModalPaging(#{params[:id]},#{params[:offset]} - 5)'>Prev</a></li>"
         paging += "<li class='active'><a>Next</a></li>"
@@ -86,6 +86,13 @@ class ReportersController < ApplicationController
         paging = "<div class='pagination' id='paginate_report'><ul>"
         paging += "<li><a style='cursor: pointer;' onclick='updateModalPaging(#{params[:id]},#{params[:offset]} - 5)'>Prev</a></li>"
         paging += "<li><a style='cursor: pointer;' onclick='updateModalPaging(#{params[:id]},#{params[:offset]} + 5)'>Next</a></li>"
+        paging += "</ul> </div>"
+      end
+    else
+      if (ConflictCase.count - 5) < params[:offset].to_i && params[:offset].to_i > 0
+        paging = "<div class='pagination' id='paginate_report'><ul>"
+        paging += "<li><a style='cursor: pointer;' onclick='updateModalPaging(#{params[:id]},#{params[:offset]} - 5)'>Prev</a></li>"
+        paging += "<li class='active'><a>Next</a></li>"
         paging += "</ul> </div>"
       end
     end
