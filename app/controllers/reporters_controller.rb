@@ -70,7 +70,7 @@ class ReportersController < ApplicationController
       table_rows = table_rows + row
     end
     json_data["table_row"] = table_rows
-    if @reporter_cases.count > 5
+    if @reporter_cases.count >= 5
       if (params[:offset].to_i <= 0)
         params[:offset] = 0
         paging = "<div class='pagination' id='paginate_report'><ul>"
