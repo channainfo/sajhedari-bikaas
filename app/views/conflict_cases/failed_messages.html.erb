@@ -28,7 +28,7 @@
 	    	<td><%= m.to %></td>
 	    	<td><%= m.body %></td>
 	    	<td><%= m.reply %></td>
-	    	<td><%= m.created_at %></td>
+	    	<td><%= m.created_at.in_time_zone(TimeZone).strftime("%m-%d-%Y %H:%M:%S") %></td>
 	    	<td>
 	    	<%= link_to raw("<i class='icon-remove'></i>"), message_path(m), :method => :delete, :confirm => "Are you sure to delete this message ?" %>
 	    	</td>
