@@ -14,6 +14,7 @@
 		    <th>To</th>
 		    <th>Original message</th>
 		    <th>System reply</th>
+		    <th>Date sent</th>
 	    </tr>
     </thead>
     <tbody>
@@ -26,6 +27,7 @@
 	    	<td><%= m.to %></td>
 	    	<td><%= m.body %></td>
 	    	<td><%= m.reply %></td>
+	    	<td><%= m.created_at %></td>
 	   	</tr>
 	<% end %>
 	</tbody>
