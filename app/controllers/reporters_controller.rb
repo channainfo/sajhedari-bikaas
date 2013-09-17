@@ -48,7 +48,7 @@ class ReportersController < ApplicationController
     json_data = {}
     table_rows = ""
     site_ids = []
-    page_size = 10
+    page_size = 5
     cases = ConflictCase.all.where(:reporter_id => params[:id]).offset(params[:offset].to_i).limit(page_size)
     unless cases.empty?
       cases.each do |c|
@@ -77,7 +77,7 @@ class ReportersController < ApplicationController
         paging += "<li class='active'><a>Prev</a></li>"
         paging += "<li><a style='cursor: pointer;' onclick='updateModalPaging(#{params[:id]},#{params[:offset]} + #{page_size})'>Next</a></li>"
         paging += "</ul> </div>"
-      elsif (ConflictCase.count - page_size) < params[:offset].to_i 
+      elsif (@reporter_cases.count - page_size) < params[:offset].to_i 
         paging = "<div class='pagination' id='paginate_report'><ul>"
         paging += "<li><a style='cursor: pointer;' onclick='updateModalPaging(#{params[:id]},#{params[:offset]} - #{page_size})'>Prev</a></li>"
         paging += "<li class='active'><a>Next</a></li>"
@@ -89,7 +89,7 @@ class ReportersController < ApplicationController
         paging += "</ul> </div>"
       end
     else
-      if (ConflictCase.count - page_size) < params[:offset].to_i && params[:offset].to_i > 0
+      if (@reporter_cases.count - page_size) < params[:offset].to_i && params[:offset].to_i > 0
         paging = "<div class='pagination' id='paginate_report'><ul>"
         paging += "<li><a style='cursor: pointer;' onclick='updateModalPaging(#{params[:id]},#{params[:offset]} - #{page_size})'>Prev</a></li>"
         paging += "<li class='active'><a>Next</a></li>"
