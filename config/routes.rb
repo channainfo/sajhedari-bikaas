@@ -43,6 +43,8 @@ Conflict::Application.routes.draw do
     end
   end
 
+  resources :messages
+
   resources :conflict_cases do
     collection do
       get 'get_field_options'

@@ -257,7 +257,7 @@ class ConflictCasesController < ApplicationController
   end
 
   def failed_messages
-    @messages = Message.where('is_success = false')
+    @messages = Message.where('is_success = false').find(:all, :order => "messages.created_at DESC")
     @messages = @messages.paginate(:page => params[:page], :per_page => PageSize)
   end
 end
