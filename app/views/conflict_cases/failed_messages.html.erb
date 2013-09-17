@@ -7,9 +7,6 @@
 <table class="table table-condensed table-hover" id="mytable_failed_messages">
     <thead>
 	    <tr>
-		    <th>Country</th>
-		    <th>Channel</th>
-		    <th>Application</th>
 		    <th>From</th>
 		    <th>To</th>
 		    <th>Original message</th>
@@ -21,9 +18,6 @@
     <tbody>
 	<% @messages.each do |m| %>	     
 	    <tr>
-	    	<td><%= m.country %></td>
-	    	<td><%= m.channel %></td>
-	    	<td><%= m.application %></td>
 	    	<td><%= m.from %></td>
 	    	<td><%= m.to %></td>
 	    	<td><%= m.body %></td>
