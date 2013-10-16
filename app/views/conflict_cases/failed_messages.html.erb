@@ -34,5 +34,5 @@
 	<span class="badge" style="padding:5px;margin-right:5px;">Display record : <%= @messages.size %> / <%= @messages.total_entries %>
 	</span>
 </div>
-<%= will_paginate @messages, :param_name => 'reporter_page', renderer: BootstrapPagination::Rails %>
+<%= will_paginate @messages, renderer: BootstrapPagination::Rails %>
 	    
