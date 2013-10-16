@@ -246,6 +246,7 @@ class ConflictCase < ActiveRecord::Base
       conflict_cases.push(conf) if conf
     end
     conflict_cases
+  end
 
   def self.get_sites_bases_on_conflict_type_from_resourcemap params
     request = Typhoeus::Request.new(
