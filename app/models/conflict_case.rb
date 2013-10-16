@@ -242,10 +242,10 @@ class ConflictCase < ActiveRecord::Base
   def self.transform sites, fields
     conflict_cases = []
     sites.each do |site|
-      conflict_cases.push(convertToConflictCase(site, fields))
+      conf = convertToConflictCase(site, fields)
+      conflict_cases.push(conf) if conf
     end
     conflict_cases
-  end
 
   def self.get_sites_bases_on_conflict_type_from_resourcemap params
     request = Typhoeus::Request.new(
@@ -262,6 +262,7 @@ class ConflictCase < ActiveRecord::Base
 
   def self.convertToConflictCase site, fields
     conflict = ConflictCase.find_by_site_id(site["id"])
+    return nil unless conflict
     properties = site["properties"]
     properties.each do |key, value|
       conflict = assign_value conflict, key, value, fields
