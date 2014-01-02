@@ -54,6 +54,7 @@ gem "whenever"
 gem 'delayed_job_active_record'
 gem "daemon-spawn", "0.4.2"
 gem 'devise-encryptable'
+gem "passenger", "3.0.0"
 
 group :test do
   gem 'faker'
