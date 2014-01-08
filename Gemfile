@@ -45,16 +45,17 @@ gem 'devise'
 gem 'decent_exposure'
 gem "tire"
 gem "nuntium_api", "~> 0.13", :require => "nuntium"
-gem 'will_paginate'
+gem 'will_paginate', "3.0.4"
 gem "twitter-bootstrap-rails", "~> 2.2.7"
 gem "protected_attributes"
-gem 'will_paginate-bootstrap'
+gem 'will_paginate-bootstrap', "0.2.4"
 gem "typhoeus"
 gem "whenever"
 gem 'delayed_job_active_record'
 gem "daemon-spawn", "0.4.2"
 gem 'devise-encryptable'
-gem "passenger", "3.0.0"
+gem "passenger", "4.0.33"
+gem "zip-zip", "~> 0.2"
 
 group :test do
   gem 'faker'
@@ -84,4 +85,3 @@ group :assets do
   gem 'uglifier', '>= 1.3.0'
   gem 'lodash-rails'
 end
-
