@@ -1,7 +1,13 @@
 class TrendsController < ApplicationController  
 	
 	def index  
-		
+		@colors = ['#FF3333', '#000000','#3333FF', '#800080', '#556B2F', '#8B4513']
+    fields = ConflictCase.get_fields
+    fields.each do |f|
+      if f["code"] == Setting.first.conflict_type_code
+        @options = f["options"]
+      end
+    end
 	end
 
   def download_csv
@@ -41,7 +47,7 @@ class TrendsController < ApplicationController
     fields = ConflictCase.get_fields
     result = []
     arr_color = []
-    colors = ['#FF3333', '#000000','#3333FF', '#800080', '#556B2F', '#8B4513']
+    colors = ['#FF3333', '#000000','#3333FF', '#800080', '#556B2F', '#8B4513','#4444FF', '#899989', '#5E6BFD', '#8BF444']
     if fields
       con_type = params[:data].split(",")
       if ((params[:from].blank? && params[:to].blank?) || ((!params[:from].blank?) && (!params[:to].blank?)))

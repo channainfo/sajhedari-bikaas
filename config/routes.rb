@@ -48,6 +48,7 @@ Conflict::Application.routes.draw do
   resources :conflict_cases do
     collection do
       get 'get_field_options'
+      get 'get_indicator_options'
       get 'export_as_kml'
       get 'export_as_shp'
       get 'failed_messages'

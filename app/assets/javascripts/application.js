@@ -100,7 +100,7 @@ function addCondition(){
     conditionHtml = conditionHtml +     '</div>';
     conditionHtml = conditionHtml + '</div>';
     $("#conditions").append(conditionHtml);
-    prepareConditionCombo(indexCondition);
+    ajaxRequestIndicators(indexCondition);
     handleConditionCombo(indexCondition);   
     indexCondition = indexCondition + 1;
 }
@@ -120,13 +120,6 @@ function handleConditionCombo(indexCondition){
 	});
 }
 
-function prepareConditionCombo(indexCondition){
-    $("#conflict-info" + indexCondition.toString())[0].options.add(new Option("Conflict State", "con_state"));
-    $("#conflict-info" + indexCondition.toString())[0].options.add(new Option("Conflict Intensity", "con_intensity"));
-    $("#conflict-info" + indexCondition.toString())[0].options.add(new Option("Conflict Type", "con_type"));
-    ajaxRequestField(indexCondition, "con_state");
-}
-
 function ajaxRequestField(indexCondition, field_code){
     $.ajax({
         url: '/conflict_cases/get_field_options.json',
@@ -137,6 +130,20 @@ function ajaxRequestField(indexCondition, field_code){
             for(i=0; i<data.length; i++){
                 $("#select-item" + indexCondition.toString())[0].options.add(new Option(data[i]["label"], data[i]["id"]));
             }
+        }
+    })
+}
+
+function ajaxRequestIndicators(indexCondition){
+    $.ajax({
+        url: '/conflict_cases/get_indicator_options.json',
+        type: "get",
+        success: function(data) {
+            $("#conflict-info" + indexCondition.toString()).empty();
+            for(i=0; i<data.length; i++){
+                $("#conflict-info" + indexCondition.toString())[0].options.add(new Option(data[i]["label"], data[i]["id"]));
+            }
+            ajaxRequestField(indexCondition, data[0]["id"]);
         }
     })
 }

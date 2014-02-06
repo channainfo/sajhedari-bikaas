@@ -14,26 +14,27 @@
 <% end %>
 <%= form_for(conflict_case, :url => {action: action} , :html => {:class => 'form-horizontal'} ) do |f| %>    
     <fieldset>                
-        <div class="control-group">
-            <%= f.label "Conflict Type",:class => "control-label" %>
-            <div class="controls">
-                <%= f.select(:conflict_type, options_for_select(field_by_code(@fields, "con_type").collect {|p| [p["label"],p["id"]] }, f.object.conflict_type)) %>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <%= f.label "Conflict State",:class => "control-label" %>
-            <div class="controls">
-                <%= f.select(:conflict_state, options_for_select(field_by_code(@fields, "con_state").collect {|p| [p["label"],p["id"]] }, f.object.conflict_state)) %>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <%= f.label "Conflict Intensity",:class => "control-label" %>
-            <div class="controls">
-                <%= f.select(:conflict_intensity, options_for_select(field_by_code(@fields, "con_intensity").collect {|p| [p["label"],p["id"]] }, f.object.conflict_intensity)) %>
-            </div>
-        </div>
+        <% @fields.each do |field| %>
+            <% if field["kind"] == 'select_one' %>
+                <div class="control-group">
+                    <%= f.label "#{field["name"]}",:class => "control-label" %>
+                    <div class="controls">
+                        <select name="properties[<%= field["id"]%>]">
+                            <% field["options"].each do |op| %>
+                                <% if op["id"]==f.object.get_properties_value("id", field) %>
+                                    <option value="<%= op["id"] %>" selected>
+                                    <%= op["label"] %>
+                                <% else %>
+                                    <option value="<%= op["id"] %>">
+                                    <%= op["label"] %>
+                                <%end%>
+                                </option>
+                            <% end %>
+                        </select>
+                    </div>
+                </div>
+            <% end %>
+        <% end %>        
 
         <div class="control-group">
             <%= f.label "Location",:class => "control-label" %>

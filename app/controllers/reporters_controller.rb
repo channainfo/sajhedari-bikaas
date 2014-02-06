@@ -2,6 +2,7 @@ class ReportersController < ApplicationController
   before_filter :authenticate_user!
 
   def index  
+    @fields = ConflictCase.get_fields
     if params[:query]
       @query = params[:query]
       @reporters = Reporter.where('last_name like ? OR first_name like ? OR phone_number like ?',"%#{@query}%","%#{@query}%","%#{@query}%").paginate(:page => params[:page], :per_page => 3)
@@ -63,10 +64,11 @@ class ReportersController < ApplicationController
     @reporter_cases.count == 0 ? table_rows = "<tr><td colspan='5' style='text-align: center; color: red; padding-top: 20px;'>No records found</td></tr>" : table_row = ""
     @reporter_cases.each do |el|
       location = Location.find_by_id(el.location_id)
-      conflict_type = ApplicationController.helpers.field_desc @fields, el.conflict_type, "con_type"
-      conflict_intensity = ApplicationController.helpers.field_desc @fields, el.conflict_intensity, "con_intensity"
-      conflict_state = ApplicationController.helpers.field_desc @fields, el.conflict_state, "con_state"
-      row = "<tr><td style='width: 200px;'>#{el.updated_at.strftime("%m-%d-%Y %H:%M:%S UTC")}</td><td>#{conflict_type}</td><td>#{conflict_intensity}</td><td>#{conflict_state}</td><td>#{location.name}</td></tr>"  
+      row = "<tr><td style='width: 200px;'>#{el.updated_at.strftime("%m-%d-%Y %H:%M:%S UTC")}</td>"
+      @fields.each do |f|
+        row += "<td>#{el.get_properties_value("label", f)}</td>"
+      end
+      row += "<td>#{location.name}</td></tr>"  
       table_rows = table_rows + row
     end
     json_data["table_row"] = table_rows

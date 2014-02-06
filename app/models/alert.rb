@@ -19,9 +19,9 @@ class Alert < ActiveRecord::Base
   	JSON.parse(self.condition).each do |key,value|
       unless fields.empty?
     		fields.each do |f|
-    			if f["code"] == key
+    			if f["id"].to_s == key.to_s
             f["options"].each do |op|
-              if(op["code"] == value)
+              if(op["id"].to_s == value.to_s)
     				    condition_list.push(f["name"].to_s + " is equal to " + op["label"])
               end
             end

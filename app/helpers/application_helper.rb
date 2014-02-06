@@ -33,4 +33,15 @@ module ApplicationHelper
         end
         return []
     end
+
+    def get_field_value(properties, field, field_key)
+        properties.each do |key, value|
+            if field["id"].to_i == key.to_i
+                field["options"].each do |op|
+                    return op[field_key] if op["id"].to_i == value.to_i
+                end
+            end            
+        end
+        return ""
+    end
 end

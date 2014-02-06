@@ -5,30 +5,18 @@
   <div>
     <div id="chart_condition" style="width: 30%; float: left; margin-top: 30px;">
       <h4> Trends </h4>
-      <div style="margin-top: 15px; margin-bottom: 15px;">
-        <span style="border: 1px solid #FF3333; background-color: #FF3333; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
-        <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="1" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Gender based violence
-      </div>
-      <div style="margin-top: 15px; margin-bottom: 15px;">
-        <span style="border: 1px solid #000000; background-color: #000000; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
-        <input type="checkbox" class="checkboxes" name="conflict_inten[identity_based]" value="2" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Identity-based violence
-      </div>
-      <div style="margin-top: 15px; margin-bottom: 15px;">
-        <span style="border: 1px solid #3333FF; background-color: #3333FF; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
-        <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="3" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Case based violence
-      </div>
-      <div style="margin-top: 15px; margin-bottom: 15px;">
-        <span style="border: 1px solid #800080; background-color: #800080; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
-        <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="4" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Political violence
-      </div>
-      <div style="margin-top: 15px; margin-bottom: 15px;">
-        <span style="border: 1px solid #556B2F; background-color: #556B2F; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
-        <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="5" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Inter-personal conflict
-      </div>
-      <div style="margin-top: 15px; margin-bottom: 15px;">
-        <span style="border: 1px solid #8B4513; background-color: #8B4513; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
-        <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="6" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" />Resource based violence
-      </div>
+      <% i=0 %>
+      <% @options.each do |option| %>
+        <div style="margin-top: 15px; margin-bottom: 15px;">
+          <span style="border: 1px solid <%= @colors[i] %>; background-color: <%= @colors[i] %>; border-width: 5px;"> &nbsp;&nbsp;&nbsp; </span>
+          <input type="checkbox" class="checkboxes" name="conflict_inten[gender_based]" value="<%= option["id"] %>" style="margin-left: 10px; margin-bottom: 6px; margin-right: 5px;" onclick="generateGraphData()" /><%= option["label"] %>
+        </div>
+        <% i = i + 1 %>
+      <% end %>
+
+
+
+      
       <div class="well">
         From
         <input type="text" id="from" class="datepicker" style="width: 80px;" onchange="generateGraphData()"/>

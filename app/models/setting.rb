@@ -9,5 +9,7 @@ class Setting < ActiveRecord::Base
   attr_accessible :message_duplicate
   attr_accessible :message_failed
   attr_accessible :email_send
+  attr_accessible :conflict_location_code
+  attr_accessible :conflict_type_code
 
 end

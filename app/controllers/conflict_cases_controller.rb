@@ -81,35 +81,40 @@ class ConflictCasesController < ApplicationController
   	@conflict_case = ConflictCase.new()
   end
 
-  def create
-    @conflict_case = ConflictCase.new(params[:conflict_case])
-    site = @conflict_case.save_case_to_resource_map
-    if site
-      @conflict_case.site_id = site["id"]
-    	if @conflict_case.save
-        flash[:notice] = "You have successfully created conflict case #{@conflict_case.location.name}."      
-        redirect_to conflict_cases_path
-      else
-        render :new
-      end
-    else
-      flash[:error] = "Failed to create case on resource map application. Please try again later."
-      render :new
-    end
-  end
+  # def create
+  #   @conflict_case = ConflictCase.new(params[:conflict_case])
+  #   site = @conflict_case.save_case_to_resource_map
+  #   if site
+  #     @conflict_case.site_id = site["id"]
+  #   	if @conflict_case.save
+  #       flash[:notice] = "You have successfully created conflict case #{@conflict_case.location.name}."      
+  #       redirect_to conflict_cases_path
+  #     else
+  #       render :new
+  #     end
+  #   else
+  #     flash[:error] = "Failed to create case on resource map application. Please try again later."
+  #     render :new
+  #   end
+  # end
 
-  def edit
-    @locations = Location.all
-    @fields = ConflictCase.get_fields
+  def edit   
     conflict = ConflictCase.find(params[:id])
-    @conflict_case = ConflictCase.convertToConflictCase(conflict.get_conflict_from_resource_map, @fields)
+    if conflict.is_updated
+      flash[:error] = "Case #{conflict.location.name} is already marked as updated please wait other people confirm update."
+      redirect_to conflict_cases_path
+    else
+      @locations = Location.all
+      @fields = ConflictCase.get_fields
+      @conflict_case = ConflictCase.convertToConflictCase(conflict.get_conflict_from_resource_map, @fields)
+    end
   end
 
   def update
     @conflict_case = ConflictCase.find(params[:id])
     if @conflict_case.is_updated       
       unless @conflict_case.backup.user.id == current_user.id
-        flash[:error] = "Case #{@conflict_case.location.name} is marked as updated please click Approve to update to confirm update location."
+        flash[:error] = "Case #{@conflict_case.location.name} is already marked as updated please wait other people confirm update."
         redirect_to conflict_cases_path
       else
         flash[:error] = "Failed to update case #{@conflict_case.location.name}. Please try again later."
@@ -118,7 +123,9 @@ class ConflictCasesController < ApplicationController
 
     else
       flash[:notice] = "#{@conflict_case.location.name} is marked as updated."
-      Backup.create!(:entity_id => @conflict_case.id, :data => params[:conflict_case].to_json, :category => ConflictCase.get_category, :user_id => current_user.id)
+      conflict = params[:conflict_case]
+      conflict[:properties] = params[:properties]
+      Backup.create!(:entity_id => @conflict_case.id, :data => conflict.to_json, :category => ConflictCase.get_category, :user_id => current_user.id)
       @conflict_case.is_updated = true
       @conflict_case.save
       redirect_to conflict_cases_path
@@ -187,7 +194,7 @@ class ConflictCasesController < ApplicationController
   def apply_update_form
     @conflict_case = ConflictCase.find(params[:id])
     if(@conflict_case and @conflict_case.is_updated and @conflict_case.backup and @conflict_case.backup.user.id != current_user.id)
-      if @conflict_case.update_to_resource_map_with_form params[:conflict_case]
+      if @conflict_case.update_to_resource_map_with_form params[:conflict_case], params[:properties]
         if(@conflict_case.update_attributes(:location_id => params["conflict_case"]["location_id"]))
           flash[:notice] = "You have successfully updated conflict case #{@conflict_case.location.name}."
           @conflict_case.backup.destroy!
@@ -199,9 +206,6 @@ class ConflictCasesController < ApplicationController
           redirect_to conflict_cases_path
         end
       else 
-        @conflict_types = ConflictType.all
-        @conflict_states = ConflictState.all
-        @conflict_intensities = ConflictIntensity.all
         flash[:error] = "Failed to update case on resource map application. Please try again later."
         redirect_to conflict_cases_path
       end
@@ -223,9 +227,6 @@ class ConflictCasesController < ApplicationController
           redirect_to conflict_cases_path
         end
       else 
-        @conflict_types = ConflictType.all
-        @conflict_states = ConflictState.all
-        @conflict_intensities = ConflictIntensity.all
         flash[:error] = "Failed to update case on resource map application. Please try again later."
         redirect_to conflict_cases_path
       end
@@ -246,7 +247,7 @@ class ConflictCasesController < ApplicationController
     @fields = ConflictCase.get_fields
     success = false
     @fields.each do |field|
-      if params[:field] == field["code"]
+      if params[:field].to_s == field["id"].to_s
         success = true
         render :json => field["options"].to_json 
       end
@@ -254,6 +255,15 @@ class ConflictCasesController < ApplicationController
     unless success
       render :json => {:error => "field not found"}
     end
+  end
+
+  def get_indicator_options
+    @fields = ConflictCase.get_fields
+    options = []
+    @fields.each do |field|
+      options.push("label" => field["name"], "code" => field["code"], "id" => field["id"])
+    end
+    render :json => options.to_json 
   end
 
   def failed_messages

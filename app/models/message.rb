@@ -9,9 +9,10 @@ class Message < ActiveRecord::Base
 
 	def process!
 		reporter_number = from
+		rm_codes = ConflictCase.get_field_codes
 		self.is_success = false
 		self.reply = INVALID_USER unless validate_sender
-		self.reply = self.validate_message
+		self.reply = self.validate_message(rm_codes)
 		self.reply = Setting.first.message_invalid_sender unless sender
 		if(self.reply == nil)
 			fields = body.split(" ")
@@ -24,31 +25,35 @@ class Message < ActiveRecord::Base
 		end
 	end
 
-	def validate_message
+	def validate_message(rm_codes)
+		
 		fields = body.split(" ")
 		list = {}
 		fields.each do |f|
-			if((f.downcase.start_with? "t.") or (f.downcase.start_with? "s.") or (f.downcase.start_with? "c.") or (f.downcase.start_with? "i."))
-				unless self.is_i? f[2..-1]
+			data = f.split(".")
+			key = data[0]
+			value = data[1]
+			if(rm_codes.include?(key.downcase) or f.downcase.start_with? "#{Setting.first.conflict_location_code}.")
+				unless self.is_i? value
 					return "Error #{f}." + Setting.first.message_unknown
 				else
-					if f.downcase.start_with? "c."
-						l = Location.find_by_code(f[2..-1])
+					if f.downcase.start_with? "#{Setting.first.conflict_location_code}."
+						l = Location.find_by_code(value)
 						if l
-							list["#{f[0]}".downcase] = f[2..-1]
+							list["#{f[0]}".downcase] = value
 						else
 							return "Error #{f}." + Setting.first.message_unknown
 						end
 					else
-						list["#{f[0]}".downcase] = f[2..-1]
+						list["#{f[0]}".downcase] = value
 					end
 				end
 			else
 				return "Error #{f}." + Setting.first.message_unknown
 			end
 		end
-		return Setting.first.message_invalid unless fields.size == 4
-		return Setting.first.message_duplicate if list.size != 4
+		return Setting.first.message_invalid unless fields.size == (rm_codes.size + 1)
+		return Setting.first.message_duplicate if list.size != (rm_codes.size + 1)
 	end
 
 	def validate_sender
@@ -70,26 +75,25 @@ class Message < ActiveRecord::Base
 	end
 
 	def save_to_case fields, sender
+		all_fields = ConflictCase.get_fields
 		conflict = {}
 		data = {}
 		fields.each do |f|
-			if f.downcase.start_with? "c."
-				l = Location.find_by_code(f[2..-1])
+			obj = f.split(".")
+			key = obj[0]
+			value = obj[1]
+			if f.downcase.start_with? "#{Setting.first.conflict_location_code}."
+				l = Location.find_by_code(value)
 				if l
 					conflict[:location_id] = l.id 
 				else
 					return false
 				end
+			else
+				property_id = ConflictCase.get_property_id(all_fields, key.to_s)
+				data[property_id] = value.to_i unless property_id.nil?
 			end
-			if f.downcase.start_with? "t."
-				data[:conflict_type] = f[2..-1].to_i
-			end
-			if f.downcase.start_with? "i."
-				data[:conflict_intensity] = f[2..-1].to_i
-			end
-			if f.downcase.start_with? "s."
-				data[:conflict_state] = f[2..-1].to_i
-			end
+			
 		end
 		conflict[:reporter_id] = sender.id
 		conflict[:message_id] = self.id

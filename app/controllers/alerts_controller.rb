@@ -19,8 +19,8 @@ class AlertsController < ApplicationController
 		@alert = Alert.new(params[:alert])
 		@alert.name = params["alert"]["name"]
 		@alert.condition = generate_condition(params[:type], params[:item]);
-		params["alert"]["phone_contacts"] = params[:phone]? params[:phone].to_json : {}.to_json
-		params["alert"]["email_contacts"] = params[:email]? params[:email].to_json : {}.to_json
+		@alert.phone_contacts = params[:phone]? params[:phone].to_json : {}.to_json
+		@alert.email_contacts = params[:email]? params[:email].to_json : {}.to_json
 	  	if @alert.save
 			flash[:notice] = "You have successfully created alert #{@alert.name}."      
 			redirect_to alerts_path

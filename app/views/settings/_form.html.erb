@@ -82,6 +82,23 @@
 
         </div>
 
+        <h4>SMS Configuration</h4>  
+        <div class="control-group">
+            <%= f.label :conflict_location_code,:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :conflict_location_code, :class =>"input-xlarge", :required => "required" %>
+                <span class="help-inline"> The code of conflict location that used to report by reporter.</span>
+            </div>
+
+        </div>
+        <div class="control-group">
+            <%= f.label :conflict_type_code,:class => "control-label" %>
+            <div class="controls">
+                <%= f.text_field :conflict_type_code, :class =>"input-xlarge", :required => "required" %>
+                <span class="help-inline"> The code of conflict type that used to report by reporter.</span>
+            </div>
+
+        </div>
         <!-- Submit -->
         <div class="control-group">
             <div class="controls">

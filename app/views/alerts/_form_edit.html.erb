@@ -30,37 +30,42 @@
                 <% if alert.condition %>
                     <% i = 1 %>
                     <% JSON.parse(alert.condition).each do |key, value| %>
-                        <% @fields.each do |f| %>
-                            <% if key == f["code"] %>
-                                <div id="condition<%= i %>" class="controls navbar-inner" style="padding-top:10px; margin-bottom:20px">
-                                    <div class="row-fluid">
-                                        <div class="span4">
-                                            <select class="input-block-level" id="conflict-info<%= i %>" name="type[]">
-                                                <option <%= "selected" if key == "con_state" %> value="con_state">Conflict State</li>
-                                                <option <%= "selected" if key == "con_intensity" %> value="con_intensity">Conflict Intensity</li>
-                                                <option <%= "selected" if key == "con_type" %> value="con_type">Conflict Type</li>
-                                            </select>                                            
-                                        </div>
-                                        <div class="span1" style="min-width:70px;padding-top:5px;">
-                                            is equal to
-                                        </div>
-                                        <div class="span5" style="min-width:330px">
-                                            <select class="input-block-level" id="select-item<%= i %>" name="item[]">
-                                                <% f["options"].each do |op| %>
-                                                    <option <%= "selected" if value == op["code"] %> value="<%= op["id"] %>"><%= op["label"] %></li>
-                                                <% end %>
-                                            </select>
-                                        </div>
-                                        <div class="span1">
-                                            <a href="javascript:void(0)" class="btn btn-danger" id="rmbtn<%= i %>" refdata="<%= i %>" onclick="removeCondition(this)"><i class='icon-minus-sign'></i></a>
-                                        </div>
-                                    </div>
+                        <% available_options = nil %>
+                        <div id="condition<%= i %>" class="controls navbar-inner" style="padding-top:10px; margin-bottom:20px">
+                            <div class="row-fluid">
+                                <div class="span4">
+                                    <select class="input-block-level" id="conflict-info<%= i %>" name="type[]">
+                                        <% @fields.each do |f| %>
+                                            <% if key.to_s == f["id"].to_s %>
+                                                <% available_options = f["options"] %>
+                                                <option selected="selected" value="<%= f["id"] %>"><%= f["name"] %></option>
+                                            <% else %>
+                                                <option value="<%= f["id"] %>"><%= f["name"] %></option>
+                                            <% end %>
+                                        <% end %>
+                                    </select>                                            
                                 </div>
-                                <script type="text/javascript">
-                                    handleConditionCombo(<%= i %>); 
-                                </script>
-                            <% end %>
-                        <% end %>
+                                <% unless available_options.nil? %>
+                                    <div class="span1" style="min-width:70px;padding-top:5px;">
+                                        is equal to
+                                    </div>
+                                    <div class="span5" style="min-width:330px">
+                                        <select class="input-block-level" id="select-item<%= i %>" name="item[]">
+                                            <% available_options.each do |op| %>
+                                                <option <%= "selected" if value == op["code"] %> value="<%= op["id"] %>"><%= op["label"] %></li>
+                                            <% end %>
+                                        </select>
+                                    </div>
+                                    <div class="span1">
+                                        <a href="javascript:void(0)" class="btn btn-danger" id="rmbtn<%= i %>" refdata="<%= i %>" onclick="removeCondition(this)"><i class='icon-minus-sign'></i></a>
+                                    </div>
+                                    <% available_options = nil %>
+                                <% end %>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            handleConditionCombo(<%= i %>); 
+                        </script>
                         <% i = i + 1 %>
                     <% end %>
                     <script type="text/javascript">

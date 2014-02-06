@@ -53,9 +53,9 @@
     <table class="table table-condensed table-hover">
 	    <thead>
 		    <tr>
-			    <th>Conflict type</th>
-			    <th>Conflict Intensity</th>
-			    <th>Conflict state</th>
+		    	<% @fields.each do |f| %>	
+			    	<th><%= f["name"] %></th>
+			    <% end %>
 			    <th>Location</th>
 			    <th>Phone Number</th>
 			    <th>Date sent</th>
@@ -71,10 +71,10 @@
 	    	<% class_name = "updated" %>
 	    <% end %>			    
 		    <tr class=<%= class_name %> align="right">
-			    <td><%= l.conflict_type_description %></td>
-			    <td><%= l.conflict_intensity_description %></td>
-			    <td><%= l.conflict_state_description %></td>
-			    <td><%= l.location.name %>(<%= l.location.code %>)</td>
+		    	<% @fields.each do |f| %>	
+			    	<td><%= l.get_properties_value("label", f)%></td>
+			    <% end %>
+			    <td><%= l.location.name %>
 			    <td style="width: 145px;">
 					<a class="" data-toggle="modal" href="#reporterModal" onclick="showReporterInfo('<%= l.reporter.first_name %>', '<%= l.reporter.last_name %>','<%= l.reporter.sex %>','<%= l.reporter.date_of_birth %>','<%= l.reporter.cast_ethnicity %>','<%= l.reporter.phone_number %>','<%= l.reporter.address %>');"><%= l.reporter.phone_number %></a> 
 				</td>

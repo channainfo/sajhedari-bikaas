@@ -22,16 +22,22 @@ class Exporter
   end	
 
   def to_shp_file sh_file_name
+
   	fields = []
   	headers = [
-		    [COL_TYPE,      "C", 20 ],	
-		    [COL_INTENSITY ,"C", 10 ],
-		    [COL_STATE,     "C", 20 ],	
+		    # [COL_TYPE,      "C", 20 ],	
+		    # [COL_INTENSITY ,"C", 10 ],
+		    # [COL_STATE,     "C", 20 ],	
 		    [COL_LOCATION,  "C", 50 ],
 		    [COL_REPORTER,  "C", 30 ],	
 		    [COL_PHONE,     "C", 20 ],	
 		    [COL_DATE_SEND, "C", 50 ]
 	  ]
+
+    rm_fields = ConflictCase.get_fields
+    rm_fields.each do |f|
+      headers.push([f["name"],"C",20])
+    end
 
 	  headers.each do |column|
 	    field = GeoRuby::Shp4r::Dbf::Field.new(*column)
@@ -43,7 +49,7 @@ class Exporter
 
   	shpfile.transaction do |tr|
   	  @data_sources.each do |row|
-  		  data = convert_to_shp_data(row)
+  		  data = convert_to_shp_data(row, rm_fields)
   		  point = GeoRuby::SimpleFeatures::Point.from_x_y(row.location.lng, row.location.lat)
   		  tr.add(GeoRuby::Shp4r::ShpRecord.new(point, data))
   	  end
@@ -106,6 +112,7 @@ class Exporter
   end
 
   def to_kml_file kml_file_name
+    fields = ConflictCase.get_fields
     builder = Nokogiri::XML::Builder.new(:encoding => 'UTF-8') do |xml|
       xml.kml(:xmlns => "http://earth.google.com/kml/2.1"){
         xml.Document {
@@ -147,18 +154,20 @@ class Exporter
                   }
 
                   xml.ExtendedData {
-                    xml.Data(:name => COL_TYPE) {
-                      xml.value row.conflict_type_description
-                    }
-
-                    xml.Data(:name => COL_INTENSITY) {
-                      xml.value row.conflict_intensity_description
-                    }
-
-                    xml.Data(:name => COL_STATE) {
-                      xml.value row.conflict_state_description
-                    }
-
+                    fields.each do |f|
+                      xml.Data(:name => f["name"]) {
+                        row.properties.each do |key, value|
+                          if key.to_s == f["id"].to_s
+                            f["options"].each do |op|
+                              if op["id"].to_s == value.to_s
+                                xml.value op["label"]
+                              end
+                            end
+                          end
+                        end                        
+                      }
+                    end
+                   
                     xml.Data(:name => COL_LOCATION) {
                       xml.value row.location.lnglat
                     }
@@ -202,16 +211,27 @@ class Exporter
     str
   end
 
-  def convert_to_shp_data row
-  	{
-  		COL_TYPE      => row.conflict_type_description,
-  		COL_INTENSITY => row.conflict_intensity_description,
-  		COL_STATE     => row.conflict_state_description,
+  def convert_to_shp_data row, fields
+  	data = {
   		COL_LOCATION  => row.location.lnglat,
   		COL_REPORTER  => row.reporter.full_name,
   		COL_PHONE     => row.reporter.phone_number,
   		COL_DATE_SEND => row.created_at
   	}
+    fields.each do |f|
+      row.properties.each do |key, value|
+        if key.to_s == f["id"].to_s
+          f["options"].each do |op|
+            if op["id"].to_s == value.to_s
+              data[f["name"].to_s] = op["label"]
+            end
+          end
+        end
+      end                        
+    end
+
+    return data;
+
   end
 
 
