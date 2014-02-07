@@ -36,7 +36,7 @@ class Exporter
 
     rm_fields = ConflictCase.get_fields
     rm_fields.each do |f|
-      headers.push([f["name"],"C",20])
+      headers.push([f["code"],"C",70])
     end
 
 	  headers.each do |column|
@@ -213,6 +213,9 @@ class Exporter
 
   def convert_to_shp_data row, fields
   	data = {
+  		# COL_TYPE      => row.conflict_type_description,
+  		# COL_INTENSITY => row.conflict_intensity_description,
+  		# COL_STATE     => row.conflict_state_description,
   		COL_LOCATION  => row.location.lnglat,
   		COL_REPORTER  => row.reporter.full_name,
   		COL_PHONE     => row.reporter.phone_number,
@@ -223,9 +226,10 @@ class Exporter
         if key.to_s == f["id"].to_s
           f["options"].each do |op|
             if op["id"].to_s == value.to_s
-              data[f["name"].to_s] = op["label"]
+              data[f["code"].to_s] = op["label"]
             end
           end
+          # xml.value row.conflict_type_description
         end
       end                        
     end

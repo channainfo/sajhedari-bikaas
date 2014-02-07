@@ -62,9 +62,7 @@ class ConflictCase < ActiveRecord::Base
                  lat: Location.find_by_id(self.backup.data["location_id"].to_i).lat, 
                  lng: Location.find_by_id(self.backup.data["location_id"].to_i).lng,
                  name: Location.find_by_id(self.backup.data["location_id"].to_i).name, 
-                 conflict_type: self.backup.data["conflict_type"].to_i,
-                 conflict_intensity: self.backup.data["conflict_intensity"].to_i,
-                 conflict_state: self.backup.data["conflict_state"].to_i 
+                 properties: self.backup.data["properties"]
                 },
        headers: { Accept: "text/html" }
      )
