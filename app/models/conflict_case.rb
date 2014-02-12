@@ -18,8 +18,10 @@ class ConflictCase < ActiveRecord::Base
   attr_accessible :is_updated
   attr_accessible :reporter_id
 
-  attr_accessor :conflict_type_description, :conflict_intensity_description, :conflict_state_description, :properties
 
+
+  attr_accessor :conflict_type_description, :conflict_intensity_description, :conflict_state_description, :properties
+  USER, PASSWORD = 'iLab', '1c4989610bce6c4879c01bb65a45ad43'
   # def translate property
   #   if property == "con_type"
   #     self.conflict_type.to_s
@@ -42,6 +44,7 @@ class ConflictCase < ActiveRecord::Base
        ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
        method: :post,
        body: "this is a request body",
+       userpwd: "#{USER}:#{PASSWORD}",
        params: params
      )
      request.run
@@ -58,6 +61,7 @@ class ConflictCase < ActiveRecord::Base
        ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites/" + site_id,
        method: :put,
        body: "this is a request body",
+       userpwd: "#{USER}:#{PASSWORD}",
        params: { phone_number: self.reporter.phone_number,
                  lat: Location.find_by_id(self.backup.data["location_id"].to_i).lat, 
                  lng: Location.find_by_id(self.backup.data["location_id"].to_i).lng,
@@ -81,6 +85,7 @@ class ConflictCase < ActiveRecord::Base
         ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites/" + site_id,
         method: :put,
         body: "this is a request body",
+        userpwd: "#{USER}:#{PASSWORD}",
         params: { 
                   phone_number: self.reporter.phone_number,
                   lat: Location.find_by_id(self.backup.data["location_id"].to_i).lat, 
@@ -101,6 +106,7 @@ class ConflictCase < ActiveRecord::Base
     ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites/" + site_id,
       method: :delete,
       body: "this is a request body",
+      userpwd: "#{USER}:#{PASSWORD}",
       params: {},
       headers: { Accept: "text/html" }
     )
@@ -114,6 +120,7 @@ class ConflictCase < ActiveRecord::Base
     ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
       method: :get,
       body: "this is a request body",
+      userpwd: "#{USER}:#{PASSWORD}",
       headers: { Accept: "text/html" }
     )
     request.run
@@ -126,6 +133,7 @@ class ConflictCase < ActiveRecord::Base
     ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
       method: :get,
       body: "this is a request body",
+      userpwd: "#{USER}:#{PASSWORD}",
       params: {:limit => limit, :offset => offset, :from => from, :to => to}
     )
     request.run
@@ -149,6 +157,7 @@ class ConflictCase < ActiveRecord::Base
       method: :get,
       body: "this is a request body",
       headers: { Accept: "text/html" },
+      userpwd: "#{USER}:#{PASSWORD}",
       params: {:start_date => start_date, :end_date => end_date } 
     )
     request.run
@@ -162,6 +171,7 @@ class ConflictCase < ActiveRecord::Base
       method: :get,
       body: "this is a request body",
       headers: { Accept: "text/html" },
+      userpwd: "#{USER}:#{PASSWORD}",
       params: {:sites => site_ids.join(",")} 
     )
     request.run
@@ -174,6 +184,7 @@ class ConflictCase < ActiveRecord::Base
       ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites/" + self.site_id.to_s,
       method: :get,
       body: "this is a request body",
+      userpwd: "#{USER}:#{PASSWORD}",
       params: {},
       headers: { Accept: "text/html" }
     )
@@ -197,6 +208,7 @@ class ConflictCase < ActiveRecord::Base
     request = Typhoeus::Request.new(
     ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/get_fields.json",
       method: :get,
+      userpwd: "#{USER}:#{PASSWORD}",
       headers: { Accept: "text/html" }
     )
     request.run
@@ -223,6 +235,7 @@ class ConflictCase < ActiveRecord::Base
     ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/get_sites_conflict.json",
       method: :get,
       body: "this is a request body",
+      userpwd: "#{USER}:#{PASSWORD}",
       params: {:con_type => params[:data], :from => params[:from], :to => params[:to], :field_code => Setting.first.conflict_type_code},
       headers: { Accept: "text/html" }
     )
