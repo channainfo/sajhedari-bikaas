@@ -732,7 +732,7 @@ class ConflictCase < ActiveRecord::Base
   def meet_alert?(condition)
     return false unless condition.size > 0
     condition.each do |key, value|
-      JSON.parse(self.properties).each do |k, v|
+      self.properties.each do |k, v|
         return false if(k.to_s == key.to_s and v.to_i != value.to_i)
       end
     end
