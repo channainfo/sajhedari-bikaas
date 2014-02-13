@@ -145,6 +145,7 @@ class ConflictCase < ActiveRecord::Base
   def self.all_from_resource_map
     request = Typhoeus::Request.new(
       ResourceMapConfig["url"] + "api/collections/" + ResourceMapConfig["collection_id"].to_s + "/sites",
+      userpwd: "#{USER}:#{PASSWORD}",
       method: :get
     )
     request.run
