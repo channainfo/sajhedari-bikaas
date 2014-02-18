@@ -84,35 +84,46 @@
 			    	<% @is_deleted = true %>		    	
 			    	<div class="btn-group pull-right">
 			    		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-							</i> <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu">
-			    		<% if l.backup.user.id != current_user.id %>						
-							
+							</i> <%= l.backup.user.first_name || "UNKNOWN" %> 
+							<% if (l.backup.user.id != current_user.id and is_super_admin? current_user) or l.backup.user.id == current_user.id%>	
+								<span class="caret"></span>
+							<% end %>							
+						</a>						
+			    		<% if l.backup.user.id != current_user.id and is_super_admin? current_user%>				
+							<ul class="dropdown-menu">
 								<li><%= link_to " Approve to delete", approve_delete_conflict_case_path(l), :method => :get, :class => 'icon-ok-circle' %>
 								<li class="divider"></li>
-								<li><%= link_to " Cancel delete", cancel_delete_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>								
-						<% else %>
-							<li><%= link_to " Cancel delete", cancel_delete_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>
+								<li><%= link_to " Cancel delete", cancel_delete_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>
+							</ul>								
+						<% elsif l.backup.user.id == current_user.id %>
+							<ul class="dropdown-menu">
+								<li><%= link_to " Cancel delete", cancel_delete_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>
+							</ul>
 						<% end %>
-						</ul>
+						
 					</div>
 				<% elsif l.is_updated %>
 					<% @is_updated = true %>
 			    	<div class="btn-group pull-right">
 						<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-							</i> <%= l.backup.user.first_name || "UNKNOWN" %> <span class="caret"></span>
-						</a>
-						<ul class="dropdown-menu">
-							<% if l.backup.user.id != current_user.id %>							
+							<%= l.backup.user.first_name || "UNKNOWN" %>
+							<% if (l.backup.user.id != current_user.id and is_super_admin? current_user) or l.backup.user.id == current_user.id%>	
+									<span class="caret"></span>
+							<% end %>
+						</a>						
+						<% if l.backup.user.id != current_user.id and is_super_admin? current_user %>	
+							<ul class="dropdown-menu">
 								<li><%= link_to " View the difference", view_difference_conflict_case_path(l), :method => :get, :class => 'icon-eye-open' %>
 								<li class="divider"></li>
 								<li><%= link_to " Approve to update", approve_update_conflict_case_path(l), :method => :get, :class => 'icon-ok-circle' %>
 								<li class="divider"></li>
 								<li><%= link_to " Cancel update", cancel_update_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>		
-							<% else %>
+							</ul>
+						<% elsif l.backup.user.id == current_user.id %>
+							<ul class="dropdown-menu">
 								<li><%= link_to " Cancel update", cancel_update_conflict_case_path(l), :method => :get, :class => 'icon-ban-circle' %></li>
-							<% end %>
+							</ul>
+						<% end %>
 						</ul>
 					</div>		
 				<% else %>	

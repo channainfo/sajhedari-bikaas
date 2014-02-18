@@ -4,7 +4,7 @@ class HomeController < ApplicationController
   def index
     if current_user && !params[:explicit]
       if mobile_device?
-        redirect_to mobile_conflict_cases_path
+        redirect_to conflict_cases_path
       else
         redirect_to conflict_cases_path
       end
