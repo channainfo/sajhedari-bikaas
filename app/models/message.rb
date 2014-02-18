@@ -82,7 +82,7 @@ class Message < ActiveRecord::Base
 			obj = f.split(".")
 			key = obj[0]
 			value = obj[1]
-			if f.downcase.start_with? "#{Setting.first.conflict_location_code}."
+			if f.downcase.start_with? "#{Setting.first.conflict_location_code.downcase}."
 				l = Location.find_by_code(value)
 				if l
 					conflict[:location_id] = l.id 
