@@ -6,14 +6,38 @@
 	  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
 	  <%= csrf_meta_tags %>
 	</head>
-	<body>
-		<div class="body-content">
-			<div class="to_right">
+	<body class="nepal">
+
+		<div class="body-login-content">
+			<div class="header">
+				<div class="sponsor">
+					<img src="/usaid.jpg" alt="USAID" />
+				</div>
+				<div class="project_title">
+					<center>
+						<h4> Welcome </h4>
+						<h3><font color="darkorange" size="bold"> SMS-Based Violence Reporting System </font></h3>
+					</center>
+				</div>
+				<div class="project_name">
+					<center>
+						<h4>
+							<font color="red" size="bold"> Sajhedari Bikaas Project </font>
+						</h4>
+						<h6>
+							<i><font color="gray" size="bold"> Partnership for Local Development </font></i>
+						</h6>
+					</center>
+				</div>
+
+			</div>
+			<div class="clear"></div>
+			<div class="to_left">
 				<%= yield %>
 			</div>
 			<hr>
 			<footer>
-				Developed by <a href="http://www.ilabsoutheastasia.org/">InSTEDD iLab South East Asia</a>.
+				<center>Sajhedari Bikaas Project(ref: AID-367-C-13-00003)</center>
 			</footer>
 		</div>
 	</body>

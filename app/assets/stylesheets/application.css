@@ -18,6 +18,29 @@
 	width: 1000px;
 }
 
+.body-login-content {
+	margin-left: auto;
+	margin-right: auto;
+	width: 1000px;
+	background-image:url('/nepal.jpg');
+	background-repeat: no-repeat;
+}
+
+.sponsor{
+	float: left;
+	width:300px;
+}
+
+.project_title{
+	float: left;
+	width: 400px;
+}
+
+.project_name{
+	float: left;
+	width: 300px;
+}
+
 .to-right{
 	right: 0px;
 	float: right;
