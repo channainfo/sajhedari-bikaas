@@ -17,7 +17,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 						</a>
-					<a class="brand" href="/" name="top" style="padding-top:0px; padding-bottom:0px;"><img src="logo.jpg" alt="USAID" /></a>
+					<a class="brand" href="/" name="top">Sajhedari Bikaas</a>
 					<div class="nav-collapse collapse">
 						<ul class="nav">
 							<li><%= link_to raw('<i class="icon-globe"></i> Map'), @rm["url"] + "collections" , :method => :get, :style => "padding: 10px", :rel => "nofollow", :target => "_blank" %></li>
@@ -70,7 +70,10 @@
 			</div>
 		<!--/.navbar-inner -->
 		</div>
-		<div class="body-content">
+		<div class="span2" style="text-align:right;">
+			<img src="/usaid.jpg" alt="USAID" />
+		</div>
+		<div class="span10 body-content">
 			<center>
 				<% if flash[:error] -%>
 				    <div class="alert alert-error">
@@ -88,9 +91,15 @@
 			<%= yield %>
 			<hr>
 			<footer>
-				Developed by <a href="http://www.ilabsoutheastasia.org/">InSTEDD iLab South East Asia</a>.
+				<center>Sajhedari Bikaas Project(ref: AID-367-C-13-00003)</center>
 			</footer>
 		</div>
-		
+		<div class="span2" style="text-align:left;">
+			<center>
+				<h6 style="text-align:center;">
+					<i><font color="red" size="6"> Conflict Reporting System </font></i>
+				</h6>
+			</center>
+		</div>
 	</body>
 </html>
