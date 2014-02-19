@@ -81,21 +81,48 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    if @user.update_to_resourcemap params[:user]
-      if(@user.update_attributes!(params[:user]))
-        @user.date_of_birth = DateTime.strptime(params["user"]["date_of_birth"], "%m-%d-%Y")  unless params["user"]["date_of_birth"].strip.empty?
-        @user.save
-        flash[:notice] = "You have successfully updated user #{@user.first_name} #{@user.last_name}."
-        redirect_to users_path
+    if(params["user"]["password"] != "" and params["user"]["password_confirmation"] != "")
+      if(params["user"]["password"] == params["user"]["password_confirmation"])
+        if @user.update_to_resourcemap params[:user]
+          if(@user.update_attributes!(params[:user]))
+            @user.date_of_birth = DateTime.strptime(params["user"]["date_of_birth"], "%m-%d-%Y")  unless params["user"]["date_of_birth"].strip.empty?
+            @user.save
+            flash[:notice] = "You have successfully updated user #{@user.first_name} #{@user.last_name}."
+            redirect_to users_path
+          else
+            flash[:error] = "Failed to update user. Please try again later."
+            assign_role_list
+            render :edit
+          end
+        else
+          flash[:error] = "Failed to update user on resource map application. Please try again later."
+          assign_role_list
+          render :edit
+        end
       else
-        flash[:error] = "Failed to update user. Please try again later."
+        flash[:error] = "Password and Password confirmation is not match"
         assign_role_list
         render :edit
       end
     else
-      flash[:error] = "Failed to update user on resource map application. Please try again later."
-      assign_role_list
-      render :edit
+      params["user"].delete("password")
+      params["user"].delete("password_confirmation")
+      if @user.update_to_resourcemap params[:user]
+        if(@user.update_attributes!(params[:user]))
+            @user.date_of_birth = DateTime.strptime(params["user"]["date_of_birth"], "%m-%d-%Y")  unless params["user"]["date_of_birth"].strip.empty?
+            @user.save
+            flash[:notice] = "You have successfully updated user #{@user.first_name} #{@user.last_name}."
+            redirect_to users_path
+          else
+            flash[:error] = "Failed to update user. Please try again later."
+            assign_role_list
+            render :edit
+          end
+        else
+          flash[:error] = "Failed to update user on resource map application. Please try again later."
+          assign_role_list
+          render :edit
+        end
     end
   end
 

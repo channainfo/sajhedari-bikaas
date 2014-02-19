@@ -77,6 +77,24 @@
                 <%= f.text_area :address, :class =>"input-xlarge" %>
             </div>
         </div>
+
+
+        <font color="gray"> Leave if blank if you don't want to change password</font>
+        <br /><br />
+
+        <div class="control-group">
+            <%= f.label "New password", :class => "control-label" %>
+            <div class="controls">
+                <%= f.password_field :password, :class =>"input-xlarge" %>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <%= f.label "Password confirmation", :class => "control-label" %>
+            <div class="controls">
+                <%= f.password_field :password_confirmation, :class =>"input-xlarge"%>
+            </div>
+        </div>
        
         <!-- Submit -->
         <div class="control-group">
