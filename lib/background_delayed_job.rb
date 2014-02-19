@@ -7,7 +7,7 @@ RAILS_ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..'))
  
 class DelayedJobWorker < DaemonSpawn::Base
 	def start(args)
-		ENV['RAILS_ENV'] ||= args.first || 'development'
+		ENV['RAILS_ENV'] ||= args.first || 'production'
 		require File.join(RAILS_ROOT, 'config', 'environment')
 		 
 		Delayed::Worker.new.start
