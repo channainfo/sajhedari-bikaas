@@ -20,7 +20,7 @@
 					<a class="brand" href="/" name="top">Sajhedari Bikaas</a>
 					<div class="nav-collapse collapse">
 						<ul class="nav">
-							<li><%= link_to raw('<i class="icon-globe"></i> Map'), @rm["url"] + "collections" , :method => :get, :style => "padding: 10px", :rel => "nofollow", :target => "_blank" %></li>
+							<li><%= link_to raw('<i class="icon-globe"></i> Map'), @rm["url"] + "collections" , :method => :get, :style => "padding: 10px" %></li>
 							<li class="divider-vertical"></li>
 							<li class=<%= section_active("reporters")  %>><%= link_to raw('<i class="icon-group"></i> Reporters'), reporters_path, :method => :get, :style => "padding: 10px" %></li>
 							<li class="divider-vertical"></li>
@@ -32,7 +32,7 @@
 										<i class="icon-warning-sign"></i> Alert <strong class="caret"></strong>
 									</a>
 									<ul class="dropdown-menu">									
-											<li><%= link_to raw('<i class="icon-bell"></i> Case Based Alert'), @rm["url"] + "plugin/alerts/collections/" + @rm["collection_id"].to_s + "/thresholds" , :method => :get, :style => "padding: 10px", :rel => "nofollow", :target => "_blank"%></li>										
+											<li><%= link_to raw('<i class="icon-bell"></i> Case Based Alert'), @rm["url"] + "plugin/alerts/collections/" + @rm["collection_id"].to_s + "/thresholds" , :method => :get, :style => "padding: 10px"%></li>										
 											<li class=<%= section_active("alerts")  %>><%= link_to raw('<i class="icon-warning-sign"></i> Aggregate Threshold Alert'), alerts_path, :method => :get, :style => "padding: 10px" %>
 									</ul>
 								</li>
