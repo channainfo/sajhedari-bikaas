@@ -1,20 +1,20 @@
 production:
   url: http://nuntium.instedd.org
-  account: ksokmesa@gmail.com
-  application: gateway
-  channel: nepal
-  password: 123456 #password application
+  account: balkumar
+  application: Sajhedari
+  channel: Sajhedari_Channels
+  password: Sajhedari #password application
 
 development:
   url: http://nuntium.instedd.org
-  account: ksokmesa@gmail.com
-  application: gateway
-  channel: nepal
-  password: 123456 #password application
+  account: balkumar
+  application: Sajhedari
+  channel: Sajhedari_Channels
+  password: Sajhedari #password application
 
 testing:
   url: http://nuntium.instedd.org
-  account: ksokmesa@gmail.com
-  application: gateway
-  channel: nepal
-  password: 123456 #password application
+  account: balkumar
+  application: Sajhedari
+  channel: Sajhedari_Channels
+  password: Sajhedari #password application
