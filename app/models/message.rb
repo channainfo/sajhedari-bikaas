@@ -35,11 +35,11 @@ class Message < ActiveRecord::Base
 			data = f.split(/(?<=[a-zA-Z])(?=\d)/)
 			key = data[0]
 			value = data[1]
-			if(rm_codes.include?(key.downcase) or f.downcase.start_with? "#{Setting.first.conflict_location_code.downcase}.")
+			if(rm_codes.include?(key.downcase) or f.downcase.start_with? "#{Setting.first.conflict_location_code.downcase}")
 				unless self.is_i? value
 					return "Error #{f}." + Setting.first.message_unknown
 				else
-					if f.downcase.start_with? "#{Setting.first.conflict_location_code.downcase}."
+					if f.downcase.start_with? "#{Setting.first.conflict_location_code.downcase}"
 						l = Location.find_by_code(value)
 						if l
 							list["#{f[0]}".downcase] = value
