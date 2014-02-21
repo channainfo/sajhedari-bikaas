@@ -140,4 +140,21 @@ class ReportersController < ApplicationController
       redirect_to reporters_path
     end
   end
+
+  def export_csv
+    header = "First Name, Last Name, Gender, Caste/Ethnicity, Phnom Number"
+    items = header + "\n"
+    Reporter.all.each do |reporter|
+      item = []
+      item.push(reporter.first_name)
+      item.push(reporter.last_name)
+      item.push(reporter.sex)
+      item.push(reporter.cast_ethnicity)
+      item.push(reporter.phone_number)
+      items = items + item.join(",") + "\n"
+    end
+    send_data items,
+      :type => 'text/csv; charset=utf-8; header=present',
+      :filename => "reporters.csv"
+  end
 end

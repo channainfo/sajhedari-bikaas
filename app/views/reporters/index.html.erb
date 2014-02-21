@@ -5,7 +5,10 @@
 	    	<button type="submit" class="btn">Search</button>
 	    </div>
 	</form>
-	<%= link_to "Add New Reporter", new_reporter_path, :method => :get, :class => 'btn btn-primary to-right' %>	    
+	<%= link_to "Add New Reporter", new_reporter_path, :method => :get, :class => 'btn btn-primary to-right' %>	
+	<a class="btn dropdown-toggle to-right" href="<%= export_csv_reporters_path()%>" style="margin-right:20px;">
+		<i class="icon-download"></i> Export to excel</span>
+	</a>    
 </div>
 <div>
 	<!--<table class="table table-bordered table-striped">-->

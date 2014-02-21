@@ -31,6 +31,8 @@ class Message < ActiveRecord::Base
 		list = {}
 		fields.each do |f|
 			data = f.split(".")
+			# if message not require . so people send a1 b2 ...
+			# data = f.split(/(?<=[a-zA-Z])(?=\d)/)
 			key = data[0]
 			value = data[1]
 			if(rm_codes.include?(key.downcase) or f.downcase.start_with? "#{Setting.first.conflict_location_code.downcase}.")
@@ -80,6 +82,8 @@ class Message < ActiveRecord::Base
 		data = {}
 		fields.each do |f|
 			obj = f.split(".")
+			# if message not require . so people send a1 b2 ...
+			# obj = f.split(/(?<=[a-zA-Z])(?=\d)/)
 			key = obj[0]
 			value = obj[1]
 			if f.downcase.start_with? "#{Setting.first.conflict_location_code.downcase}."

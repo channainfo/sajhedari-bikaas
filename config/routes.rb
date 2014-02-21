@@ -30,6 +30,7 @@ Conflict::Application.routes.draw do
   resources :reporters do
     collection do
       get 'getReporterCasesPagination'
+      get 'export_csv'
     end
   end
 
