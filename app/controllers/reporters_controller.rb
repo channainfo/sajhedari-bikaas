@@ -142,7 +142,7 @@ class ReportersController < ApplicationController
   end
 
   def export_csv
-    header = "First Name, Last Name, Gender, Caste/Ethnicity, Phnom Number"
+    header = "First Name, Last Name, Gender, Caste/Ethnicity, Phone Number"
     items = header + "\n"
     Reporter.all.each do |reporter|
       item = []

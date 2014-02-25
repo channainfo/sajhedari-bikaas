@@ -57,11 +57,17 @@ class Alert < ActiveRecord::Base
     sites = ConflictCase.get_all_sites_from_resource_map_by_period(start_date, end_date)
     conflict_cases = ConflictCase.transform(sites, fields)
     count = 0
+    # email_mesage = " <p> List of reporter that report the message :<br /><ul>"
     conflict_cases.each do |conflict|
       if conflict.meet_alert?(JSON.parse(self.condition))
+        # reporter = conflict.reporter
+        # location = conflict.location
+        # email_mesage = email_mesage + "<li> #{reporter.first_name} #{reporter.last_name} [ #{reporter.phone_number} ] sent from location conflict.location.name(#{location.code}) </li>"
         count = count + 1
       end
     end
+    # email_mesage = email_mesage + "</ul></p>"
+    # message = self.message + email_mesage
     if count > self.total
       JSON.parse(self.email_contacts).each do |id|
         user = User.find(id)
