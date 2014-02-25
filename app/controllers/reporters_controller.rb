@@ -5,9 +5,9 @@ class ReportersController < ApplicationController
     @fields = ConflictCase.get_fields
     if params[:query]
       @query = params[:query]
-      @reporters = Reporter.where('last_name like ? OR first_name like ? OR phone_number like ?',"%#{@query}%","%#{@query}%","%#{@query}%").paginate(:page => params[:page], :per_page => 3)
+      @reporters = Reporter.where('last_name like ? OR first_name like ? OR phone_number like ?',"%#{@query}%","%#{@query}%","%#{@query}%").order(:first_name).paginate(:page => params[:page], :per_page => 3)
     else
-      @reporters = Reporter.all.paginate(:page => params[:reporter_page], :per_page => PageSize)
+      @reporters = Reporter.all.order(:first_name).paginate(:page => params[:reporter_page], :per_page => PageSize)
     end
   end
 
@@ -64,7 +64,7 @@ class ReportersController < ApplicationController
     @reporter_cases.count == 0 ? table_rows = "<tr><td colspan='5' style='text-align: center; color: red; padding-top: 20px;'>No records found</td></tr>" : table_row = ""
     @reporter_cases.each do |el|
       location = Location.find_by_id(el.location_id)
-      row = "<tr><td style='width: 200px;'>#{el.updated_at.strftime("%m-%d-%Y %H:%M:%S UTC")}</td>"
+      row = "<tr><td style='width: 200px;'>#{el.created_at.in_time_zone(TimeZone).strftime("%m-%d-%Y %H:%M:%S")}</td>"
       @fields.each do |f|
         row += "<td>#{el.get_properties_value("label", f)}</td>"
       end
